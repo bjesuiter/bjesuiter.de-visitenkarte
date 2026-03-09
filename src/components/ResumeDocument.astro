@@ -1,0 +1,676 @@
+---
+import { getLocalizedResumeContent, type ResumeLocale } from "../data/resume";
+
+interface Props {
+  locale?: ResumeLocale;
+}
+
+const { locale = "de" } = Astro.props;
+const content = getLocalizedResumeContent(locale);
+const toolbarAriaLabel = locale === "de" ? "Lebenslauf-Aktionen" : "CV actions";
+---
+
+<main class="resume-page">
+  <div class="resume-toolbar print-hidden" aria-label={toolbarAriaLabel}>
+    <button type="button" onclick="window.print()">
+      {content.navigation.printLabel}
+    </button>
+  </div>
+
+  <article class="resume-sheet">
+    <header class="resume-hero">
+      <div class="resume-hero-copy">
+        <p class="resume-badge">{content.badge}</p>
+        <h1>{content.heading}</h1>
+        <p class="resume-intro">{content.intro}</p>
+      </div>
+
+      <div class="resume-hero-note print-hidden">
+        <p>{content.printHint}</p>
+      </div>
+    </header>
+
+    <section class="resume-grid resume-top-grid">
+      <section class="resume-panel resume-panel-emphasis">
+        <h2>{content.factsTitle}</h2>
+        <dl class="resume-facts">
+          {
+            content.facts.map((fact) => (
+              <div>
+                <dt>{fact.label}</dt>
+                <dd>{fact.value}</dd>
+              </div>
+            ))
+          }
+        </dl>
+      </section>
+
+      <section class="resume-panel">
+        <h2>{content.contactTitle}</h2>
+        <ul class="resume-link-list">
+          {
+            content.contactLinks.map((link) => (
+              <li>
+                <a href={link.href} target="_blank" rel="noreferrer">
+                  <span>{link.label}</span>
+                  <span>{link.href.replace(/^https?:\/\//, "")}</span>
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+
+        <h2 class="resume-subheading">{content.industriesTitle}</h2>
+        <ul class="resume-chip-list">
+          {content.industries.map((industry) => <li>{industry}</li>)}
+        </ul>
+      </section>
+    </section>
+
+    <section class="resume-panel resume-section">
+      <div class="resume-section-heading">
+        <h2>{content.skillsTitle}</h2>
+      </div>
+
+      <div class="resume-skills-grid">
+        {
+          content.skillCategories.map((category) => (
+            <section class="resume-skill-card">
+              <h3>{category.title}</h3>
+              <ul>
+                {category.items.map((item) => (
+                  <li>{item}</li>
+                ))}
+              </ul>
+            </section>
+          ))
+        }
+      </div>
+    </section>
+
+    <section class="resume-section">
+      <div class="resume-section-heading">
+        <div>
+          <h2>{content.projectsTitle}</h2>
+          <p>{content.projectsIntro}</p>
+        </div>
+      </div>
+
+      <div class="resume-projects">
+        {
+          content.projects.map((project) => (
+            <article class="resume-project-card">
+              <header class="resume-project-header">
+                <div>
+                  <p class="resume-project-period">{project.period}</p>
+                  <p class="resume-project-sector">{project.sector}</p>
+                  <h3>{project.title}</h3>
+                </div>
+
+                <dl class="resume-project-meta">
+                  {project.duration && (
+                    <div>
+                      <dt>{content.durationLabel}</dt>
+                      <dd>{project.duration}</dd>
+                    </div>
+                  )}
+                  {project.teamSize && (
+                    <div>
+                      <dt>{content.teamSizeLabel}</dt>
+                      <dd>{project.teamSize}</dd>
+                    </div>
+                  )}
+                  <div>
+                    <dt>{content.rolesLabel}</dt>
+                    <dd>{project.roles.join(" · ")}</dd>
+                  </div>
+                </dl>
+              </header>
+
+              <div class="resume-project-body">
+                <div class="resume-project-copy">
+                  {project.summary.map((paragraph) => (
+                    <p>{paragraph}</p>
+                  ))}
+                </div>
+
+                <section class="resume-detail-card">
+                  <h4>{content.highlightsTitle}</h4>
+                  <ul>
+                    {project.highlights.map((highlight) => (
+                      <li>{highlight}</li>
+                    ))}
+                  </ul>
+                </section>
+
+                <section class="resume-detail-card">
+                  <h4>{content.stackTitle}</h4>
+                  <dl class="resume-stack-list">
+                    {project.stack.map((item) => (
+                      <div>
+                        <dt>{item.label}</dt>
+                        <dd>{item.value}</dd>
+                      </div>
+                    ))}
+                  </dl>
+                </section>
+              </div>
+            </article>
+          ))
+        }
+      </div>
+    </section>
+  </article>
+</main>
+
+<style is:global>
+  .resume-page {
+    min-height: 100vh;
+    padding: clamp(1rem, 2vw, 1.75rem);
+    background:
+      radial-gradient(
+        circle at top left,
+        rgba(110, 231, 183, 0.22),
+        transparent 28%
+      ),
+      radial-gradient(
+        circle at bottom right,
+        rgba(16, 185, 129, 0.16),
+        transparent 25%
+      ),
+      linear-gradient(180deg, #eef8f3 0%, #f8fcfa 100%);
+    color: #113128;
+  }
+
+  .resume-toolbar {
+    width: min(1100px, 100%);
+    margin: 0 auto 1rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    justify-content: flex-end;
+  }
+
+  .resume-toolbar :is(a, button) {
+    appearance: none;
+    border: 1px solid rgba(17, 49, 40, 0.12);
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.82);
+    padding: 0.72rem 1rem;
+    font: inherit;
+    color: #113128;
+    font-weight: 600;
+    cursor: pointer;
+    transition:
+      transform 160ms ease,
+      border-color 160ms ease,
+      background-color 160ms ease;
+  }
+
+  .resume-toolbar :is(a, button):hover {
+    transform: translateY(-1px);
+    border-color: rgba(16, 185, 129, 0.35);
+    background: white;
+  }
+
+  .resume-sheet {
+    width: min(1100px, 100%);
+    margin: 0 auto;
+    padding: clamp(1.1rem, 2vw, 1.8rem);
+    border-radius: 28px;
+    background: rgba(255, 255, 255, 0.88);
+    border: 1px solid rgba(17, 49, 40, 0.08);
+    box-shadow: 0 28px 70px rgba(13, 37, 30, 0.08);
+    backdrop-filter: blur(12px);
+  }
+
+  .resume-hero {
+    display: grid;
+    gap: 1rem;
+    padding-bottom: 1.4rem;
+    border-bottom: 1px solid rgba(17, 49, 40, 0.1);
+  }
+
+  .resume-badge {
+    margin: 0 0 0.75rem;
+    font-size: 0.82rem;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: #0f766e;
+  }
+
+  .resume-hero h1,
+  .resume-section h2,
+  .resume-panel h2,
+  .resume-project-card h3,
+  .resume-detail-card h4,
+  .resume-skill-card h3 {
+    font-family:
+      Iowan Old Style,
+      Palatino Linotype,
+      Book Antiqua,
+      Georgia,
+      serif;
+  }
+
+  .resume-hero h1 {
+    margin: 0;
+    font-size: clamp(2.2rem, 5vw, 4rem);
+    line-height: 0.96;
+    letter-spacing: -0.03em;
+    color: #0f2a22;
+  }
+
+  .resume-intro {
+    max-width: 72ch;
+    margin: 1rem 0 0;
+    font-size: clamp(1rem, 1.5vw, 1.08rem);
+    line-height: 1.7;
+    color: #345349;
+  }
+
+  .resume-hero-note {
+    width: fit-content;
+    justify-self: start;
+    border-radius: 18px;
+    background: linear-gradient(
+      135deg,
+      rgba(16, 185, 129, 0.12),
+      rgba(15, 118, 110, 0.06)
+    );
+    border: 1px solid rgba(15, 118, 110, 0.12);
+    padding: 0.95rem 1rem;
+    color: #245045;
+  }
+
+  .resume-hero-note p {
+    margin: 0;
+    line-height: 1.5;
+  }
+
+  .resume-grid {
+    display: grid;
+    gap: 1rem;
+  }
+
+  .resume-top-grid {
+    margin-top: 1rem;
+  }
+
+  .resume-panel,
+  .resume-project-card {
+    border-radius: 22px;
+    border: 1px solid rgba(17, 49, 40, 0.08);
+    background: #ffffff;
+    box-shadow: 0 14px 32px rgba(13, 37, 30, 0.04);
+  }
+
+  .resume-panel {
+    padding: 1.1rem;
+  }
+
+  .resume-panel-emphasis {
+    background:
+      radial-gradient(
+        circle at top right,
+        rgba(110, 231, 183, 0.18),
+        transparent 35%
+      ),
+      linear-gradient(180deg, #fcfffe 0%, #f5fbf8 100%);
+  }
+
+  .resume-panel h2,
+  .resume-section h2 {
+    margin: 0;
+    font-size: clamp(1.3rem, 2vw, 1.8rem);
+    color: #102a22;
+  }
+
+  .resume-subheading {
+    margin-top: 1.35rem !important;
+  }
+
+  .resume-facts {
+    display: grid;
+    gap: 0.9rem;
+    margin-top: 1rem;
+  }
+
+  .resume-facts div,
+  .resume-stack-list div {
+    display: grid;
+    gap: 0.2rem;
+  }
+
+  .resume-facts dt,
+  .resume-project-meta dt,
+  .resume-stack-list dt {
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #0f766e;
+  }
+
+  .resume-facts dd,
+  .resume-project-meta dd,
+  .resume-stack-list dd {
+    margin: 0;
+    line-height: 1.6;
+    color: #27453c;
+  }
+
+  .resume-link-list,
+  .resume-chip-list,
+  .resume-skill-card ul,
+  .resume-detail-card ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .resume-link-list {
+    display: grid;
+    gap: 0.7rem;
+    margin-top: 1rem;
+  }
+
+  .resume-link-list a {
+    display: grid;
+    gap: 0.16rem;
+    padding: 0.9rem 1rem;
+    border-radius: 16px;
+    border: 1px solid rgba(17, 49, 40, 0.08);
+    background: linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 1),
+      rgba(246, 251, 248, 1)
+    );
+  }
+
+  .resume-link-list a span:first-child {
+    font-weight: 700;
+    color: #102a22;
+  }
+
+  .resume-link-list a span:last-child {
+    color: #426257;
+    word-break: break-word;
+  }
+
+  .resume-chip-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.55rem;
+    margin-top: 1rem;
+  }
+
+  .resume-chip-list li {
+    padding: 0.5rem 0.8rem;
+    border-radius: 999px;
+    background: #eff9f5;
+    color: #235044;
+    border: 1px solid rgba(17, 49, 40, 0.08);
+  }
+
+  .resume-section {
+    margin-top: 1rem;
+  }
+
+  .resume-section-heading {
+    margin-bottom: 1rem;
+  }
+
+  .resume-section-heading p {
+    margin: 0.45rem 0 0;
+    line-height: 1.6;
+    color: #436259;
+  }
+
+  .resume-skills-grid {
+    display: grid;
+    gap: 0.9rem;
+  }
+
+  .resume-skill-card {
+    padding: 1rem;
+    border-radius: 18px;
+    border: 1px solid rgba(17, 49, 40, 0.08);
+    background: linear-gradient(180deg, #ffffff 0%, #f7fbf9 100%);
+  }
+
+  .resume-skill-card h3 {
+    margin: 0 0 0.7rem;
+    font-size: 1.08rem;
+    color: #123127;
+  }
+
+  .resume-skill-card ul {
+    display: grid;
+    gap: 0.5rem;
+  }
+
+  .resume-skill-card li,
+  .resume-detail-card li,
+  .resume-project-copy p {
+    line-height: 1.65;
+    color: #33534a;
+  }
+
+  .resume-skill-card li,
+  .resume-detail-card li {
+    position: relative;
+    padding-left: 1rem;
+  }
+
+  .resume-skill-card li::before,
+  .resume-detail-card li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0.72rem;
+    width: 0.38rem;
+    height: 0.38rem;
+    border-radius: 999px;
+    background: #10b981;
+  }
+
+  .resume-projects {
+    display: grid;
+    gap: 1rem;
+  }
+
+  .resume-project-card {
+    overflow: hidden;
+  }
+
+  .resume-project-header {
+    display: grid;
+    gap: 1rem;
+    padding: 1.1rem;
+    border-bottom: 1px solid rgba(17, 49, 40, 0.08);
+    background:
+      radial-gradient(
+        circle at top right,
+        rgba(110, 231, 183, 0.15),
+        transparent 34%
+      ),
+      linear-gradient(180deg, #fbfffd 0%, #f5faf7 100%);
+  }
+
+  .resume-project-period,
+  .resume-project-sector {
+    margin: 0;
+    color: #0f766e;
+    font-weight: 700;
+  }
+
+  .resume-project-period {
+    font-size: 0.84rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .resume-project-sector {
+    margin-top: 0.45rem;
+    font-size: 0.94rem;
+  }
+
+  .resume-project-card h3 {
+    margin: 0.5rem 0 0;
+    font-size: clamp(1.3rem, 2vw, 1.75rem);
+    line-height: 1.15;
+    color: #102a22;
+  }
+
+  .resume-project-meta {
+    display: grid;
+    gap: 0.7rem;
+  }
+
+  .resume-project-body {
+    display: grid;
+    gap: 1rem;
+    padding: 1.1rem;
+  }
+
+  .resume-project-copy {
+    display: grid;
+    gap: 0.8rem;
+  }
+
+  .resume-project-copy p {
+    margin: 0;
+  }
+
+  .resume-detail-card {
+    padding: 1rem;
+    border-radius: 18px;
+    border: 1px solid rgba(17, 49, 40, 0.08);
+    background: #fbfefd;
+  }
+
+  .resume-detail-card h4 {
+    margin: 0 0 0.7rem;
+    font-size: 1.03rem;
+    color: #123127;
+  }
+
+  .resume-detail-card ul {
+    display: grid;
+    gap: 0.55rem;
+  }
+
+  .resume-stack-list {
+    display: grid;
+    gap: 0.75rem;
+  }
+
+  @media (min-width: 760px) {
+    .resume-hero {
+      grid-template-columns: minmax(0, 1fr) auto;
+      align-items: end;
+    }
+
+    .resume-top-grid {
+      grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr);
+    }
+
+    .resume-skills-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .resume-project-header {
+      grid-template-columns: minmax(0, 1.5fr) minmax(280px, 0.9fr);
+      align-items: start;
+    }
+  }
+
+  @media (min-width: 980px) {
+    .resume-sheet {
+      padding: 1.6rem;
+    }
+
+    .resume-skills-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+
+  @page {
+    size: A4;
+    margin: 12mm;
+  }
+
+  @media print {
+    html,
+    body {
+      background: #ffffff !important;
+    }
+
+    .print-hidden {
+      display: none !important;
+    }
+
+    .resume-page {
+      padding: 0;
+      background: #ffffff;
+      color: #000000;
+    }
+
+    .resume-sheet {
+      width: 100%;
+      max-width: none;
+      margin: 0;
+      padding: 0;
+      border: 0;
+      border-radius: 0;
+      box-shadow: none;
+      backdrop-filter: none;
+      background: #ffffff;
+    }
+
+    .resume-panel,
+    .resume-project-card,
+    .resume-skill-card,
+    .resume-detail-card,
+    .resume-link-list a {
+      box-shadow: none;
+      break-inside: avoid;
+      page-break-inside: avoid;
+    }
+
+    .resume-hero,
+    .resume-panel,
+    .resume-project-card,
+    .resume-detail-card,
+    .resume-skill-card {
+      background: #ffffff !important;
+    }
+
+    .resume-project-card {
+      border-color: rgba(0, 0, 0, 0.18);
+    }
+
+    .resume-link-list a,
+    .resume-chip-list li,
+    .resume-detail-card,
+    .resume-skill-card,
+    .resume-panel {
+      border-color: rgba(0, 0, 0, 0.12);
+    }
+
+    .resume-section {
+      margin-top: 0.8rem;
+    }
+
+    .resume-projects {
+      gap: 0.8rem;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+  }
+</style>

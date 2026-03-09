@@ -1,4 +1,5 @@
 ---
+import DockNav from "../components/DockNav.astro";
 import Layout from "../layouts/Layout.astro";
 ---
 
@@ -6,13 +7,21 @@ import Layout from "../layouts/Layout.astro";
   title="Support · bjesuiter.de"
   description="Support-Seite von Benjamin Jesuiter."
 >
+  <DockNav
+    locale="de"
+    current="support"
+    homeHref="/"
+    resumeHref="/de/lebenslauf/"
+    supportHref="/support/"
+    languageSwitchHref="/en/support/"
+  />
   <main class="support-shell">
     <section class="support-card">
       <p class="support-kicker">Support</p>
       <h1>Danke, dass du meine Arbeit unterstützen möchtest!</h1>
       <p>
-        Hier findest direkte Links, unter denen du mich supporten kannst oder die mir eine kleine Provision geben, wenn du Sie nutzt.
-        DANKE!
+        Hier findest direkte Links, unter denen du mich supporten kannst oder
+        die mir eine kleine Provision geben, wenn du Sie nutzt. DANKE!
       </p>
       <ul class="support-links" aria-label="Support-Links">
         <li>
@@ -38,9 +47,6 @@ import Layout from "../layouts/Layout.astro";
           </a>
         </li>
       </ul>
-      <div class="support-actions">
-        <a href="/" class="support-back">Zurück zur Startseite</a>
-      </div>
     </section>
   </main>
 </Layout>
@@ -106,10 +112,6 @@ import Layout from "../layouts/Layout.astro";
     max-width: 60ch;
   }
 
-  .support-actions {
-    margin-top: 1.15rem;
-  }
-
   .support-links {
     margin-top: 1rem;
     display: grid;
@@ -139,28 +141,5 @@ import Layout from "../layouts/Layout.astro";
     font-size: 0.65rem;
     letter-spacing: 0.08em;
     color: #a7f3d0;
-  }
-
-  .support-back {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0.62rem 1.05rem;
-    border-radius: 999px;
-    border: 1px solid rgba(255, 255, 255, 0.24);
-    color: #032015;
-    background: linear-gradient(90deg, #6ee7b7, #34d399);
-    font-family: "Chakra Petch", sans-serif;
-    font-weight: 700;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
-    transition:
-      transform 170ms ease,
-      filter 170ms ease;
-  }
-
-  .support-back:hover {
-    transform: translateY(-1px);
-    filter: brightness(1.06);
   }
 </style>

@@ -10,12 +10,48 @@ import {
 interface Props {
   locale?: SupportedLocale;
   supportHref?: string;
+  resumeHref?: string;
 }
 
-const { locale = "de", supportHref = "/support" } = Astro.props;
+const {
+  locale = "de",
+  supportHref = "/support",
+  resumeHref = "/de/lebenslauf",
+} = Astro.props;
 const { identity, profileSections, supportCta } =
   getLocalizedProfileContent(locale);
 const profileAriaLabel = locale === "de" ? "Profile" : "Profiles";
+const openLabel = locale === "de" ? "öffnen" : "open";
+const verificationContent =
+  locale === "de"
+    ? {
+        ariaLabel: "Verifizierung",
+        title: "Verifizierung",
+        description:
+          "Über diese Website kann ich beweisen, dass ich die angegebenen Domains und Social-Accounts kontrolliere. Dafür nutze ich atproto.",
+      }
+    : {
+        ariaLabel: "Verification",
+        title: "Verification",
+        description:
+          "This website can be used to prove that I control the domains and social accounts listed here. It uses atproto for that.",
+      };
+const resumeCta =
+  locale === "de"
+    ? {
+        ariaLabel: "Lebenslauf",
+        title: "Vollständiger Lebenslauf",
+        description:
+          "Meine komplette Projektchronik, Kompetenzen und Branchenerfahrung gibt es jetzt auch direkt auf der Website – optimiert zum Lesen und zum Ausdrucken als PDF.",
+        linkLabel: "Lebenslauf öffnen",
+      }
+    : {
+        ariaLabel: "CV",
+        title: "Full CV",
+        description:
+          "My complete project history, core skills, and industry background are now available directly on the website and optimized for reading or printing as a PDF.",
+        linkLabel: "Open CV",
+      };
 ---
 
 <article class="v5-pass">
@@ -46,7 +82,7 @@ const profileAriaLabel = locale === "de" ? "Profile" : "Profiles";
                 <a href={link.href} target="_blank" rel="noreferrer">
                   <Icon name={link.icon} />
                   <span>{link.label}</span>
-                  <span aria-hidden="true">open</span>
+                  <span aria-hidden="true">{openLabel}</span>
                 </a>
               </li>
             ))}
@@ -56,13 +92,20 @@ const profileAriaLabel = locale === "de" ? "Profile" : "Profiles";
     }
   </section>
 
-  <section class="v5-verification" aria-label="Verifizierung">
-    <h2>Verifizierung</h2>
-    <p>
-      Mit dieser Website ist es möglich zu beweisen, dass ich die Domains und
-      Social-Accounts besitze, die ich angebe. Sie nutzt atproto dafür.
-    </p>
-    <a href="https://keytrace.dev/@bjesuiter.de" target="_blank" rel="noreferrer">
+  <section class="v5-resume" aria-label={resumeCta.ariaLabel}>
+    <h2>{resumeCta.title}</h2>
+    <p>{resumeCta.description}</p>
+    <a href={resumeHref}>{resumeCta.linkLabel}</a>
+  </section>
+
+  <section class="v5-verification" aria-label={verificationContent.ariaLabel}>
+    <h2>{verificationContent.title}</h2>
+    <p>{verificationContent.description}</p>
+    <a
+      href="https://keytrace.dev/@bjesuiter.de"
+      target="_blank"
+      rel="noreferrer"
+    >
       keytrace.dev/@bjesuiter.de
     </a>
   </section>
@@ -177,11 +220,25 @@ const profileAriaLabel = locale === "de" ? "Profile" : "Profiles";
     border-bottom: 0;
   }
 
+  .v5-resume,
   .v5-verification {
     display: grid;
     gap: 0.85rem;
     padding: clamp(1.2rem, 3vw, 1.8rem);
     border-top: 1px dashed rgba(167, 243, 208, 0.2);
+  }
+
+  .v5-resume {
+    background:
+      radial-gradient(
+        circle at 12% 16%,
+        rgba(110, 231, 183, 0.16),
+        transparent 30%
+      ),
+      linear-gradient(120deg, rgba(4, 27, 21, 0.96), rgba(6, 34, 25, 0.82));
+  }
+
+  .v5-verification {
     background:
       radial-gradient(
         circle at 90% 20%,
@@ -191,6 +248,7 @@ const profileAriaLabel = locale === "de" ? "Profile" : "Profiles";
       linear-gradient(120deg, rgba(5, 26, 20, 0.92), rgba(5, 30, 22, 0.72));
   }
 
+  .v5-resume h2,
   .v5-verification h2 {
     font-family: "Fraunces", serif;
     font-size: clamp(1.2rem, 2vw, 1.55rem);
@@ -198,6 +256,7 @@ const profileAriaLabel = locale === "de" ? "Profile" : "Profiles";
     line-height: 1.1;
   }
 
+  .v5-resume p,
   .v5-verification p {
     font-family: "Chakra Petch", sans-serif;
     color: #c9f7e3;
@@ -205,25 +264,41 @@ const profileAriaLabel = locale === "de" ? "Profile" : "Profiles";
     line-height: 1.5;
   }
 
+  .v5-resume a,
   .v5-verification a {
     width: fit-content;
     font-family: "Chakra Petch", sans-serif;
     font-weight: 700;
     letter-spacing: 0.04em;
     text-transform: uppercase;
-    color: #d9f9ec;
     border-radius: 999px;
     padding: 0.55rem 1.05rem;
-    border: 1px solid rgba(110, 231, 183, 0.5);
-    background: rgba(3, 24, 18, 0.6);
     transition:
       transform 170ms ease,
-      border-color 170ms ease;
+      border-color 170ms ease,
+      filter 170ms ease;
   }
 
+  .v5-resume a {
+    color: #032015;
+    border: 1px solid rgba(255, 255, 255, 0.24);
+    background: linear-gradient(90deg, #a7f3d0, #6ee7b7);
+  }
+
+  .v5-verification a {
+    color: #d9f9ec;
+    border: 1px solid rgba(110, 231, 183, 0.5);
+    background: rgba(3, 24, 18, 0.6);
+  }
+
+  .v5-resume a:hover,
   .v5-verification a:hover {
     transform: translateY(-1px);
     border-color: #6ee7b7;
+  }
+
+  .v5-resume a:hover {
+    filter: brightness(1.04);
   }
 
   .v5-support {
@@ -408,5 +483,4 @@ const profileAriaLabel = locale === "de" ? "Profile" : "Profiles";
       object-position: center 12%;
     }
   }
-
 </style>

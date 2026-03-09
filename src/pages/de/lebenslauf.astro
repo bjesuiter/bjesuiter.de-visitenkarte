@@ -1,0 +1,21 @@
+---
+import DockNav from "../../components/DockNav.astro";
+import ResumeDocument from "../../components/ResumeDocument.astro";
+import Layout from "../../layouts/Layout.astro";
+---
+
+<Layout
+  lang="de"
+  title="Benjamin Jesuiter · Lebenslauf"
+  description="Vollständiger Lebenslauf von Benjamin Jesuiter mit Projektchronik, Kompetenzen und Branchenerfahrung."
+>
+  <DockNav
+    locale="de"
+    current="resume"
+    homeHref="/de/"
+    resumeHref="/de/lebenslauf/"
+    supportHref="/de/support/"
+    languageSwitchHref="/en/cv/"
+  />
+  <ResumeDocument locale="de" />
+</Layout>

@@ -1,0 +1,377 @@
+---
+import { Icon } from "astro-icon/components";
+
+export type DockNavLocale = "de" | "en";
+export type DockNavCurrent = "home" | "resume" | "support";
+
+interface Props {
+  locale?: DockNavLocale;
+  current?: DockNavCurrent;
+  homeHref?: string;
+  resumeHref?: string;
+  supportHref?: string;
+  languageSwitchHref: string;
+}
+
+const {
+  locale = "de",
+  current,
+  homeHref = locale === "de" ? "/de/" : "/en/",
+  resumeHref = locale === "de" ? "/de/lebenslauf/" : "/en/cv/",
+  supportHref = locale === "de" ? "/de/support/" : "/en/support/",
+  languageSwitchHref,
+} = Astro.props;
+
+const navContent =
+  locale === "de"
+    ? {
+        ariaLabel: "Hauptnavigation",
+        items: [
+          {
+            id: "home",
+            label: "Start",
+            href: homeHref,
+            icon: "ion:home",
+          },
+          {
+            id: "resume",
+            label: "Lebenslauf",
+            href: resumeHref,
+            icon: "ion:document-text",
+          },
+          {
+            id: "support",
+            label: "Support",
+            href: supportHref,
+            icon: "ion:heart",
+          },
+        ],
+        language: {
+          trigger: "DE",
+          menuLabel: "Sprache auswählen",
+          switchLabel: "English",
+          switchMeta: "EN",
+        },
+      }
+    : {
+        ariaLabel: "Main navigation",
+        items: [
+          {
+            id: "home",
+            label: "Home",
+            href: homeHref,
+            icon: "ion:home",
+          },
+          {
+            id: "resume",
+            label: "CV",
+            href: resumeHref,
+            icon: "ion:document-text",
+          },
+          {
+            id: "support",
+            label: "Funding",
+            href: supportHref,
+            icon: "ion:heart",
+          },
+        ],
+        language: {
+          trigger: "EN",
+          menuLabel: "Choose language",
+          switchLabel: "Deutsch",
+          switchMeta: "DE",
+        },
+      };
+---
+
+<div class="dock-wrap">
+  <nav class="dock-nav" aria-label={navContent.ariaLabel}>
+    <ul>
+      {
+        navContent.items.map((item) => (
+          <li>
+            <a
+              href={item.href}
+              class:list={{ "is-active": current === item.id }}
+              aria-current={current === item.id ? "page" : undefined}
+            >
+              <span class="dock-icon" aria-hidden="true">
+                <Icon name={item.icon} />
+              </span>
+              <span class="dock-label">{item.label}</span>
+            </a>
+          </li>
+        ))
+      }
+
+      <li class="dock-language-item">
+        <details class="dock-language-details">
+          <summary class="dock-language-trigger">
+            <span class="dock-icon" aria-hidden="true">
+              <Icon name="ion:language" />
+            </span>
+            <span class="dock-label">{navContent.language.trigger}</span>
+            <span class="dock-caret" aria-hidden="true"></span>
+          </summary>
+
+          <div
+            class="dock-language-menu"
+            aria-label={navContent.language.menuLabel}
+          >
+            <a href={languageSwitchHref} class="dock-language-row is-link">
+              <div>
+                <span class="dock-language-name">
+                  {navContent.language.switchLabel}
+                </span>
+                <span class="dock-language-meta">
+                  {navContent.language.switchMeta}
+                </span>
+              </div>
+              <span class="dock-language-status" aria-hidden="true">↗</span>
+            </a>
+          </div>
+        </details>
+      </li>
+    </ul>
+  </nav>
+</div>
+
+<style>
+  .dock-wrap {
+    position: sticky;
+    top: 0.9rem;
+    z-index: 60;
+    display: flex;
+    justify-content: center;
+    padding: 0.9rem 1rem 0;
+    margin-bottom: 0.9rem;
+  }
+
+  .dock-nav {
+    max-width: 100%;
+    border-radius: 999px;
+    border: 1px solid rgba(167, 243, 208, 0.22);
+    background: rgba(3, 24, 18, 0.8);
+    box-shadow:
+      0 16px 34px rgba(1, 10, 7, 0.3),
+      inset 0 1px 0 rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(18px) saturate(130%);
+  }
+
+  .dock-nav ul {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.35rem;
+    padding: 0.4rem;
+    margin: 0;
+    list-style: none;
+  }
+
+  .dock-nav a,
+  .dock-language-trigger {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.58rem;
+    min-height: 3rem;
+    padding: 0.5rem 0.85rem 0.5rem 0.52rem;
+    border-radius: 999px;
+    color: #d8fbed;
+    transition:
+      transform 170ms ease,
+      background-color 170ms ease,
+      color 170ms ease,
+      border-color 170ms ease,
+      box-shadow 170ms ease;
+  }
+
+  .dock-nav a:hover,
+  .dock-language-trigger:hover,
+  .dock-language-details[open] .dock-language-trigger {
+    transform: translateY(-1px);
+    background: rgba(167, 243, 208, 0.08);
+  }
+
+  .dock-nav a.is-active {
+    color: #032015;
+    background: linear-gradient(90deg, #a7f3d0, #6ee7b7);
+    box-shadow: 0 10px 22px rgba(0, 0, 0, 0.2);
+  }
+
+  .dock-icon {
+    display: inline-grid;
+    place-items: center;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.08);
+    color: currentColor;
+    transition:
+      transform 170ms ease,
+      background-color 170ms ease;
+  }
+
+  .dock-nav a:hover .dock-icon,
+  .dock-language-trigger:hover .dock-icon,
+  .dock-language-details[open] .dock-icon {
+    transform: scale(1.06);
+    background: rgba(255, 255, 255, 0.13);
+  }
+
+  .dock-nav a.is-active .dock-icon {
+    background: rgba(3, 32, 21, 0.12);
+  }
+
+  .dock-icon :global(svg) {
+    width: 1.1rem;
+    height: 1.1rem;
+  }
+
+  .dock-label {
+    font-family: "Chakra Petch", sans-serif;
+    font-size: 0.88rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  .dock-language-item {
+    position: relative;
+  }
+
+  .dock-language-details {
+    position: relative;
+  }
+
+  .dock-language-details summary {
+    list-style: none;
+    cursor: pointer;
+  }
+
+  .dock-language-details summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .dock-caret {
+    width: 0.6rem;
+    height: 0.6rem;
+    border-right: 1.5px solid currentColor;
+    border-bottom: 1.5px solid currentColor;
+    transform: rotate(45deg) translateY(-1px);
+    opacity: 0.8;
+    transition: transform 170ms ease;
+  }
+
+  .dock-language-details[open] .dock-caret {
+    transform: rotate(-135deg) translateY(-1px);
+  }
+
+  .dock-language-menu {
+    position: absolute;
+    right: 0;
+    top: calc(100% + 0.65rem);
+    min-width: 220px;
+    padding: 0.45rem;
+    border-radius: 18px;
+    border: 1px solid rgba(167, 243, 208, 0.18);
+    background: rgba(5, 29, 22, 0.92);
+    box-shadow:
+      0 24px 44px rgba(1, 10, 7, 0.34),
+      inset 0 1px 0 rgba(255, 255, 255, 0.06);
+    backdrop-filter: blur(18px);
+  }
+
+  .dock-language-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.8rem 0.9rem;
+    border-radius: 14px;
+    color: #d8fbed;
+  }
+
+  .dock-language-row.is-link {
+    transition:
+      transform 170ms ease,
+      background-color 170ms ease;
+  }
+
+  .dock-language-row.is-link:hover {
+    transform: translateY(-1px);
+    background: rgba(167, 243, 208, 0.08);
+  }
+
+  .dock-language-name,
+  .dock-language-meta {
+    display: block;
+  }
+
+  .dock-language-name {
+    font-family: "Chakra Petch", sans-serif;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+  }
+
+  .dock-language-meta {
+    margin-top: 0.12rem;
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #93cdb7;
+  }
+
+  .dock-language-status {
+    font-size: 0.9rem;
+    color: #6ee7b7;
+  }
+
+  @media (max-width: 640px) {
+    .dock-language-menu {
+      right: auto;
+      left: 50%;
+      transform: translateX(-50%);
+      width: min(260px, calc(100vw - 1.4rem));
+    }
+  }
+
+  @media (max-width: 520px) {
+    .dock-wrap {
+      top: 0.6rem;
+      padding-inline: 0.7rem;
+    }
+
+    .dock-nav {
+      width: 100%;
+      border-radius: 28px;
+    }
+
+    .dock-nav ul {
+      gap: 0.28rem;
+    }
+
+    .dock-nav a,
+    .dock-language-trigger {
+      flex: 1 1 calc(50% - 0.28rem);
+      justify-content: center;
+      padding-right: 0.7rem;
+    }
+
+    .dock-language-item,
+    .dock-language-details {
+      flex: 1 1 calc(50% - 0.28rem);
+    }
+
+    .dock-language-menu {
+      top: calc(100% + 0.45rem);
+    }
+  }
+
+  @media print {
+    .dock-wrap {
+      display: none;
+    }
+  }
+</style>
