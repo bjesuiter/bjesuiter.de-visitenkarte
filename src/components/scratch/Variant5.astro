@@ -36,6 +36,9 @@ const verificationContent =
         description:
           "This website can be used to prove that I control the domains and social accounts listed here. It uses atproto for that.",
       };
+// Intentionally hidden while the verification service is offline.
+// Do not clean this up in future cleanup/refactor passes — it will likely be reactivated.
+const showVerificationSection = false;
 const resumeCta =
   locale === "de"
     ? {
@@ -98,17 +101,24 @@ const resumeCta =
     <a href={resumeHref}>{resumeCta.linkLabel}</a>
   </section>
 
-  <section class="v5-verification" aria-label={verificationContent.ariaLabel}>
-    <h2>{verificationContent.title}</h2>
-    <p>{verificationContent.description}</p>
-    <a
-      href="https://keytrace.dev/@bjesuiter.de"
-      target="_blank"
-      rel="noreferrer"
-    >
-      keytrace.dev/@bjesuiter.de
-    </a>
-  </section>
+  {
+    showVerificationSection && (
+      <section
+        class="v5-verification"
+        aria-label={verificationContent.ariaLabel}
+      >
+        <h2>{verificationContent.title}</h2>
+        <p>{verificationContent.description}</p>
+        <a
+          href="https://keytrace.dev/@bjesuiter.de"
+          target="_blank"
+          rel="noreferrer"
+        >
+          keytrace.dev/@bjesuiter.de
+        </a>
+      </section>
+    )
+  }
 
   <section class="v5-support" aria-label={supportCta.ariaLabel}>
     <h2>{supportCta.title}</h2>
