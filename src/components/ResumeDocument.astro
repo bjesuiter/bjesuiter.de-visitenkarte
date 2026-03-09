@@ -201,8 +201,12 @@ const toolbarAriaLabel = locale === "de" ? "Lebenslauf-Aktionen" : "CV actions";
   @import url("https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=Fraunces:opsz,wght@9..144,500;9..144,700&display=swap");
 
   .resume-page {
+    --resume-page-padding: clamp(1rem, 2.4vw, 2.1rem);
+    --resume-dock-overlap: 5.8rem;
     min-height: 100vh;
-    padding: clamp(1rem, 2.4vw, 2.1rem);
+    margin-top: calc(var(--resume-dock-overlap) * -1);
+    padding: calc(var(--resume-page-padding) + var(--resume-dock-overlap))
+      var(--resume-page-padding) var(--resume-page-padding);
     background:
       linear-gradient(0deg, rgba(4, 18, 15, 0.93), rgba(4, 18, 15, 0.93)),
       radial-gradient(
@@ -682,7 +686,7 @@ const toolbarAriaLabel = locale === "de" ? "Lebenslauf-Aktionen" : "CV actions";
 
   @media (max-width: 640px) {
     .resume-page {
-      padding-inline: 0.8rem;
+      --resume-page-padding: 0.8rem;
     }
 
     .resume-toolbar {
@@ -695,6 +699,12 @@ const toolbarAriaLabel = locale === "de" ? "Lebenslauf-Aktionen" : "CV actions";
 
     .resume-action {
       flex: 1 1 100%;
+    }
+  }
+
+  @media (max-width: 520px) {
+    .resume-page {
+      --resume-dock-overlap: 8.25rem;
     }
   }
 
@@ -752,6 +762,7 @@ const toolbarAriaLabel = locale === "de" ? "Lebenslauf-Aktionen" : "CV actions";
     }
 
     .resume-page {
+      margin-top: 0;
       padding: 0;
       background: var(--resume-print-page-bg);
       color: var(--resume-print-text);
