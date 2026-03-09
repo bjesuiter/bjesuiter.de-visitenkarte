@@ -35,6 +35,7 @@ export interface ResumeProject {
 
 export interface ResumeNavigationContent {
   backLabel: string;
+  downloadLabel: string;
   printLabel: string;
   languageSwitchLabel: string;
 }
@@ -75,7 +76,8 @@ const resumeDe: ResumeContent = {
     "Senior Software Developer & Consultant mit Schwerpunkt auf produktnaher Frontend-Architektur, TypeScript-Plattformen und pragmatischer Cloud-Umsetzung. Ich verbinde technische Konzeption, Hands-on-Entwicklung und teamübergreifende Steuerung in langfristigen Produkt- und Transformationsprojekten.",
   navigation: {
     backLabel: "Zurück zur Startseite",
-    printLabel: "Drucken / als PDF speichern",
+    downloadLabel: "Download als PDF",
+    printLabel: "Drucken",
     languageSwitchLabel: "View CV in English",
   },
   contactTitle: "Profile & Links",
@@ -91,7 +93,7 @@ const resumeDe: ResumeContent = {
   durationLabel: "Projektdauer",
   teamSizeLabel: "Teamgröße",
   printHint:
-    "Diese Seite ist für den Ausdruck optimiert und lässt sich direkt als PDF speichern.",
+    "Download öffnet den Browser-Dialog zum Speichern als PDF mit dem Website-Look. Drucken nutzt automatisch eine helle, tintensparende Variante mit demselben Layout.",
   facts: [
     { label: "Beruf", value: "Senior Software Developer & Consultant" },
     { label: "Jahrgang", value: "1994" },
@@ -686,7 +688,8 @@ const resumeEn: ResumeContent = {
     "Senior Software Engineer & Consultant focused on product-grade frontend architecture, TypeScript platforms, and pragmatic cloud delivery. I combine technical concept work, hands-on implementation, and cross-team coordination in long-running product and transformation projects.",
   navigation: {
     backLabel: "Back to homepage",
-    printLabel: "Print / save as PDF",
+    downloadLabel: "Download PDF",
+    printLabel: "Print",
     languageSwitchLabel: "Zur deutschen Version",
   },
   contactTitle: "Profiles & links",
@@ -702,7 +705,7 @@ const resumeEn: ResumeContent = {
   durationLabel: "Project duration",
   teamSizeLabel: "Team size",
   printHint:
-    "This page is optimized for printing and can be saved directly as a PDF.",
+    "Download opens the browser flow for saving a PDF with the site styling. Print automatically switches to a bright, ink-friendly version with the same layout.",
   facts: [
     { label: "Role", value: "Senior Software Engineer & Consultant" },
     { label: "Year of birth", value: "1994" },

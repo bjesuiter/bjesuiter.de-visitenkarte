@@ -12,9 +12,22 @@ const toolbarAriaLabel = locale === "de" ? "Lebenslauf-Aktionen" : "CV actions";
 
 <main class="resume-page">
   <div class="resume-toolbar print-hidden" aria-label={toolbarAriaLabel}>
-    <button type="button" onclick="window.print()">
-      {content.navigation.printLabel}
-    </button>
+    <div class="resume-toolbar-actions">
+      <button
+        type="button"
+        class="resume-action resume-action-download"
+        onclick="window.__resumePrintMode('download')"
+      >
+        {content.navigation.downloadLabel}
+      </button>
+      <button
+        type="button"
+        class="resume-action resume-action-print"
+        onclick="window.__resumePrintMode('print')"
+      >
+        {content.navigation.printLabel}
+      </button>
+    </div>
   </div>
 
   <article class="resume-sheet">
@@ -163,81 +176,148 @@ const toolbarAriaLabel = locale === "de" ? "Lebenslauf-Aktionen" : "CV actions";
   </article>
 </main>
 
+<script is:inline>
+  (() => {
+    const setMode = (mode) => {
+      document.documentElement.dataset.resumeOutput = mode;
+      document.body?.setAttribute("data-resume-output", mode);
+    };
+
+    const clearMode = () => {
+      delete document.documentElement.dataset.resumeOutput;
+      document.body?.removeAttribute("data-resume-output");
+    };
+
+    window.__resumePrintMode = (mode) => {
+      setMode(mode);
+      window.print();
+    };
+
+    window.addEventListener("afterprint", clearMode);
+  })();
+</script>
+
 <style is:global>
+  @import url("https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=Fraunces:opsz,wght@9..144,500;9..144,700&display=swap");
+
   .resume-page {
     min-height: 100vh;
-    padding: clamp(1rem, 2vw, 1.75rem);
+    padding: clamp(1rem, 2.4vw, 2.1rem);
     background:
+      linear-gradient(0deg, rgba(4, 18, 15, 0.93), rgba(4, 18, 15, 0.93)),
       radial-gradient(
-        circle at top left,
-        rgba(110, 231, 183, 0.22),
-        transparent 28%
+        circle at 82% 12%,
+        rgba(110, 231, 183, 0.34),
+        transparent 30%
       ),
       radial-gradient(
-        circle at bottom right,
-        rgba(16, 185, 129, 0.16),
-        transparent 25%
+        circle at 12% 88%,
+        rgba(34, 197, 94, 0.28),
+        transparent 30%
       ),
-      linear-gradient(180deg, #eef8f3 0%, #f8fcfa 100%);
-    color: #113128;
+      #02110d;
+    color: #ecfdf5;
   }
 
   .resume-toolbar {
-    width: min(1100px, 100%);
+    width: min(1140px, 100%);
     margin: 0 auto 1rem;
     display: flex;
-    flex-wrap: wrap;
-    gap: 0.75rem;
     justify-content: flex-end;
+    align-items: center;
+    gap: 0.9rem;
   }
 
-  .resume-toolbar :is(a, button) {
+  .resume-toolbar-actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 0.75rem;
+  }
+
+  .resume-action {
     appearance: none;
-    border: 1px solid rgba(17, 49, 40, 0.12);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 3rem;
     border-radius: 999px;
-    background: rgba(255, 255, 255, 0.82);
-    padding: 0.72rem 1rem;
-    font: inherit;
-    color: #113128;
-    font-weight: 600;
+    padding: 0.7rem 1.1rem;
+    font-family: "Chakra Petch", sans-serif;
+    font-size: 0.92rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
     cursor: pointer;
     transition:
-      transform 160ms ease,
-      border-color 160ms ease,
-      background-color 160ms ease;
+      transform 170ms ease,
+      border-color 170ms ease,
+      filter 170ms ease,
+      background-color 170ms ease,
+      color 170ms ease;
   }
 
-  .resume-toolbar :is(a, button):hover {
+  .resume-action:hover {
     transform: translateY(-1px);
-    border-color: rgba(16, 185, 129, 0.35);
-    background: white;
+  }
+
+  .resume-action-download {
+    color: #032015;
+    border: 1px solid rgba(255, 255, 255, 0.24);
+    background: linear-gradient(90deg, #a7f3d0, #6ee7b7);
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.24);
+  }
+
+  .resume-action-download:hover {
+    filter: brightness(1.04);
+  }
+
+  .resume-action-print {
+    color: #d8fbed;
+    border: 1px solid rgba(167, 243, 208, 0.28);
+    background: rgba(3, 24, 18, 0.72);
+    box-shadow:
+      0 16px 34px rgba(1, 10, 7, 0.3),
+      inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(18px);
+  }
+
+  .resume-action-print:hover {
+    border-color: #6ee7b7;
+    background: rgba(5, 30, 22, 0.92);
   }
 
   .resume-sheet {
-    width: min(1100px, 100%);
+    width: min(1140px, 100%);
     margin: 0 auto;
     padding: clamp(1.1rem, 2vw, 1.8rem);
-    border-radius: 28px;
-    background: rgba(255, 255, 255, 0.88);
-    border: 1px solid rgba(17, 49, 40, 0.08);
-    box-shadow: 0 28px 70px rgba(13, 37, 30, 0.08);
-    backdrop-filter: blur(12px);
+    border-radius: 22px;
+    overflow: hidden;
+    border: 1px solid rgba(167, 243, 208, 0.24);
+    background:
+      linear-gradient(90deg, rgba(220, 252, 231, 0.02) 1px, transparent 1px) 0
+        0 / 34px 100%,
+      linear-gradient(0deg, rgba(220, 252, 231, 0.015) 1px, transparent 1px) 0
+        0 / 100% 34px,
+      linear-gradient(135deg, rgba(7, 30, 24, 0.95), rgba(5, 24, 19, 0.84));
+    box-shadow: 0 24px 52px rgba(1, 10, 7, 0.55);
   }
 
   .resume-hero {
     display: grid;
     gap: 1rem;
     padding-bottom: 1.4rem;
-    border-bottom: 1px solid rgba(17, 49, 40, 0.1);
+    border-bottom: 1px dashed rgba(167, 243, 208, 0.22);
   }
 
   .resume-badge {
     margin: 0 0 0.75rem;
-    font-size: 0.82rem;
+    font-family: "Chakra Petch", sans-serif;
+    font-size: 0.84rem;
     font-weight: 700;
-    letter-spacing: 0.16em;
+    letter-spacing: 0.14em;
     text-transform: uppercase;
-    color: #0f766e;
+    color: #6ee7b7;
   }
 
   .resume-hero h1,
@@ -246,47 +326,46 @@ const toolbarAriaLabel = locale === "de" ? "Lebenslauf-Aktionen" : "CV actions";
   .resume-project-card h3,
   .resume-detail-card h4,
   .resume-skill-card h3 {
-    font-family:
-      Iowan Old Style,
-      Palatino Linotype,
-      Book Antiqua,
-      Georgia,
-      serif;
+    font-family: "Fraunces", serif;
+    text-wrap: balance;
   }
 
   .resume-hero h1 {
     margin: 0;
-    font-size: clamp(2.2rem, 5vw, 4rem);
-    line-height: 0.96;
-    letter-spacing: -0.03em;
-    color: #0f2a22;
+    font-size: clamp(2.4rem, 6vw, 4.6rem);
+    line-height: 0.92;
+    letter-spacing: -0.04em;
+    color: #ecfdf5;
   }
 
   .resume-intro {
     max-width: 72ch;
     margin: 1rem 0 0;
     font-size: clamp(1rem, 1.5vw, 1.08rem);
-    line-height: 1.7;
-    color: #345349;
+    line-height: 1.75;
+    color: #c7f3df;
   }
 
   .resume-hero-note {
-    width: fit-content;
+    width: 100%;
+    max-width: 32rem;
     justify-self: start;
     border-radius: 18px;
-    background: linear-gradient(
-      135deg,
-      rgba(16, 185, 129, 0.12),
-      rgba(15, 118, 110, 0.06)
-    );
-    border: 1px solid rgba(15, 118, 110, 0.12);
+    background:
+      radial-gradient(
+        circle at 12% 20%,
+        rgba(110, 231, 183, 0.14),
+        transparent 32%
+      ),
+      linear-gradient(120deg, rgba(5, 26, 20, 0.92), rgba(5, 30, 22, 0.72));
+    border: 1px solid rgba(110, 231, 183, 0.18);
     padding: 0.95rem 1rem;
-    color: #245045;
+    color: #d7fbec;
   }
 
   .resume-hero-note p {
     margin: 0;
-    line-height: 1.5;
+    line-height: 1.6;
   }
 
   .resume-grid {
@@ -300,10 +379,11 @@ const toolbarAriaLabel = locale === "de" ? "Lebenslauf-Aktionen" : "CV actions";
 
   .resume-panel,
   .resume-project-card {
-    border-radius: 22px;
-    border: 1px solid rgba(17, 49, 40, 0.08);
-    background: #ffffff;
-    box-shadow: 0 14px 32px rgba(13, 37, 30, 0.04);
+    border-radius: 20px;
+    border: 1px solid rgba(134, 239, 172, 0.18);
+    background: rgba(3, 24, 18, 0.56);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+    backdrop-filter: blur(10px);
   }
 
   .resume-panel {
@@ -314,17 +394,17 @@ const toolbarAriaLabel = locale === "de" ? "Lebenslauf-Aktionen" : "CV actions";
     background:
       radial-gradient(
         circle at top right,
-        rgba(110, 231, 183, 0.18),
+        rgba(110, 231, 183, 0.14),
         transparent 35%
       ),
-      linear-gradient(180deg, #fcfffe 0%, #f5fbf8 100%);
+      linear-gradient(120deg, rgba(4, 27, 21, 0.92), rgba(6, 34, 25, 0.82));
   }
 
   .resume-panel h2,
   .resume-section h2 {
     margin: 0;
-    font-size: clamp(1.3rem, 2vw, 1.8rem);
-    color: #102a22;
+    font-size: clamp(1.35rem, 2vw, 1.9rem);
+    color: #ecfdf5;
   }
 
   .resume-subheading {
@@ -346,11 +426,12 @@ const toolbarAriaLabel = locale === "de" ? "Lebenslauf-Aktionen" : "CV actions";
   .resume-facts dt,
   .resume-project-meta dt,
   .resume-stack-list dt {
+    font-family: "Chakra Petch", sans-serif;
     font-size: 0.75rem;
     font-weight: 700;
     letter-spacing: 0.12em;
     text-transform: uppercase;
-    color: #0f766e;
+    color: #6ee7b7;
   }
 
   .resume-facts dd,
@@ -358,7 +439,7 @@ const toolbarAriaLabel = locale === "de" ? "Lebenslauf-Aktionen" : "CV actions";
   .resume-stack-list dd {
     margin: 0;
     line-height: 1.6;
-    color: #27453c;
+    color: #d7fbec;
   }
 
   .resume-link-list,
@@ -381,21 +462,22 @@ const toolbarAriaLabel = locale === "de" ? "Lebenslauf-Aktionen" : "CV actions";
     gap: 0.16rem;
     padding: 0.9rem 1rem;
     border-radius: 16px;
-    border: 1px solid rgba(17, 49, 40, 0.08);
-    background: linear-gradient(
-      180deg,
-      rgba(255, 255, 255, 1),
-      rgba(246, 251, 248, 1)
-    );
+    border: 1px solid rgba(134, 239, 172, 0.16);
+    background: rgba(2, 20, 15, 0.42);
+    transition: border-color 170ms ease;
+  }
+
+  .resume-link-list a:hover {
+    border-color: #6ee7b7;
   }
 
   .resume-link-list a span:first-child {
     font-weight: 700;
-    color: #102a22;
+    color: #ecfdf5;
   }
 
   .resume-link-list a span:last-child {
-    color: #426257;
+    color: #bdeed8;
     word-break: break-word;
   }
 
@@ -409,9 +491,9 @@ const toolbarAriaLabel = locale === "de" ? "Lebenslauf-Aktionen" : "CV actions";
   .resume-chip-list li {
     padding: 0.5rem 0.8rem;
     border-radius: 999px;
-    background: #eff9f5;
-    color: #235044;
-    border: 1px solid rgba(17, 49, 40, 0.08);
+    background: rgba(2, 20, 15, 0.52);
+    color: #d7fbec;
+    border: 1px solid rgba(134, 239, 172, 0.16);
   }
 
   .resume-section {
@@ -425,7 +507,7 @@ const toolbarAriaLabel = locale === "de" ? "Lebenslauf-Aktionen" : "CV actions";
   .resume-section-heading p {
     margin: 0.45rem 0 0;
     line-height: 1.6;
-    color: #436259;
+    color: #bdeed8;
   }
 
   .resume-skills-grid {
@@ -436,14 +518,14 @@ const toolbarAriaLabel = locale === "de" ? "Lebenslauf-Aktionen" : "CV actions";
   .resume-skill-card {
     padding: 1rem;
     border-radius: 18px;
-    border: 1px solid rgba(17, 49, 40, 0.08);
-    background: linear-gradient(180deg, #ffffff 0%, #f7fbf9 100%);
+    border: 1px solid rgba(134, 239, 172, 0.16);
+    background: rgba(2, 20, 15, 0.42);
   }
 
   .resume-skill-card h3 {
     margin: 0 0 0.7rem;
     font-size: 1.08rem;
-    color: #123127;
+    color: #ecfdf5;
   }
 
   .resume-skill-card ul {
@@ -454,8 +536,8 @@ const toolbarAriaLabel = locale === "de" ? "Lebenslauf-Aktionen" : "CV actions";
   .resume-skill-card li,
   .resume-detail-card li,
   .resume-project-copy p {
-    line-height: 1.65;
-    color: #33534a;
+    line-height: 1.7;
+    color: #c7f3df;
   }
 
   .resume-skill-card li,
@@ -473,7 +555,7 @@ const toolbarAriaLabel = locale === "de" ? "Lebenslauf-Aktionen" : "CV actions";
     width: 0.38rem;
     height: 0.38rem;
     border-radius: 999px;
-    background: #10b981;
+    background: #6ee7b7;
   }
 
   .resume-projects {
@@ -489,24 +571,25 @@ const toolbarAriaLabel = locale === "de" ? "Lebenslauf-Aktionen" : "CV actions";
     display: grid;
     gap: 1rem;
     padding: 1.1rem;
-    border-bottom: 1px solid rgba(17, 49, 40, 0.08);
+    border-bottom: 1px solid rgba(134, 239, 172, 0.16);
     background:
       radial-gradient(
         circle at top right,
-        rgba(110, 231, 183, 0.15),
+        rgba(110, 231, 183, 0.12),
         transparent 34%
       ),
-      linear-gradient(180deg, #fbfffd 0%, #f5faf7 100%);
+      linear-gradient(120deg, rgba(4, 27, 21, 0.96), rgba(6, 34, 25, 0.82));
   }
 
   .resume-project-period,
   .resume-project-sector {
     margin: 0;
-    color: #0f766e;
+    color: #6ee7b7;
     font-weight: 700;
   }
 
   .resume-project-period {
+    font-family: "Chakra Petch", sans-serif;
     font-size: 0.84rem;
     letter-spacing: 0.1em;
     text-transform: uppercase;
@@ -519,9 +602,9 @@ const toolbarAriaLabel = locale === "de" ? "Lebenslauf-Aktionen" : "CV actions";
 
   .resume-project-card h3 {
     margin: 0.5rem 0 0;
-    font-size: clamp(1.3rem, 2vw, 1.75rem);
+    font-size: clamp(1.35rem, 2vw, 1.8rem);
     line-height: 1.15;
-    color: #102a22;
+    color: #ecfdf5;
   }
 
   .resume-project-meta {
@@ -547,14 +630,14 @@ const toolbarAriaLabel = locale === "de" ? "Lebenslauf-Aktionen" : "CV actions";
   .resume-detail-card {
     padding: 1rem;
     border-radius: 18px;
-    border: 1px solid rgba(17, 49, 40, 0.08);
-    background: #fbfefd;
+    border: 1px solid rgba(134, 239, 172, 0.16);
+    background: rgba(2, 20, 15, 0.42);
   }
 
   .resume-detail-card h4 {
     margin: 0 0 0.7rem;
     font-size: 1.03rem;
-    color: #123127;
+    color: #ecfdf5;
   }
 
   .resume-detail-card ul {
@@ -569,7 +652,7 @@ const toolbarAriaLabel = locale === "de" ? "Lebenslauf-Aktionen" : "CV actions";
 
   @media (min-width: 760px) {
     .resume-hero {
-      grid-template-columns: minmax(0, 1fr) auto;
+      grid-template-columns: minmax(0, 1.35fr) minmax(18rem, 0.9fr);
       align-items: end;
     }
 
@@ -597,15 +680,71 @@ const toolbarAriaLabel = locale === "de" ? "Lebenslauf-Aktionen" : "CV actions";
     }
   }
 
+  @media (max-width: 640px) {
+    .resume-page {
+      padding-inline: 0.8rem;
+    }
+
+    .resume-toolbar {
+      justify-content: stretch;
+    }
+
+    .resume-toolbar-actions {
+      width: 100%;
+    }
+
+    .resume-action {
+      flex: 1 1 100%;
+    }
+  }
+
   @page {
     size: A4;
     margin: 12mm;
   }
 
   @media print {
+    :root {
+      --resume-print-page-bg: #ffffff;
+      --resume-print-sheet-bg: #ffffff;
+      --resume-print-panel-bg: #ffffff;
+      --resume-print-panel-muted-bg: #ffffff;
+      --resume-print-chip-bg: #f4f7f6;
+      --resume-print-border: rgba(0, 0, 0, 0.16);
+      --resume-print-border-soft: rgba(0, 0, 0, 0.12);
+      --resume-print-heading: #0f172a;
+      --resume-print-text: #1f2937;
+      --resume-print-muted: #475569;
+      --resume-print-accent: #0f766e;
+    }
+
+    :root[data-resume-output="download"] {
+      --resume-print-page-bg: #071712;
+      --resume-print-sheet-bg:
+        linear-gradient(90deg, rgba(220, 252, 231, 0.02) 1px, transparent 1px) 0
+          0 / 24px 100%,
+        linear-gradient(0deg, rgba(220, 252, 231, 0.018) 1px, transparent 1px) 0
+          0 / 100% 24px,
+        linear-gradient(135deg, rgba(7, 30, 24, 0.98), rgba(5, 24, 19, 0.94));
+      --resume-print-panel-bg: rgba(6, 31, 24, 0.92);
+      --resume-print-panel-muted-bg: rgba(9, 39, 30, 0.96);
+      --resume-print-chip-bg: rgba(6, 33, 25, 0.95);
+      --resume-print-border: rgba(167, 243, 208, 0.26);
+      --resume-print-border-soft: rgba(167, 243, 208, 0.18);
+      --resume-print-heading: #ecfdf5;
+      --resume-print-text: #def7eb;
+      --resume-print-muted: #bfe8d5;
+      --resume-print-accent: #86efac;
+    }
+
     html,
     body {
-      background: #ffffff !important;
+      background: var(--resume-print-page-bg) !important;
+    }
+
+    body {
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
     }
 
     .print-hidden {
@@ -614,20 +753,24 @@ const toolbarAriaLabel = locale === "de" ? "Lebenslauf-Aktionen" : "CV actions";
 
     .resume-page {
       padding: 0;
-      background: #ffffff;
-      color: #000000;
+      background: var(--resume-print-page-bg);
+      color: var(--resume-print-text);
     }
 
     .resume-sheet {
       width: 100%;
       max-width: none;
       margin: 0;
-      padding: 0;
-      border: 0;
-      border-radius: 0;
+      padding: 10mm 10mm 9mm;
+      border: 1px solid var(--resume-print-border);
+      border-radius: 20px;
       box-shadow: none;
       backdrop-filter: none;
-      background: #ffffff;
+      background: var(--resume-print-sheet-bg);
+    }
+
+    .resume-hero {
+      border-bottom-color: var(--resume-print-border-soft);
     }
 
     .resume-panel,
@@ -635,29 +778,59 @@ const toolbarAriaLabel = locale === "de" ? "Lebenslauf-Aktionen" : "CV actions";
     .resume-skill-card,
     .resume-detail-card,
     .resume-link-list a {
+      background: var(--resume-print-panel-bg) !important;
+      border-color: var(--resume-print-border-soft) !important;
       box-shadow: none;
       break-inside: avoid;
       page-break-inside: avoid;
     }
 
-    .resume-hero,
-    .resume-panel,
-    .resume-project-card,
-    .resume-detail-card,
-    .resume-skill-card {
-      background: #ffffff !important;
+    .resume-panel-emphasis,
+    .resume-project-header {
+      background: var(--resume-print-panel-muted-bg) !important;
+      border-color: var(--resume-print-border-soft) !important;
     }
 
-    .resume-project-card {
-      border-color: rgba(0, 0, 0, 0.18);
+    .resume-chip-list li {
+      background: var(--resume-print-chip-bg) !important;
+      border-color: var(--resume-print-border-soft) !important;
+      color: var(--resume-print-text);
     }
 
-    .resume-link-list a,
-    .resume-chip-list li,
-    .resume-detail-card,
-    .resume-skill-card,
-    .resume-panel {
-      border-color: rgba(0, 0, 0, 0.12);
+    .resume-badge,
+    .resume-facts dt,
+    .resume-project-meta dt,
+    .resume-stack-list dt,
+    .resume-project-period,
+    .resume-project-sector {
+      color: var(--resume-print-accent);
+    }
+
+    .resume-hero h1,
+    .resume-section h2,
+    .resume-panel h2,
+    .resume-project-card h3,
+    .resume-detail-card h4,
+    .resume-skill-card h3,
+    .resume-link-list a span:first-child {
+      color: var(--resume-print-heading);
+    }
+
+    .resume-intro,
+    .resume-facts dd,
+    .resume-project-meta dd,
+    .resume-stack-list dd,
+    .resume-link-list a span:last-child,
+    .resume-section-heading p,
+    .resume-skill-card li,
+    .resume-detail-card li,
+    .resume-project-copy p {
+      color: var(--resume-print-muted);
+    }
+
+    .resume-skill-card li::before,
+    .resume-detail-card li::before {
+      background: var(--resume-print-accent);
     }
 
     .resume-section {
