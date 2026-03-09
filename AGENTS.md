@@ -17,6 +17,7 @@ Use Bun for local workflows:
 - `bun run dev` (or `bun run start`): run local Astro dev server.
 - Prefer `bun run dev` for local serving in this repo instead of ad-hoc servers like Python HTTP servers.
 - Use `bgproc` to run long-lived dev servers or other background processes.
+- Keep bgproc-managed dev servers running after testing; only stop them when the user explicitly asks.
 - `bun run build`: produce static output in `dist/`.
 - `bun run preview`: preview the built site.
 - `bun run prettier`: format all files with Prettier.
