@@ -1,0 +1,97 @@
+---
+interface Props {
+  locale?: "de" | "en";
+  variant?: "modern" | "classic";
+  modernHref: string;
+  classicHref: string;
+}
+
+const {
+  locale = "de",
+  variant = "modern",
+  modernHref,
+  classicHref,
+} = Astro.props;
+
+const content =
+  locale === "de"
+    ? {
+        ariaLabel: "Lebenslauf-Stil wechseln",
+        modernLabel: "Neu",
+        classicLabel: "Klassisch",
+      }
+    : {
+        ariaLabel: "Switch CV style",
+        modernLabel: "New",
+        classicLabel: "Classic",
+      };
+---
+
+<div class="resume-style-switch print-hidden" aria-label={content.ariaLabel}>
+  <a
+    href={modernHref}
+    class:list={{ "is-active": variant === "modern" }}
+    aria-current={variant === "modern" ? "page" : undefined}
+  >
+    {content.modernLabel}
+  </a>
+  <a
+    href={classicHref}
+    class:list={{ "is-active": variant === "classic" }}
+    aria-current={variant === "classic" ? "page" : undefined}
+  >
+    {content.classicLabel}
+  </a>
+</div>
+
+<style>
+  .resume-style-switch {
+    width: fit-content;
+    max-width: 100%;
+    margin: 0 0 1rem;
+    display: inline-flex;
+    gap: 0.4rem;
+    padding: 0.25rem;
+    border-radius: 999px;
+    border: 1px solid rgba(167, 243, 208, 0.2);
+    background: rgba(3, 24, 18, 0.72);
+    backdrop-filter: blur(14px);
+  }
+
+  .resume-style-switch a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 2.2rem;
+    padding: 0.4rem 0.95rem;
+    border-radius: 999px;
+    font-family: "Chakra Petch", sans-serif;
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: #d8fbed;
+  }
+
+  .resume-style-switch a.is-active {
+    color: #032015;
+    background: linear-gradient(90deg, #a7f3d0, #6ee7b7);
+  }
+
+  @media (max-width: 640px) {
+    .resume-style-switch {
+      width: 100%;
+      display: flex;
+    }
+
+    .resume-style-switch a {
+      flex: 1 1 0;
+    }
+  }
+
+  @media print {
+    .resume-style-switch {
+      display: none;
+    }
+  }
+</style>

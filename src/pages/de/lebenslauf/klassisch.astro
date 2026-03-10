@@ -1,0 +1,23 @@
+---
+import DockNav from "../../../components/DockNav.astro";
+import ResumeDocumentClassic from "../../../components/ResumeDocumentClassic.astro";
+import Layout from "../../../layouts/Layout.astro";
+---
+
+<Layout
+  lang="de"
+  title="Benjamin Jesuiter · Lebenslauf (klassisch)"
+  description="Klassische Lebenslauf-Ansicht von Benjamin Jesuiter mit Projektchronik, Kompetenzen und Branchenerfahrung."
+  bodyClass="bg-[#02110d]"
+>
+  <DockNav
+    locale="de"
+    current="resume"
+    homeHref="/de/"
+    resumeHref="/de/lebenslauf/klassisch/"
+    supportHref="/de/support/"
+    languageSwitchHref="/en/cv/classic/"
+  />
+
+  <ResumeDocumentClassic locale="de" />
+</Layout>
