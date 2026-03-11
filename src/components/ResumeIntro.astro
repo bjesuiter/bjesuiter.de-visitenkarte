@@ -1,0 +1,58 @@
+---
+import type { ResumeLocale } from "../data/resume";
+
+interface Props {
+  locale?: ResumeLocale;
+}
+
+const { locale = "de" } = Astro.props;
+---
+
+<div class="resume-intro">
+  {
+    locale === "de" ? (
+      <>
+        <p>
+          <strong>Programmierer aus Leidenschaft.</strong>
+        </p>
+        <p>
+          <strong>Neues Abenteuer:</strong> Agentic Engineering – aber richtig.
+        </p>
+        <p>
+          <strong>Ansatz:</strong> kein Vibe-Slop, sondern technische Expertise,
+          in Tests, Regeln und Guardrails encodiert.
+        </p>
+        <p>
+          <strong>Hintergrund:</strong> Expert Web Developer, TypeScript-Main,
+          CI/CD & DevOps, Cloud Architect und Senior Consultant.
+        </p>
+        <p>
+          <strong>Heute:</strong> Ich helfe Teams, sich in der neuen Welt des
+          Agentic Engineering sicher zurechtzufinden.
+        </p>
+      </>
+    ) : (
+      <>
+        <p>
+          <strong>Programmer by passion.</strong>
+        </p>
+        <p>
+          <strong>New adventure:</strong> agentic engineering, done properly.
+        </p>
+        <p>
+          <strong>Approach:</strong> no vibe-slop — technical expertise encoded
+          as tests, rules, and guardrails.
+        </p>
+        <p>
+          <strong>Background:</strong> expert web developer, TypeScript-first
+          engineer, CI/CD & DevOps practitioner, cloud architect, and senior
+          consultant.
+        </p>
+        <p>
+          <strong>Today:</strong> I help teams navigate the new world of agentic
+          engineering with confidence.
+        </p>
+      </>
+    )
+  }
+</div>

@@ -40,12 +40,13 @@ export interface ResumeNavigationContent {
   languageSwitchLabel: string;
 }
 
+// NOTE: The localized intro block is not stored in this data file.
+// It is rendered directly in the Astro template: src/components/ResumeIntro.astro
 export interface ResumeContent {
   pageTitle: string;
   pageDescription: string;
   badge: string;
   heading: string;
-  intro: string;
   navigation: ResumeNavigationContent;
   contactTitle: string;
   factsTitle: string;
@@ -72,8 +73,6 @@ const resumeDe: ResumeContent = {
     "Vollständiger Lebenslauf von Benjamin Jesuiter mit Projektchronik, Kompetenzen und Branchenerfahrung.",
   badge: "Lebenslauf · Projektchronik",
   heading: "Benjamin Jesuiter",
-  intro:
-    "Senior Software Developer & Consultant mit Schwerpunkt auf produktnaher Frontend-Architektur, TypeScript-Plattformen und pragmatischer Cloud-Umsetzung. Ich verbinde technische Konzeption, Hands-on-Entwicklung und teamübergreifende Steuerung in langfristigen Produkt- und Transformationsprojekten.",
   navigation: {
     backLabel: "Zurück zur Startseite",
     downloadLabel: "Download als PDF",
@@ -684,8 +683,6 @@ const resumeEn: ResumeContent = {
     "Full CV of Benjamin Jesuiter with project history, skills, and industry experience.",
   badge: "CV · Project history",
   heading: "Benjamin Jesuiter",
-  intro:
-    "Senior Software Engineer & Consultant focused on product-grade frontend architecture, TypeScript platforms, and pragmatic cloud delivery. I combine technical concept work, hands-on implementation, and cross-team coordination in long-running product and transformation projects.",
   navigation: {
     backLabel: "Back to homepage",
     downloadLabel: "Download PDF",

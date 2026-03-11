@@ -2,6 +2,7 @@
 import { Image } from "astro:assets";
 import profilePic from "../assets/2023-03-17_square_near_profilepic.jpeg";
 import { getLocalizedResumeContent, type ResumeLocale } from "../data/resume";
+import ResumeIntro from "./ResumeIntro.astro";
 import ResumeStyleSwitch from "./ResumeStyleSwitch.astro";
 
 interface Props {
@@ -52,7 +53,7 @@ const classicHref =
       <div class="resume-hero-copy">
         <p class="resume-badge">{content.badge}</p>
         <h1>{content.heading}</h1>
-        <p class="resume-intro">{content.intro}</p>
+        <ResumeIntro locale={locale} />
       </div>
 
       <div class="resume-hero-media">
@@ -372,6 +373,18 @@ const classicHref =
     font-size: clamp(1rem, 1.5vw, 1.08rem);
     line-height: 1.75;
     color: #c7f3df;
+  }
+
+  .resume-intro p {
+    margin: 0;
+  }
+
+  .resume-intro p + p {
+    margin-top: 0.45rem;
+  }
+
+  .resume-intro strong {
+    color: #ecfdf5;
   }
 
   .resume-hero-media {
