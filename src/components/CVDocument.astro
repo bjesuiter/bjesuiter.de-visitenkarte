@@ -86,7 +86,7 @@ const profileImageAlt =
         </ul>
 
         <h2 class="resume-subheading">{content.industriesTitle}</h2>
-        <ul class="resume-industries-grid">
+        <ul class="resume-chip-list">
           {content.industries.map((industry) => <li>{industry}</li>)}
         </ul>
       </section>
@@ -107,11 +107,11 @@ const profileImageAlt =
                   typeof item === "string" ? (
                     <li>{item}</li>
                   ) : "items" in item ? (
-                    <li>
-                      <span>{item.label}</span>
+                    <li class="resume-skill-group">
+                      <span class="resume-skill-group-label">{item.label}</span>
                       <ul class="resume-skill-sublist">
                         {item.items.map((subItem) => (
-                          <li>{subItem}</li>
+                          <li class="resume-skill-sublist-item">{subItem}</li>
                         ))}
                       </ul>
                     </li>
@@ -542,7 +542,7 @@ const profileImageAlt =
   }
 
   .resume-link-list,
-  .resume-industries-grid,
+  .resume-chip-list,
   .resume-skill-card ul,
   .resume-detail-card ul {
     margin: 0;
@@ -587,29 +587,29 @@ const profileImageAlt =
     word-break: break-word;
   }
 
-  .resume-industries-grid {
-    display: grid;
-    gap: 0.45rem 1rem;
+  .resume-chip-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.55rem;
     margin-top: 1rem;
-    color: #d7fbec;
   }
 
-  .resume-industries-grid li {
-    position: relative;
-    padding-left: 0.95rem;
-    line-height: 1.6;
-    text-wrap: balance;
-  }
-
-  .resume-industries-grid li::before {
-    content: "";
-    position: absolute;
-    left: 0;
-    top: 0.7rem;
-    width: 0.28rem;
-    height: 0.28rem;
+  /*
+    Keep these pills visually explicit.
+    A lighter/softer treatment made the industries read like plain wrapped text,
+    while this stronger background + border makes the intended tag grouping clear.
+    Reuse this approach if similar pill lists start looking too subtle again.
+  */
+  .resume-chip-list li {
+    padding: 0.5rem 0.8rem;
     border-radius: 999px;
-    background: #6ee7b7;
+    background: rgba(6, 33, 25, 0.9);
+    color: #ecfdf5;
+    border: 1px solid rgba(110, 231, 183, 0.3);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.06),
+      0 0 0 1px rgba(3, 24, 18, 0.32);
+    line-height: 1.4;
   }
 
   .resume-section {
@@ -649,12 +649,47 @@ const profileImageAlt =
 
   .resume-skill-card ul {
     display: grid;
-    gap: 0.5rem;
+    gap: 0.42rem;
+  }
+
+  .resume-skill-group-label {
+    font-weight: 500;
+    color: #ddfced;
   }
 
   .resume-skill-sublist {
-    margin-top: 0.35rem;
-    margin-left: 0.3rem;
+    display: flex;
+    flex-wrap: wrap;
+    row-gap: 0.2rem;
+    column-gap: 0.35rem;
+    margin-top: 0.32rem;
+    margin-left: 0;
+    padding-left: 0;
+  }
+
+  .resume-skill-sublist .resume-skill-sublist-item {
+    list-style: none;
+    position: static;
+    padding-left: 0;
+    line-height: 1.35;
+    font-size: 0.9em;
+  }
+
+  .resume-skill-sublist .resume-skill-sublist-item::before {
+    content: "·";
+    position: static;
+    display: inline-block;
+    width: auto;
+    height: auto;
+    margin-right: 0.35rem;
+    border-radius: 0;
+    background: none;
+    color: rgba(110, 231, 183, 0.85);
+  }
+
+  .resume-skill-sublist .resume-skill-sublist-item:first-child::before {
+    content: "";
+    margin-right: 0;
   }
 
   .resume-skill-chip-row {
@@ -701,6 +736,12 @@ const profileImageAlt =
     height: 0.38rem;
     border-radius: 999px;
     background: #6ee7b7;
+  }
+
+  .resume-skill-card li.resume-skill-group::before {
+    top: 0.78rem;
+    width: 0.26rem;
+    height: 0.26rem;
   }
 
   .resume-projects {
@@ -824,10 +865,6 @@ const profileImageAlt =
       padding-left: 1rem;
       border-top: 0;
       border-left: 1px dashed var(--resume-divider);
-    }
-
-    .resume-industries-grid {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 
     .resume-skills-grid {
@@ -984,12 +1021,10 @@ const profileImageAlt =
       border-color: var(--resume-divider) !important;
     }
 
-    .resume-industries-grid li {
+    .resume-chip-list li {
+      background: var(--resume-print-chip-bg) !important;
+      border-color: transparent !important;
       color: var(--resume-print-text);
-    }
-
-    .resume-industries-grid li::before {
-      background: var(--resume-print-accent);
     }
 
     .resume-badge,
