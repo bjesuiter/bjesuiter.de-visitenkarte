@@ -399,6 +399,77 @@ When implementing the timeline strip:
 - do not use a gradient for the strip body
 - keep the strip visually stable across screen and print variants unless print clarity requires simplification
 
+#### Styling technique
+
+The implementation technique for the timeline strip is:
+
+- create the card as a normal surface
+- add a dedicated `::before` pseudo-element on the card
+- draw the strip with `border-left`, `border-top`, and `border-bottom`
+- use the card radius on the left corners so the strip visibly wraps around the top-left and bottom-left corners
+- use a **mask gradient** on the pseudo-element so the open ends fade smoothly outward while the main run and corner turns remain crisp
+- keep the strip color as a single solid accent value
+
+This is important:
+
+- the strip itself stays solid
+- only the **visibility mask** fades the open end
+- this avoids the strip looking like a gradient fill
+
+#### Reference CSS
+
+Use this CSS pattern as the canonical implementation for the timeline strip:
+
+```css
+.resume-surface-project {
+  --resume-timeline-strip-color: rgba(110, 231, 183, 0.58);
+  --resume-timeline-strip-width: 2px;
+  --resume-timeline-strip-wrap: 1.5rem;
+  position: relative;
+  background: rgba(4, 21, 17, 0.78);
+}
+
+.resume-surface-project::before {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: calc(
+    var(--resume-timeline-strip-wrap) + var(--resume-timeline-strip-width)
+  );
+  border-top: var(--resume-timeline-strip-width) solid
+    var(--resume-timeline-strip-color);
+  border-bottom: var(--resume-timeline-strip-width) solid
+    var(--resume-timeline-strip-color);
+  border-left: var(--resume-timeline-strip-width) solid
+    var(--resume-timeline-strip-color);
+  border-top-left-radius: var(--resume-panel-radius);
+  border-bottom-left-radius: var(--resume-panel-radius);
+  pointer-events: none;
+  -webkit-mask-image: linear-gradient(
+    90deg,
+    #000 0,
+    #000 calc(100% - 0.92rem),
+    rgba(0, 0, 0, 0.72) calc(100% - 0.56rem),
+    rgba(0, 0, 0, 0.28) calc(100% - 0.18rem),
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    90deg,
+    #000 0,
+    #000 calc(100% - 0.92rem),
+    rgba(0, 0, 0, 0.72) calc(100% - 0.56rem),
+    rgba(0, 0, 0, 0.28) calc(100% - 0.18rem),
+    transparent 100%
+  );
+}
+
+@media print {
+  .resume-surface-project {
+    --resume-timeline-strip-color: var(--resume-print-accent);
+  }
+}
+```
+
 #### Usage guidance
 
 Use the timeline strip on:
