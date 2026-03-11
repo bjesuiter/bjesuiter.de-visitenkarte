@@ -1,8 +1,8 @@
 ---
 import { Image } from "astro:assets";
 import profilePic from "../assets/2023-03-17_square_near_profilepic.jpeg";
-import { getLocalizedResumeContent, type ResumeLocale } from "../data/resume";
-import ResumeIntro from "./ResumeIntro.astro";
+import { getLocalizedResumeContent, type ResumeLocale } from "../data/cv";
+import CVIntro from "./CVIntro.astro";
 
 interface Props {
   locale?: ResumeLocale;
@@ -42,7 +42,7 @@ const profileImageAlt =
       <div class="resume-hero-copy">
         <p class="resume-badge">{content.badge}</p>
         <h1>{content.heading}</h1>
-        <ResumeIntro locale={locale} />
+        <CVIntro locale={locale} />
       </div>
 
       <div class="resume-hero-media">

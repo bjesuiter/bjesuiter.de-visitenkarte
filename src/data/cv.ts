@@ -41,7 +41,7 @@ export interface ResumeNavigationContent {
 }
 
 // NOTE: The localized intro block is not stored in this data file.
-// It is rendered directly in the Astro template: src/components/ResumeIntro.astro
+// It is rendered directly in the Astro template: src/components/CVIntro.astro
 export interface ResumeContent {
   pageTitle: string;
   pageDescription: string;
