@@ -586,7 +586,7 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
   }
 
   .resume-surface-project {
-    --resume-timeline-strip-color: rgba(110, 231, 183, 0.82);
+    --resume-timeline-strip-color: rgba(110, 231, 183, 0.58);
     --resume-timeline-strip-width: 2px;
     --resume-timeline-strip-wrap: 1.5rem;
     position: relative;
@@ -607,6 +607,20 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
     border-top-left-radius: var(--resume-panel-radius);
     border-bottom-left-radius: var(--resume-panel-radius);
     pointer-events: none;
+    -webkit-mask-image: linear-gradient(
+      90deg,
+      #000 0,
+      #000 calc(100% - 0.38rem),
+      rgba(0, 0, 0, 0.42) calc(100% - 0.12rem),
+      transparent 100%
+    );
+    mask-image: linear-gradient(
+      90deg,
+      #000 0,
+      #000 calc(100% - 0.38rem),
+      rgba(0, 0, 0, 0.42) calc(100% - 0.12rem),
+      transparent 100%
+    );
   }
 
   .resume-panel {
