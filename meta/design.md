@@ -285,6 +285,63 @@ The fade should never:
 - overpower the dashed structure
 - become so long that the brace looks blurry
 
+### Global open-edge fade rule
+
+A general design rule of this project is:
+
+- whenever a line, border, strip, divider, or framing element ends in open space, the end should usually **fade out** instead of stopping abruptly
+
+This applies beyond the dashed border braces.
+It is part of the visual language of the whole site.
+
+#### Why this rule exists
+
+Open-edge fading makes structural lines feel:
+
+- more intentional
+- more integrated into the surface
+- less like generic CSS borders
+- calmer and more technical
+
+Hard stops are acceptable only when a line is intentionally meant to feel mechanical, blunt, or grid-locked.
+The default should be the opposite: **lines should dissolve at their open ends**.
+
+#### Where this rule applies
+
+Use fading open ends for example on:
+
+- horizontal dividers
+- `hr`-like separators
+- partial card frames
+- timeline strips
+- technical annotation lines
+- section separators
+- accent rails and locator lines
+
+Example:
+
+- if a section uses an `hr`, the left and right ends should usually fade out instead of terminating as a hard full-width stroke
+
+#### Where this rule does not apply
+
+Do not force fade-outs on:
+
+- closed geometric shapes that are meant to read as complete boxes
+- outer solid sheet borders
+- controls where sharp edge clarity is more important than atmosphere
+- tiny UI details where the fade would only look blurry
+
+#### Implementation rule
+
+Prefer this hierarchy:
+
+1. keep the line or border color itself solid
+2. create the fade with a **mask** or a dedicated opacity falloff on the drawing layer
+3. preserve the readable core segment before the fade begins
+
+This is important because the project should avoid borders that look like soft gradients.
+The structure should stay crisp; only the open end should dissolve.
+
 #### Implementation guidance
 
 When implementing this pattern in CSS:
@@ -422,7 +479,7 @@ Use this CSS pattern as the canonical implementation for the timeline strip:
 
 ```css
 .resume-surface-project {
-  --resume-timeline-strip-color: rgba(110, 231, 183, 0.58);
+  --resume-timeline-strip-color: rgba(110, 231, 183, 0.42);
   --resume-timeline-strip-width: 2px;
   --resume-timeline-strip-wrap: 1.5rem;
   position: relative;
