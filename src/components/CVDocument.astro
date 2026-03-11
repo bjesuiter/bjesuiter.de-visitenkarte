@@ -21,7 +21,7 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
 <main class="resume-page">
   <div class="resume-toolbar print-hidden" aria-label={toolbarAriaLabel}>
     <div class="resume-toolbar-shell">
-      <div class="resume-toolbar-copy">
+      <div class="resume-toolbar-copy gap-4">
         <p class="resume-toolbar-kicker">{content.badge}</p>
         <p class="resume-toolbar-note">{content.printHint}</p>
       </div>
@@ -52,8 +52,8 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
   </div>
 
   <article class="resume-sheet">
-    <header class="resume-hero">
-      <div class="resume-hero-copy">
+    <header class="resume-hero gap-4">
+      <div class="resume-hero-copy gap-4">
         <p class="resume-badge">{content.badge}</p>
         <h1>{content.heading}</h1>
         <CVIntro locale={locale} />
@@ -69,10 +69,10 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
       </div>
     </header>
 
-    <section class="resume-grid resume-top-grid">
+    <section class="resume-grid resume-top-grid gap-4">
       <section class="resume-panel resume-surface resume-surface-strong">
         <h2>{content.factsTitle}</h2>
-        <dl class="resume-facts">
+        <dl class="resume-facts gap-4">
           {
             content.facts.map((fact) => (
               <div>
@@ -118,14 +118,14 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
         <h2>{content.skillsTitle}</h2>
       </div>
 
-      <div class="resume-skills-grid">
+      <div class="resume-skills-grid gap-4">
         {
           content.skillCategories.map((category) => (
             <section class="resume-skill-card resume-surface-soft">
               <div class="resume-card-heading">
                 <h3>{category.title}</h3>
               </div>
-              <ul>
+              <ul class="gap-4">
                 {category.items.map((item) =>
                   typeof item === "string" ? (
                     <li>{item}</li>
@@ -160,12 +160,12 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
         </div>
       </div>
 
-      <div class="resume-projects">
+      <div class="resume-projects gap-4">
         {
           content.projects.map((project, index) => (
             <article class="resume-project-card resume-surface resume-surface-project">
-              <header class="resume-project-header resume-surface-strong">
-                <div class="resume-project-title-block">
+              <header class="resume-project-header resume-surface-strong gap-4">
+                <div class="resume-project-title-block gap-4">
                   <div class="resume-project-eyebrow">
                     <span class="resume-card-index">
                       {String(index + 1).padStart(2, "0")}
@@ -176,7 +176,7 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
                   <h3>{project.title}</h3>
                 </div>
 
-                <dl class="resume-project-meta">
+                <dl class="resume-project-meta gap-4">
                   {project.duration && (
                     <div class="resume-surface-inset">
                       <dt>{content.durationLabel}</dt>
@@ -196,8 +196,8 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
                 </dl>
               </header>
 
-              <div class="resume-project-body">
-                <div class="resume-project-copy">
+              <div class="resume-project-body gap-4">
+                <div class="resume-project-copy gap-4">
                   {project.summary.map((paragraph) => (
                     <p>{paragraph}</p>
                   ))}
@@ -205,7 +205,7 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
 
                 <section class="resume-detail-card resume-surface-inset">
                   <h4>{content.highlightsTitle}</h4>
-                  <ul>
+                  <ul class="gap-4">
                     {project.highlights.map((highlight) => (
                       <li>{highlight}</li>
                     ))}
@@ -214,7 +214,7 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
 
                 <section class="resume-detail-card resume-surface-inset">
                   <h4>{content.stackTitle}</h4>
-                  <dl class="resume-stack-list">
+                  <dl class="resume-stack-list gap-4">
                     {project.stack.map((item) => (
                       <div>
                         <dt>{item.label}</dt>
@@ -580,7 +580,7 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
   }
 
   .resume-panel-mirrored {
-    padding: 1.1rem 1.16rem 1.1rem 2rem;
+    padding: 1.1rem 1.16rem 1.1rem 1.1rem;
   }
 
   .resume-section {
