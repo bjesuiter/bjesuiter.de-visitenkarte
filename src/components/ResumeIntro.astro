@@ -11,7 +11,7 @@ const { locale = "de" } = Astro.props;
 <div class="resume-intro">
   {
     locale === "de" ? (
-      <p>
+      <>
         <p>
           Ich bin <strong>Programmierer aus Leidenschaft</strong> und seit über
           einem Jahrzehnt im Web-Engineering zuhause. Von TypeScript, Frontend
@@ -20,32 +20,39 @@ const { locale = "de" } = Astro.props;
         </p>
         <p>
           <strong>Mein aktuelles Abenteuer</strong> ist das Thema
-          <strong>Agentic Engineering</strong>: Wie können wir KI nutzen und
-          gleichzeitig weiterhin zuberlässige Systeme bauen? Was verstehen
+          <strong> Agentic Engineering</strong>: Wie können wir KI nutzen und
+          gleichzeitig weiterhin zuverlässige Systeme bauen? Was verstehen
           Coding Agents bereits eigenständig und was müssen wir ihnen noch
           beibringen? Welche Auswirkungen haben diese Entwicklungen auf die
           Softwareentwicklung und auf die Gesellschaft als Ganzes? Und wie
           nutzen wir sie ethisch und verantwortungsvoll?
         </p>
         <p>
-          Ich <strong> liebe die aktuelle Aufbruchsstimmung</strong> und freue
+          Ich <strong>liebe die aktuelle Aufbruchsstimmung</strong> und freue
           mich auf die vielen unterschiedlichen Begegnungen, die mich ganz
           sicher erwarten!
         </p>
-      </p>
+      </>
     ) : (
       <>
         <p>
-          <strong>Programmer by passion.</strong> My current adventure is
-          agentic engineering, approached with technical rigor rather than
-          vibe-slop.
+          I&apos;m a <strong>passionate programmer</strong> who&apos;s been at
+          home in web engineering for over a decade. From TypeScript and
+          frontend work with Angular and SolidJS to CI/CD, cloud architecture,
+          and senior-level consulting – I&apos;ve worked across the full
+          spectrum.
         </p>
         <p>
-          I focus on encoding expertise into tests, rules, and guardrails to
-          build reliable systems. After working as an expert web developer,
-          TypeScript-first engineer, CI/CD and DevOps practitioner, cloud
-          architect, and senior consultant, I now help teams navigate this new
-          agentic engineering landscape with confidence.
+          <strong>My current adventure</strong> is
+          <strong> agentic engineering</strong>: How do we harness AI while
+          still building truly reliable systems? What do coding agents already
+          grasp on their own and what do we still need to teach them? What will
+          these developments mean for software engineering and society at large?
+          And how do we approach them ethically and responsibly?
+        </p>
+        <p>
+          I <strong>love the energy of this moment</strong> and can&apos;t wait
+          for the many new people that I&apos;ll meet along the way!
         </p>
       </>
     )
