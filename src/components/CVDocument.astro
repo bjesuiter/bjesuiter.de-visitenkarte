@@ -15,25 +15,44 @@ const profileImageAlt =
   locale === "de"
     ? "Porträt von Benjamin Jesuiter"
     : "Portrait of Benjamin Jesuiter";
+const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
+const highlightFacts = [
+  content.facts[0],
+  content.facts[content.facts.length - 2],
+  content.facts[content.facts.length - 1],
+].filter(Boolean);
 ---
 
 <main class="resume-page">
   <div class="resume-toolbar print-hidden" aria-label={toolbarAriaLabel}>
-    <div class="resume-toolbar-actions">
-      <button
-        type="button"
-        class="resume-action resume-action-download"
-        onclick="window.__resumePrintMode('download')"
-      >
-        {content.navigation.downloadLabel}
-      </button>
-      <button
-        type="button"
-        class="resume-action resume-action-print"
-        onclick="window.__resumePrintMode('print')"
-      >
-        {content.navigation.printLabel}
-      </button>
+    <div class="resume-toolbar-shell">
+      <div class="resume-toolbar-copy">
+        <p class="resume-toolbar-kicker">{content.badge}</p>
+        <p class="resume-toolbar-note">{content.printHint}</p>
+      </div>
+
+      <div class="resume-toolbar-actions">
+        <a
+          href={languageSwitchHref}
+          class="resume-action resume-action-secondary"
+        >
+          {content.navigation.languageSwitchLabel}
+        </a>
+        <button
+          type="button"
+          class="resume-action resume-action-print"
+          onclick="window.__resumePrintMode('print')"
+        >
+          {content.navigation.printLabel}
+        </button>
+        <button
+          type="button"
+          class="resume-action resume-action-download"
+          onclick="window.__resumePrintMode('download')"
+        >
+          {content.navigation.downloadLabel}
+        </button>
+      </div>
     </div>
   </div>
 
@@ -43,6 +62,17 @@ const profileImageAlt =
         <p class="resume-badge">{content.badge}</p>
         <h1>{content.heading}</h1>
         <CVIntro locale={locale} />
+
+        <dl class="resume-hero-fact-strip" aria-label={content.factsTitle}>
+          {
+            highlightFacts.map((fact) => (
+              <div class="resume-hero-fact">
+                <dt>{fact.label}</dt>
+                <dd>{fact.value}</dd>
+              </div>
+            ))
+          }
+        </dl>
       </div>
 
       <div class="resume-hero-media">
@@ -99,9 +129,14 @@ const profileImageAlt =
 
       <div class="resume-skills-grid">
         {
-          content.skillCategories.map((category) => (
+          content.skillCategories.map((category, index) => (
             <section class="resume-skill-card">
-              <h3>{category.title}</h3>
+              <div class="resume-card-heading">
+                <p class="resume-card-index">
+                  {String(index + 1).padStart(2, "0")}
+                </p>
+                <h3>{category.title}</h3>
+              </div>
               <ul>
                 {category.items.map((item) =>
                   typeof item === "string" ? (
@@ -139,11 +174,16 @@ const profileImageAlt =
 
       <div class="resume-projects">
         {
-          content.projects.map((project) => (
+          content.projects.map((project, index) => (
             <article class="resume-project-card">
               <header class="resume-project-header">
-                <div>
-                  <p class="resume-project-period">{project.period}</p>
+                <div class="resume-project-title-block">
+                  <div class="resume-project-eyebrow">
+                    <span class="resume-card-index">
+                      {String(index + 1).padStart(2, "0")}
+                    </span>
+                    <p class="resume-project-period">{project.period}</p>
+                  </div>
                   <p class="resume-project-sector">{project.sector}</p>
                   <h3>{project.title}</h3>
                 </div>
@@ -277,10 +317,50 @@ const profileImageAlt =
   .resume-toolbar {
     width: min(1140px, 100%);
     margin: 0 auto 1rem;
+  }
+
+  .resume-toolbar-shell {
     display: flex;
-    justify-content: flex-end;
+    flex-wrap: wrap;
     align-items: center;
-    gap: 0.9rem;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.85rem 1rem;
+    border-radius: 20px;
+    border: 1px solid rgba(167, 243, 208, 0.2);
+    background:
+      linear-gradient(180deg, rgba(2, 19, 14, 0.9), rgba(4, 24, 19, 0.82)),
+      radial-gradient(
+        circle at 16% 0%,
+        rgba(110, 231, 183, 0.16),
+        transparent 34%
+      );
+    box-shadow:
+      0 16px 34px rgba(1, 10, 7, 0.24),
+      inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(18px);
+  }
+
+  .resume-toolbar-copy {
+    display: grid;
+    gap: 0.22rem;
+    max-width: 54rem;
+  }
+
+  .resume-toolbar-kicker {
+    margin: 0;
+    font-family: "Chakra Petch", sans-serif;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #86efac;
+  }
+
+  .resume-toolbar-note {
+    margin: 0;
+    line-height: 1.55;
+    color: #c7f3df;
   }
 
   .resume-toolbar-actions {
@@ -298,33 +378,49 @@ const profileImageAlt =
     min-height: 3rem;
     border-radius: 999px;
     padding: 0.7rem 1.1rem;
+    border: 1px solid transparent;
     font-family: "Chakra Petch", sans-serif;
-    font-size: 0.92rem;
+    font-size: 0.88rem;
     font-weight: 700;
-    letter-spacing: 0.04em;
+    letter-spacing: 0.06em;
     text-transform: uppercase;
+    text-decoration: none;
     cursor: pointer;
     transition:
       transform 170ms ease,
       border-color 170ms ease,
       filter 170ms ease,
       background-color 170ms ease,
-      color 170ms ease;
+      color 170ms ease,
+      box-shadow 170ms ease;
   }
 
   .resume-action:hover {
     transform: translateY(-1px);
   }
 
+  .resume-action-secondary {
+    color: #d8fbed;
+    border-color: rgba(167, 243, 208, 0.18);
+    background: rgba(7, 34, 26, 0.56);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  }
+
+  .resume-action-secondary:hover {
+    border-color: rgba(110, 231, 183, 0.5);
+    background: rgba(8, 39, 29, 0.82);
+  }
+
   .resume-action-download {
     color: #032015;
     border: 1px solid rgba(255, 255, 255, 0.24);
-    background: linear-gradient(90deg, #a7f3d0, #6ee7b7);
+    background: linear-gradient(90deg, #c5fbdc, #6ee7b7);
     box-shadow: 0 10px 24px rgba(0, 0, 0, 0.24);
   }
 
   .resume-action-download:hover {
     filter: brightness(1.04);
+    box-shadow: 0 14px 28px rgba(0, 0, 0, 0.28);
   }
 
   .resume-action-print {
@@ -332,7 +428,7 @@ const profileImageAlt =
     border: 1px solid rgba(167, 243, 208, 0.28);
     background: rgba(3, 24, 18, 0.72);
     box-shadow:
-      0 16px 34px rgba(1, 10, 7, 0.3),
+      0 12px 26px rgba(1, 10, 7, 0.24),
       inset 0 1px 0 rgba(255, 255, 255, 0.05);
     backdrop-filter: blur(18px);
   }
@@ -360,13 +456,19 @@ const profileImageAlt =
 
   .resume-hero {
     display: grid;
-    gap: 1rem;
-    padding-bottom: 1.4rem;
+    gap: 1.15rem;
+    padding-bottom: 1.6rem;
     border-bottom: 1px dashed var(--resume-divider-strong);
   }
 
+  .resume-hero-copy {
+    display: grid;
+    gap: 0.95rem;
+    align-content: start;
+  }
+
   .resume-badge {
-    margin: 0 0 0.75rem;
+    margin: 0;
     font-family: "Chakra Petch", sans-serif;
     font-size: 0.84rem;
     font-weight: 700;
@@ -395,7 +497,7 @@ const profileImageAlt =
 
   .resume-intro {
     max-width: 72ch;
-    margin: 1rem 0 0;
+    margin: 0;
     font-size: clamp(1rem, 1.5vw, 1.08rem);
     line-height: 1.75;
     color: #c7f3df;
@@ -413,19 +515,56 @@ const profileImageAlt =
     color: #ecfdf5;
   }
 
+  .resume-hero-fact-strip {
+    display: grid;
+    gap: 0.8rem;
+    margin: 0;
+  }
+
+  .resume-hero-fact {
+    padding: 0.85rem 0.95rem;
+    border-radius: 18px;
+    border: 1px solid rgba(167, 243, 208, 0.12);
+    background:
+      linear-gradient(180deg, rgba(5, 27, 21, 0.9), rgba(3, 20, 16, 0.82)),
+      radial-gradient(
+        circle at 0% 0%,
+        rgba(110, 231, 183, 0.12),
+        transparent 38%
+      );
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  }
+
+  .resume-hero-fact dt {
+    margin: 0;
+    font-family: "Chakra Petch", sans-serif;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #86efac;
+  }
+
+  .resume-hero-fact dd {
+    margin: 0.32rem 0 0;
+    color: #ecfdf5;
+    line-height: 1.45;
+  }
+
   .resume-hero-media {
     position: relative;
-    min-height: 19rem;
-    border-radius: 22px;
+    min-height: 20rem;
+    border-radius: 28px;
     overflow: hidden;
+    border: 1px solid rgba(167, 243, 208, 0.18);
     background:
       radial-gradient(
         circle at 24% 22%,
-        rgba(110, 231, 183, 0.18),
+        rgba(110, 231, 183, 0.2),
         transparent 28%
       ),
       linear-gradient(135deg, rgba(5, 26, 20, 0.82), rgba(3, 18, 14, 0.48));
-    box-shadow: 0 18px 40px rgba(1, 10, 7, 0.28);
+    box-shadow: 0 24px 48px rgba(1, 10, 7, 0.32);
   }
 
   .resume-hero-media::after {
@@ -433,17 +572,18 @@ const profileImageAlt =
     position: absolute;
     inset: 0;
     background:
-      radial-gradient(
-        circle at 22% 18%,
-        rgba(110, 231, 183, 0.16),
-        transparent 30%
-      ),
       linear-gradient(
         180deg,
-        rgba(3, 16, 12, 0.04) 0%,
-        rgba(6, 32, 22, 0.14) 42%,
-        rgba(4, 28, 19, 0.5) 72%,
+        rgba(3, 16, 12, 0.03) 0%,
+        rgba(6, 32, 22, 0.1) 38%,
+        rgba(4, 28, 19, 0.38) 68%,
         rgba(3, 16, 12, 0.84) 100%
+      ),
+      linear-gradient(
+        135deg,
+        rgba(255, 255, 255, 0.16) 0%,
+        transparent 22%,
+        transparent 100%
       );
     pointer-events: none;
   }
@@ -453,28 +593,7 @@ const profileImageAlt =
     height: 100%;
     object-fit: cover;
     object-position: center top;
-    filter: saturate(0.84) contrast(1.03) brightness(0.98);
-  }
-
-  .resume-hero-note {
-    width: 100%;
-    max-width: 32rem;
-    justify-self: start;
-    border-radius: 18px;
-    background:
-      radial-gradient(
-        circle at 12% 20%,
-        rgba(110, 231, 183, 0.14),
-        transparent 32%
-      ),
-      linear-gradient(120deg, rgba(5, 26, 20, 0.92), rgba(5, 30, 22, 0.72));
-    padding: 0.95rem 1rem;
-    color: #d7fbec;
-  }
-
-  .resume-hero-note p {
-    margin: 0;
-    line-height: 1.6;
+    filter: saturate(0.88) contrast(1.04) brightness(1);
   }
 
   .resume-grid {
@@ -643,17 +762,21 @@ const profileImageAlt =
   .resume-link-list a {
     display: grid;
     gap: 0.22rem;
-    padding: 0;
+    padding: 0.72rem 0.85rem;
     border-radius: 16px;
-    border: 0;
-    background: transparent;
+    border: 1px solid rgba(167, 243, 208, 0.1);
+    background: rgba(5, 26, 20, 0.34);
     transition:
       color 170ms ease,
-      transform 170ms ease;
+      transform 170ms ease,
+      border-color 170ms ease,
+      background-color 170ms ease;
   }
 
   .resume-link-list a:hover {
     transform: translateX(2px);
+    border-color: rgba(110, 231, 183, 0.28);
+    background: rgba(6, 31, 24, 0.56);
   }
 
   .resume-link-list a span:first-child {
@@ -726,12 +849,39 @@ const profileImageAlt =
     gap: 0.9rem 1rem;
   }
 
+  .resume-card-heading {
+    display: flex;
+    align-items: baseline;
+    gap: 0.7rem;
+    margin-bottom: 0.85rem;
+  }
+
+  .resume-card-index {
+    margin: 0;
+    font-family: "Chakra Petch", sans-serif;
+    font-size: 0.74rem;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: #86efac;
+    opacity: 0.92;
+  }
+
   .resume-skill-card {
-    overflow: visible;
-    padding: 1rem 0 0;
-    background: transparent;
-    box-shadow: none;
-    backdrop-filter: none;
+    padding: 1rem 1rem 1.05rem;
+    border-radius: 18px;
+    border: 1px solid rgba(167, 243, 208, 0.12);
+    background:
+      linear-gradient(180deg, rgba(5, 27, 21, 0.88), rgba(4, 22, 18, 0.8)),
+      radial-gradient(
+        circle at 0% 0%,
+        rgba(110, 231, 183, 0.12),
+        transparent 42%
+      );
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.04),
+      0 14px 28px rgba(1, 10, 7, 0.16);
+    backdrop-filter: blur(10px);
   }
 
   .resume-skill-card::before,
@@ -739,20 +889,15 @@ const profileImageAlt =
     display: none;
   }
 
-  .resume-skill-card + .resume-skill-card {
-    border-top: 1px dashed var(--resume-divider);
-    padding-top: 1rem;
-  }
-
   .resume-skill-card h3 {
-    margin: 0 0 0.7rem;
+    margin: 0;
     font-size: 1.08rem;
     color: #ecfdf5;
   }
 
   .resume-skill-card ul {
     display: grid;
-    gap: 0.42rem;
+    gap: 0.46rem;
   }
 
   .resume-skill-group-label {
@@ -800,8 +945,8 @@ const profileImageAlt =
   .resume-chip {
     display: inline-block;
     border: 1px solid rgba(110, 231, 183, 0.24);
-    background: rgba(16, 185, 129, 0.06);
-    color: rgba(187, 247, 208, 0.78);
+    background: rgba(16, 185, 129, 0.08);
+    color: rgba(187, 247, 208, 0.8);
     border-radius: 999px;
     padding: 0.08rem 0.45rem;
     font-size: 0.7rem;
@@ -844,7 +989,7 @@ const profileImageAlt =
 
   .resume-projects {
     display: grid;
-    gap: 1.1rem;
+    gap: 1.15rem;
   }
 
   .resume-project-card {
@@ -862,7 +1007,7 @@ const profileImageAlt =
   .resume-project-header {
     display: grid;
     gap: 1rem;
-    padding: 1.1rem 1.1rem 1rem 1.25rem;
+    padding: 1.18rem 1.18rem 1.04rem 1.3rem;
     border-bottom: 1px dashed var(--resume-divider-strong);
     background:
       radial-gradient(
@@ -871,6 +1016,18 @@ const profileImageAlt =
         transparent 60%
       ),
       linear-gradient(160deg, rgba(5, 30, 23, 0.95), rgba(5, 26, 20, 0.88));
+  }
+
+  .resume-project-title-block {
+    display: grid;
+    gap: 0.45rem;
+  }
+
+  .resume-project-eyebrow {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.65rem;
   }
 
   .resume-project-period,
@@ -888,12 +1045,11 @@ const profileImageAlt =
   }
 
   .resume-project-sector {
-    margin-top: 0.45rem;
     font-size: 0.94rem;
   }
 
   .resume-project-card h3 {
-    margin: 0.5rem 0 0;
+    margin: 0.15rem 0 0;
     font-size: clamp(1.35rem, 2vw, 1.8rem);
     line-height: 1.15;
     color: #ecfdf5;
@@ -901,16 +1057,20 @@ const profileImageAlt =
 
   .resume-project-meta {
     display: grid;
-    gap: 0.7rem;
-    margin-top: 0.15rem;
-    padding-top: 0.85rem;
-    border-top: 1px dashed var(--resume-divider);
+    gap: 0.75rem;
+  }
+
+  .resume-project-meta > div {
+    padding: 0.8rem 0.9rem;
+    border-radius: 14px;
+    border: 1px solid rgba(167, 243, 208, 0.12);
+    background: rgba(5, 26, 20, 0.48);
   }
 
   .resume-project-body {
     display: grid;
     gap: 1rem;
-    padding: 1.1rem 1.1rem 1.1rem 1.25rem;
+    padding: 1.18rem 1.18rem 1.18rem 1.3rem;
   }
 
   .resume-project-body > * + * {
@@ -928,9 +1088,15 @@ const profileImageAlt =
   }
 
   .resume-detail-card {
-    padding: 0;
-    border: 0;
-    background: transparent;
+    padding: 0.95rem 1rem;
+    border: 1px solid rgba(167, 243, 208, 0.12);
+    border-radius: 16px;
+    background: linear-gradient(
+      180deg,
+      rgba(5, 27, 21, 0.82),
+      rgba(3, 20, 16, 0.7)
+    );
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03);
   }
 
   .resume-detail-card h4 {
@@ -951,12 +1117,16 @@ const profileImageAlt =
 
   @media (min-width: 760px) {
     .resume-hero {
-      grid-template-columns: minmax(0, 1.18fr) minmax(18rem, 0.82fr);
+      grid-template-columns: minmax(0, 1.14fr) minmax(19rem, 0.86fr);
       align-items: stretch;
     }
 
     .resume-hero-media {
       min-height: 100%;
+    }
+
+    .resume-hero-fact-strip {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
     }
 
     .resume-top-grid {
@@ -970,17 +1140,53 @@ const profileImageAlt =
       border-left: 0;
     }
 
+    .resume-facts {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.9rem 1rem;
+    }
+
+    .resume-facts div {
+      padding: 0.7rem 0.8rem;
+      border-radius: 14px;
+      border: 1px solid rgba(167, 243, 208, 0.12);
+      background: rgba(5, 26, 20, 0.34);
+    }
+
+    .resume-facts div + div {
+      border-top: 0;
+      padding-top: 0.7rem;
+    }
+
     .resume-skills-grid {
       grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 
     .resume-project-header {
-      grid-template-columns: minmax(0, 1.5fr) minmax(280px, 0.9fr);
+      grid-template-columns: minmax(0, 1.45fr) minmax(260px, 0.95fr);
       align-items: start;
     }
 
     .resume-project-meta {
-      margin-top: 0;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      align-self: start;
+    }
+  }
+
+  @media (min-width: 980px) {
+    .resume-sheet {
+      padding: 1.7rem;
+    }
+
+    .resume-skills-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .resume-project-body {
+      grid-template-columns: minmax(0, 1.45fr) minmax(0, 0.9fr) minmax(0, 0.9fr);
+      align-items: start;
+    }
+
+    .resume-project-body > * + * {
       padding-top: 0;
       padding-left: 1rem;
       border-top: 0;
@@ -988,13 +1194,18 @@ const profileImageAlt =
     }
   }
 
-  @media (min-width: 980px) {
-    .resume-sheet {
-      padding: 1.6rem;
+  @media (max-width: 760px) {
+    .resume-toolbar-shell {
+      padding: 0.9rem;
     }
 
-    .resume-skills-grid {
-      grid-template-columns: repeat(3, minmax(0, 1fr));
+    .resume-toolbar-actions {
+      width: 100%;
+      justify-content: stretch;
+    }
+
+    .resume-action {
+      flex: 1 1 14rem;
     }
   }
 
@@ -1003,16 +1214,16 @@ const profileImageAlt =
       --resume-page-padding: 0.8rem;
     }
 
-    .resume-toolbar {
-      justify-content: stretch;
-    }
-
-    .resume-toolbar-actions {
-      width: 100%;
+    .resume-toolbar-note {
+      font-size: 0.95rem;
     }
 
     .resume-action {
       flex: 1 1 100%;
+    }
+
+    .resume-facts {
+      gap: 0.75rem;
     }
   }
 
