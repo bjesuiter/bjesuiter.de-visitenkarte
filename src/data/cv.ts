@@ -120,8 +120,8 @@ const resumeDe: ResumeContent = {
   ],
   contactLinks: [
     { label: "Website", href: "https://bjesuiter.de" },
-    { label: "Consulting", href: "https://consulting.jesuiter.com/" },
-    { label: "LinkedIn", href: "https://www.linkedin.com/in/bjesuiter/" },
+    { label: "Consulting", href: "https://consulting.jesuiter.com" },
+    { label: "LinkedIn", href: "https://www.linkedin.com/in/bjesuiter" },
     { label: "GitHub", href: "https://github.com/bjesuiter" },
   ],
   industries: [
@@ -730,8 +730,8 @@ const resumeEn: ResumeContent = {
   ],
   contactLinks: [
     { label: "Website", href: "https://bjesuiter.de" },
-    { label: "Consulting", href: "https://consulting.jesuiter.com/" },
-    { label: "LinkedIn", href: "https://www.linkedin.com/in/bjesuiter/" },
+    { label: "Consulting", href: "https://consulting.jesuiter.com" },
+    { label: "LinkedIn", href: "https://www.linkedin.com/in/bjesuiter" },
     { label: "GitHub", href: "https://github.com/bjesuiter" },
   ],
   industries: [
