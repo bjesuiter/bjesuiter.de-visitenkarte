@@ -13,7 +13,9 @@ const {
 
 const Tag = as;
 const baseClass =
-  "w-full overflow-hidden rounded-[22px] border border-emerald-200/25 bg-[linear-gradient(90deg,rgba(220,252,231,0.02)_1px,transparent_1px)_0_0/34px_100%,linear-gradient(0deg,rgba(220,252,231,0.015)_1px,transparent_1px)_0_0/100%_34px,linear-gradient(135deg,rgba(7,30,24,0.95),rgba(5,24,19,0.84))] shadow-[0_24px_52px_rgba(1,10,7,0.55)]";
+  "w-full overflow-hidden rounded-[22px] border border-emerald-200/25 shadow-[0_24px_52px_rgba(1,10,7,0.55)]";
+const baseStyle =
+  "background: linear-gradient(90deg, rgba(220, 252, 231, 0.02) 1px, transparent 1px) 0 0 / 34px 100%, linear-gradient(0deg, rgba(220, 252, 231, 0.015) 1px, transparent 1px) 0 0 / 100% 34px, linear-gradient(135deg, rgba(7, 30, 24, 0.95), rgba(5, 24, 19, 0.84));";
 ---
 
 <Tag
@@ -22,6 +24,7 @@ const baseClass =
     borderStyle === "dashed" && "border-dashed",
     className,
   ]}
+  style={baseStyle}
 >
   <slot />
 </Tag>

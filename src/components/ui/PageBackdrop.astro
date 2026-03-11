@@ -11,18 +11,19 @@ const {
   subtleGrid = false,
 } = Astro.props;
 
-const baseClass =
-  "min-h-screen bg-[linear-gradient(0deg,rgba(4,18,15,0.93),rgba(4,18,15,0.93)),radial-gradient(circle_at_82%_12%,rgba(110,231,183,0.34),transparent_30%),radial-gradient(circle_at_12%_88%,rgba(34,197,94,0.28),transparent_30%),#02110d]";
-const subtleGridClass =
-  "bg-[linear-gradient(90deg,rgba(220,252,231,0.018)_1px,transparent_1px)_0_0/34px_100%,linear-gradient(0deg,rgba(220,252,231,0.014)_1px,transparent_1px)_0_0/100%_34px,linear-gradient(0deg,rgba(4,18,15,0.93),rgba(4,18,15,0.93)),radial-gradient(circle_at_82%_12%,rgba(110,231,183,0.34),transparent_30%),radial-gradient(circle_at_12%_88%,rgba(34,197,94,0.28),transparent_30%),#02110d]";
+const baseStyle =
+  "background: linear-gradient(0deg, rgba(4, 18, 15, 0.93), rgba(4, 18, 15, 0.93)), radial-gradient(circle at 82% 12%, rgba(110, 231, 183, 0.34), transparent 30%), radial-gradient(circle at 12% 88%, rgba(34, 197, 94, 0.28), transparent 30%), #02110d;";
+const subtleGridStyle =
+  "background: linear-gradient(90deg, rgba(220, 252, 231, 0.018) 1px, transparent 1px) 0 0 / 34px 100%, linear-gradient(0deg, rgba(220, 252, 231, 0.014) 1px, transparent 1px) 0 0 / 100% 34px, linear-gradient(0deg, rgba(4, 18, 15, 0.93), rgba(4, 18, 15, 0.93)), radial-gradient(circle at 82% 12%, rgba(110, 231, 183, 0.34), transparent 30%), radial-gradient(circle at 12% 88%, rgba(34, 197, 94, 0.28), transparent 30%), #02110d;";
 ---
 
 <main
   class:list={[
-    subtleGrid ? subtleGridClass : baseClass,
+    "min-h-screen",
     centered && "grid place-items-center",
     className,
   ]}
+  style={subtleGrid ? subtleGridStyle : baseStyle}
 >
   <slot />
 </main>
