@@ -233,6 +233,19 @@ const profileImageAlt =
     --resume-dock-overlap: 5.8rem;
     --resume-divider: rgba(167, 243, 208, 0.14);
     --resume-divider-strong: rgba(167, 243, 208, 0.22);
+    --resume-panel-radius: 14px;
+    --resume-panel-border: rgba(167, 243, 208, 0.18);
+    --resume-panel-border-strong: rgba(167, 243, 208, 0.28);
+    --resume-panel-surface: linear-gradient(
+      160deg,
+      rgba(4, 28, 21, 0.9),
+      rgba(4, 23, 18, 0.82)
+    );
+    --resume-panel-wash: radial-gradient(
+      120% 70% at 50% 0%,
+      rgba(110, 231, 183, 0.13),
+      transparent 58%
+    );
     min-height: 100vh;
     margin-top: calc(var(--resume-dock-overlap) * -1);
     padding: calc(var(--resume-page-padding) + var(--resume-dock-overlap))
@@ -327,7 +340,7 @@ const profileImageAlt =
     padding: clamp(1.1rem, 2vw, 1.8rem);
     border-radius: 22px;
     overflow: hidden;
-    border: 1px solid rgba(167, 243, 208, 0.24);
+    border: 1px dashed rgba(167, 243, 208, 0.24);
     background:
       linear-gradient(90deg, rgba(220, 252, 231, 0.02) 1px, transparent 1px) 0
         0 / 34px 100%,
@@ -466,16 +479,19 @@ const profileImageAlt =
   }
 
   .resume-top-grid > * + * {
-    padding-top: 1rem;
-    border-top: 1px dashed var(--resume-divider);
+    padding-top: 0;
+    border-top: 0;
   }
 
   .resume-panel,
-  .resume-project-card {
-    border-radius: 20px;
-    border: 0;
-    background: rgba(3, 24, 18, 0.44);
-    box-shadow: none;
+  .resume-project-card,
+  .resume-skill-card {
+    border-radius: var(--resume-panel-radius);
+    border: 1px dashed var(--resume-panel-border);
+    background: var(--resume-panel-wash), var(--resume-panel-surface);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.06),
+      0 14px 28px rgba(1, 10, 7, 0.2);
     backdrop-filter: blur(10px);
   }
 
@@ -483,21 +499,16 @@ const profileImageAlt =
     padding: 1.1rem;
   }
 
-  /*
-    Use a shallow top wash instead of a corner glow for the top info panels.
-    The corner spotlight pulled attention into empty space, while this broader
-    highlight supports the headings and keeps both panels visually calmer.
-  */
   .resume-panel-emphasis,
   .resume-panel-emphasis-mirrored {
+    border-color: var(--resume-panel-border-strong);
     background:
       radial-gradient(
-        120% 58% at 42% 0%,
-        rgba(110, 231, 183, 0.12),
-        transparent 55%
+        120% 70% at 50% 0%,
+        rgba(110, 231, 183, 0.18),
+        transparent 58%
       ),
-      linear-gradient(120deg, rgba(4, 27, 21, 0.92), rgba(6, 34, 25, 0.82));
-    box-shadow: inset 0 1px 0 rgba(167, 243, 208, 0.06);
+      linear-gradient(160deg, rgba(5, 31, 24, 0.95), rgba(4, 26, 20, 0.86));
   }
 
   .resume-panel h2,
@@ -514,7 +525,7 @@ const profileImageAlt =
   .resume-facts {
     display: grid;
     gap: 0.9rem;
-    margin-top: 1rem;
+    margin-top: 1.05rem;
   }
 
   .resume-facts div,
@@ -560,7 +571,7 @@ const profileImageAlt =
   .resume-link-list {
     display: grid;
     gap: 0.7rem;
-    margin-top: 1rem;
+    margin-top: 1.05rem;
   }
 
   .resume-link-list li + li {
@@ -570,8 +581,8 @@ const profileImageAlt =
 
   .resume-link-list a {
     display: grid;
-    gap: 0.16rem;
-    padding: 0.15rem 0;
+    gap: 0.22rem;
+    padding: 0;
     border-radius: 16px;
     border: 0;
     background: transparent;
@@ -585,12 +596,17 @@ const profileImageAlt =
   }
 
   .resume-link-list a span:first-child {
+    font-family: "Chakra Petch", sans-serif;
+    font-size: 0.75rem;
     font-weight: 700;
-    color: #ecfdf5;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #6ee7b7;
   }
 
   .resume-link-list a span:last-child {
-    color: #bdeed8;
+    color: #d7fbec;
+    line-height: 1.6;
     word-break: break-word;
   }
 
@@ -627,12 +643,11 @@ const profileImageAlt =
 
   .resume-panel.resume-section {
     padding-bottom: 1rem;
-    border-bottom: 1px dashed var(--resume-divider-strong);
   }
 
   .resume-panel.resume-section + .resume-section {
     padding-top: 1rem;
-    border-top: 0;
+    border-top: 1px dashed var(--resume-divider-strong);
   }
 
   .resume-section-heading {
@@ -651,11 +666,7 @@ const profileImageAlt =
   }
 
   .resume-skill-card {
-    padding: 1rem 0 0;
-    border-radius: 0;
-    border: 0;
-    border-top: 1px dashed var(--resume-divider);
-    background: transparent;
+    padding: 1rem;
   }
 
   .resume-skill-card h3 {
@@ -758,30 +769,40 @@ const profileImageAlt =
 
   .resume-projects {
     display: grid;
-    gap: 1rem;
+    gap: 1.1rem;
   }
 
   .resume-project-card {
+    position: relative;
     overflow: hidden;
+    border-color: var(--resume-panel-border-strong);
   }
 
-  .resume-project-card + .resume-project-card {
-    padding-top: 1rem;
-    border-top: 1px dashed var(--resume-divider-strong);
+  .resume-project-card::before {
+    content: "";
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: 3px;
+    background: linear-gradient(
+      180deg,
+      rgba(110, 231, 183, 0.94),
+      rgba(110, 231, 183, 0.12)
+    );
+    pointer-events: none;
   }
 
   .resume-project-header {
     display: grid;
     gap: 1rem;
-    padding: 1.1rem;
-    border-bottom: 1px dashed var(--resume-divider);
+    padding: 1.1rem 1.1rem 1rem 1.25rem;
+    border-bottom: 1px dashed var(--resume-divider-strong);
     background:
       radial-gradient(
-        circle at top right,
-        rgba(110, 231, 183, 0.12),
-        transparent 34%
+        110% 62% at 40% 0%,
+        rgba(110, 231, 183, 0.14),
+        transparent 60%
       ),
-      linear-gradient(120deg, rgba(4, 27, 21, 0.96), rgba(6, 34, 25, 0.82));
+      linear-gradient(160deg, rgba(5, 30, 23, 0.95), rgba(5, 26, 20, 0.88));
   }
 
   .resume-project-period,
@@ -813,12 +834,15 @@ const profileImageAlt =
   .resume-project-meta {
     display: grid;
     gap: 0.7rem;
+    margin-top: 0.15rem;
+    padding-top: 0.85rem;
+    border-top: 1px dashed var(--resume-divider);
   }
 
   .resume-project-body {
     display: grid;
     gap: 1rem;
-    padding: 1.1rem;
+    padding: 1.1rem 1.1rem 1.1rem 1.25rem;
   }
 
   .resume-project-body > * + * {
@@ -837,14 +861,13 @@ const profileImageAlt =
 
   .resume-detail-card {
     padding: 0;
-    border-radius: 0;
     border: 0;
     background: transparent;
   }
 
   .resume-detail-card h4 {
     margin: 0 0 0.7rem;
-    font-size: 1.03rem;
+    font-size: 1.14rem;
     color: #ecfdf5;
   }
 
@@ -873,8 +896,8 @@ const profileImageAlt =
     }
 
     .resume-top-grid > * + * {
-      padding-top: 1.1rem;
-      padding-left: 1.1rem;
+      padding-top: 0;
+      padding-left: 0;
       border-top: 0;
       border-left: 0;
     }
@@ -886,6 +909,14 @@ const profileImageAlt =
     .resume-project-header {
       grid-template-columns: minmax(0, 1.5fr) minmax(280px, 0.9fr);
       align-items: start;
+    }
+
+    .resume-project-meta {
+      margin-top: 0;
+      padding-top: 0;
+      padding-left: 1rem;
+      border-top: 0;
+      border-left: 1px dashed var(--resume-divider);
     }
   }
 

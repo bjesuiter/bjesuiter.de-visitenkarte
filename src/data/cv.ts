@@ -742,7 +742,7 @@ const resumeEn: ResumeContent = {
   skillsTitle: "IT skills",
   projectsTitle: "Project history",
   projectsIntro:
-    "Selected projects since 2014, with a focus on responsibilities, roles, and technical context.",
+    "An overview of most of my professional project work.",
   highlightsTitle: "Responsibilities & outcomes",
   stackTitle: "Technical context",
   rolesLabel: "Roles",
