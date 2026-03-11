@@ -3,7 +3,6 @@ import { Image } from "astro:assets";
 import profilePic from "../assets/2023-03-17_square_near_profilepic.jpeg";
 import { getLocalizedResumeContent, type ResumeLocale } from "../data/resume";
 import ResumeIntro from "./ResumeIntro.astro";
-import ResumeStyleSwitch from "./ResumeStyleSwitch.astro";
 
 interface Props {
   locale?: ResumeLocale;
@@ -16,9 +15,6 @@ const profileImageAlt =
   locale === "de"
     ? "Porträt von Benjamin Jesuiter"
     : "Portrait of Benjamin Jesuiter";
-const modernHref = locale === "de" ? "/de/lebenslauf/" : "/en/cv/";
-const classicHref =
-  locale === "de" ? "/de/lebenslauf/klassisch/" : "/en/cv/classic/";
 ---
 
 <main class="resume-page">
@@ -42,13 +38,6 @@ const classicHref =
   </div>
 
   <article class="resume-sheet">
-    <ResumeStyleSwitch
-      locale={locale}
-      variant="modern"
-      modernHref={modernHref}
-      classicHref={classicHref}
-    />
-
     <header class="resume-hero">
       <div class="resume-hero-copy">
         <p class="resume-badge">{content.badge}</p>
