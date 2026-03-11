@@ -705,6 +705,7 @@ const resumeDe: ResumeContent = {
         "Besonderes Feature: direktes Schreiben eingehender Daten auf die Festplatte ohne Zwischenspeicherung im RAM.",
       ],
       duration: "2 Jahre",
+      teamSize: "1",
       roles: ["Softwarearchitekt", "Softwareentwickler"],
       stack: [
         { label: "Betriebssysteme", value: "Windows" },
@@ -741,8 +742,7 @@ const resumeEn: ResumeContent = {
   industriesTitle: "Industries",
   skillsTitle: "IT skills",
   projectsTitle: "Project history",
-  projectsIntro:
-    "An overview of most of my professional project work.",
+  projectsIntro: "An overview of most of my professional project work.",
   highlightsTitle: "Responsibilities & outcomes",
   stackTitle: "Technical context",
   rolesLabel: "Roles",
@@ -1353,6 +1353,7 @@ const resumeEn: ResumeContent = {
         "Delivered a special feature that wrote incoming data directly to disk without buffering it in RAM.",
       ],
       duration: "2 years",
+      teamSize: "1",
       roles: ["Software Architect", "Software Developer"],
       stack: [
         { label: "Operating systems", value: "Windows" },
