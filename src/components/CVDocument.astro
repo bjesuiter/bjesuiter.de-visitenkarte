@@ -70,7 +70,7 @@ const profileImageAlt =
         </dl>
       </section>
 
-      <section class="resume-panel">
+      <section class="resume-panel resume-panel-emphasis-mirrored">
         <h2>{content.contactTitle}</h2>
         <ul class="resume-link-list">
           {
@@ -493,6 +493,16 @@ const profileImageAlt =
       linear-gradient(120deg, rgba(4, 27, 21, 0.92), rgba(6, 34, 25, 0.82));
   }
 
+  .resume-panel-emphasis-mirrored {
+    background:
+      radial-gradient(
+        circle at top left,
+        rgba(110, 231, 183, 0.14),
+        transparent 35%
+      ),
+      linear-gradient(120deg, rgba(4, 27, 21, 0.92), rgba(6, 34, 25, 0.82));
+  }
+
   .resume-panel h2,
   .resume-section h2 {
     margin: 0;
@@ -616,6 +626,16 @@ const profileImageAlt =
     margin-top: 1rem;
     padding-top: 1rem;
     border-top: 1px dashed var(--resume-divider-strong);
+  }
+
+  .resume-panel.resume-section {
+    padding-bottom: 1rem;
+    border-bottom: 1px dashed var(--resume-divider-strong);
+  }
+
+  .resume-panel.resume-section + .resume-section {
+    padding-top: 1rem;
+    border-top: 0;
   }
 
   .resume-section-heading {
