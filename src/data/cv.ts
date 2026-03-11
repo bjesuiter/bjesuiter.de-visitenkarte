@@ -729,10 +729,10 @@ const resumeEn: ResumeContent = {
   pageTitle: "Benjamin Jesuiter · CV",
   pageDescription:
     "Full CV of Benjamin Jesuiter with project history, skills, and industry experience.",
-  badge: "CV · Project history",
+  badge: "CV · Project History",
   heading: "Benjamin Jesuiter",
   navigation: {
-    backLabel: "Back to homepage",
+    backLabel: "Back to Homepage",
     downloadLabel: "Download PDF",
     printLabel: "Print",
     languageSwitchLabel: "Zur deutschen Version",
@@ -740,19 +740,19 @@ const resumeEn: ResumeContent = {
   contactTitle: "Links",
   factsTitle: "Profile",
   industriesTitle: "Industries",
-  skillsTitle: "IT skills",
-  projectsTitle: "Project history",
+  skillsTitle: "IT Skills",
+  projectsTitle: "Project History",
   projectsIntro: "An overview of most of my professional project work.",
   highlightsTitle: "Responsibilities & Outcomes",
   stackTitle: "Technical Context",
   rolesLabel: "Roles",
-  durationLabel: "Project duration",
-  teamSizeLabel: "Team size",
+  durationLabel: "Project Duration",
+  teamSizeLabel: "Team Size",
   printHint:
     "Download opens the browser flow for saving a PDF with the site styling. Print automatically switches to a bright, ink-friendly version with the same layout.",
   facts: [
     { label: "Role", value: "Senior Software Engineer & Consultant" },
-    { label: "Year of birth", value: "1994" },
+    { label: "Year of Birth", value: "1994" },
     {
       label: "Education",
       value:
@@ -763,7 +763,7 @@ const resumeEn: ResumeContent = {
       value:
         "Design and implementation of a communication module for an Android application to exchange data with a server backend",
     },
-    { label: "Final grade", value: "2.1" },
+    { label: "Final Grade", value: "2.1" },
     {
       label: "Languages",
       value: "German (native), English (fluent)",
@@ -772,8 +772,8 @@ const resumeEn: ResumeContent = {
       label: "Certificate",
       value: "AWS Architect Associate (09/2018 – 09/2020)",
     },
-    { label: "IT experience since", value: "2008" },
-    { label: "Project experience since", value: "2014" },
+    { label: "IT Experience Since", value: "2008" },
+    { label: "Project Experience Since", value: "2014" },
   ],
   contactLinks: [
     { label: "Website", href: "https://bjesuiter.de" },
@@ -784,18 +784,18 @@ const resumeEn: ResumeContent = {
   industries: [
     "Finance",
     "Travel",
-    "Software development",
-    "Industry / manufacturing",
-    "E-mobility",
-    "Rail freight",
-    "Cargo transport security",
-    "Information technology",
+    "Software Development",
+    "Industry / Manufacturing",
+    "E-Mobility",
+    "Rail Freight",
+    "Cargo Transport Security",
+    "Information Technology",
     "Research",
-    "IT network infrastructure",
+    "IT Network Infrastructure",
   ],
   skillCategories: [
     {
-      title: "Project setup",
+      title: "Project Setup",
       items: [
         "Requirements analysis",
         "Project setup with Git",
@@ -805,7 +805,7 @@ const resumeEn: ResumeContent = {
       ],
     },
     {
-      title: "Development environment",
+      title: "Development Environment",
       items: [
         "macOS",
         "Desktop Linux: Ubuntu, Debian",
@@ -834,7 +834,7 @@ const resumeEn: ResumeContent = {
       ],
     },
     {
-      title: "Server-side development",
+      title: "Server-Side Development",
       items: [
         "Node.js, Bun, Deno",
         "Express, Elysia",
@@ -846,7 +846,7 @@ const resumeEn: ResumeContent = {
       ],
     },
     {
-      title: "Frontend development",
+      title: "Frontend Development",
       items: [
         "Vite",
         "Angular (AngularJS 1 to Angular 20)",
@@ -862,7 +862,7 @@ const resumeEn: ResumeContent = {
       ],
     },
     {
-      title: "Programming languages",
+      title: "Programming Languages",
       items: [
         "TypeScript",
         "JavaScript",
@@ -883,7 +883,7 @@ const resumeEn: ResumeContent = {
       ],
     },
     {
-      title: "Project organization & documentation",
+      title: "Project Organization & Documentation",
       items: [
         "Jira",
         "GitLab Boards",
@@ -897,7 +897,7 @@ const resumeEn: ResumeContent = {
       ],
     },
     {
-      title: "Deployment & self-hosting",
+      title: "Deployment & Self-Hosting",
       items: [
         "nginx",
         "Deno Deploy",
@@ -916,9 +916,9 @@ const resumeEn: ResumeContent = {
     {
       id: "network-infrastructure",
       period: "10/2023 – 04/2025",
-      sector: "IT network infrastructure",
+      sector: "IT Network Infrastructure",
       title:
-        "Lead of product development for an administration platform for network resources",
+        "Lead of Product Development for an Administration Platform for Network Resources",
       summary: [
         "After moving from consulting into a product-focused organization, I took ownership of the administration platform used by an IT service provider.",
         "The platform provisions and manages email services, backup management, virtual servers, domains, certificates, virtual desktops, and customer-specific solutions while automating the related operational workflows.",
@@ -947,14 +947,14 @@ const resumeEn: ResumeContent = {
           label: "Other",
           value: "Node.js, Rust (custom SSH file uploader)",
         },
-        { label: "Build tooling", value: "GitLab Pipelines" },
-        { label: "Methods / process", value: "Architecture" },
+        { label: "Build Tooling", value: "GitLab Pipelines" },
+        { label: "Methods / Process", value: "Architecture" },
         { label: "Documentation", value: "Markdown in Obsidian" },
         {
           label: "Frameworks",
           value: "Angular 11 → 19, TanStack Query, Tailwind CSS, RxJS",
         },
-        { label: "Programming languages", value: "TypeScript" },
+        { label: "Programming Languages", value: "TypeScript" },
       ],
     },
     {
@@ -962,7 +962,7 @@ const resumeEn: ResumeContent = {
       period: "06/2021 – 12/2023",
       sector: "Finance",
       title:
-        "Interactive overlay system for collecting consents and change confirmations",
+        "Interactive Overlay System for Collecting Consents and Change Confirmations",
       summary: [
         "After a German Federal Court ruling invalidated implicit acceptance of changed banking terms, a new system was needed to collect explicit customer consent.",
         "A central modular overlay platform was created to guide customers immediately after login. This later expanded into overlay management, customer consent management, and a banker-facing consent management interface.",
@@ -991,8 +991,8 @@ const resumeEn: ResumeContent = {
             "OpenShift 4, Nexus, npm, Jira, Bitbucket, Git, VS Code, Docker",
         },
         { label: "Other", value: "Node.js" },
-        { label: "Build tooling", value: "Jenkins" },
-        { label: "Methods / process", value: "Architecture" },
+        { label: "Build Tooling", value: "Jenkins" },
+        { label: "Methods / Process", value: "Architecture" },
         {
           label: "Documentation",
           value: "Confluence, OpenAPI Specification (Swagger)",
@@ -1001,14 +1001,14 @@ const resumeEn: ResumeContent = {
           label: "Frameworks",
           value: "Angular 10 → 16, RxJS, ngneat/elf",
         },
-        { label: "Programming languages", value: "TypeScript" },
+        { label: "Programming Languages", value: "TypeScript" },
       ],
     },
     {
       id: "finance-access-management",
       period: "09/2020 – 05/2021",
       sector: "Finance",
-      title: "Access management sub-web app for an online banking platform",
+      title: "Access Management Sub-Web App for an Online Banking Platform",
       summary: [
         "The goal of the web app was to show all permissions granted by a customer inside the platform, under PSD2, or through third-party providers.",
         "It also logged and visualized all third-party access to account data or payment initiation events for private banking users.",
@@ -1025,8 +1025,8 @@ const resumeEn: ResumeContent = {
           label: "Tools",
           value: "OpenShift, Nexus, npm, Jira, Bitbucket, Git, VS Code",
         },
-        { label: "Build tooling", value: "Jenkins" },
-        { label: "Methods / process", value: "Architecture" },
+        { label: "Build Tooling", value: "Jenkins" },
+        { label: "Methods / Process", value: "Architecture" },
         { label: "Frameworks", value: "Angular 8, Angular 11, Angular 12" },
         { label: "Documentation", value: "Confluence" },
         { label: "Other", value: "Node.js" },
@@ -1036,7 +1036,7 @@ const resumeEn: ResumeContent = {
       id: "travel-aws-migration",
       period: "07/2020 – 09/2020",
       sector: "Travel",
-      title: "On-premise to AWS cloud migration for an au pair travel company",
+      title: "On-Premise to AWS Cloud Migration for an Au Pair Travel Company",
       summary: [
         "The customer operated its services on-premise and wanted to move to AWS to gain scalability and work more flexibly.",
         "The target setup included EC2 instances for DNS and email services, an EKS cluster for the main applications, and databases in Amazon RDS.",
@@ -1052,16 +1052,16 @@ const resumeEn: ResumeContent = {
       roles: ["AWS Architect"],
       stack: [
         {
-          label: "Cloud technologies",
+          label: "Cloud Technologies",
           value: "AWS Cloud, AWS EKS, AWS CloudFormation",
         },
-        { label: "Methods / process", value: "Cloud architecture" },
+        { label: "Methods / Process", value: "Cloud architecture" },
       ],
     },
     {
       id: "gerrit-to-gitea",
       period: "05/2020 – 07/2020",
-      sector: "Software development",
+      sector: "Software Development",
       title: "Migration from Gerrit VCS to Gitea",
       summary: [
         "The existing Gerrit-based version control setup was replaced with Gitea in order to align better with modern Git workflows and more contemporary CI/CD practices.",
@@ -1076,17 +1076,17 @@ const resumeEn: ResumeContent = {
       roles: ["Software Engineer"],
       stack: [
         { label: "Tools", value: "Gitea, Gerrit, Git" },
-        { label: "Build tooling", value: "Jenkins" },
-        { label: "General knowledge", value: "Git workflows" },
-        { label: "Methods / process", value: "CI/CD" },
+        { label: "Build Tooling", value: "Jenkins" },
+        { label: "General Knowledge", value: "Git workflows" },
+        { label: "Methods / Process", value: "CI/CD" },
       ],
     },
     {
       id: "bi-dashboard-monitoring",
       period: "03/2019 – 04/2020",
-      sector: "Industry / manufacturing",
+      sector: "Industry / Manufacturing",
       title:
-        "Cross-platform BI dashboard and monitoring for a machine manufacturer",
+        "Cross-Platform BI Dashboard and Monitoring for a Machine Manufacturer",
       summary: [
         "The main application in this project was a BI dashboard for visualizing operational performance data from metal-processing machines.",
         "Machine status data was sent through Azure IoT Hub, processed via Azure Stream Analytics, stored in Azure SQL, and then made available through a REST API. The project later expanded to include OEE reporting, a tracking app for operators, and a back-office web application.",
@@ -1109,12 +1109,12 @@ const resumeEn: ResumeContent = {
             "Ionic 1, Angular 1, Cordova, Ionic Web Components, Ionic 4/5, Capacitor, Angular 6 → 9, StencilJS, Highcharts, SCSS",
         },
         {
-          label: "Cloud technologies",
+          label: "Cloud Technologies",
           value:
             "Azure Functions, Azure SQL, Azure Container Instances, Azure Container Registry, Azure IoT",
         },
         {
-          label: "Development environments",
+          label: "Development Environments",
           value: "IntelliJ, WebStorm, Visual Studio Code",
         },
         {
@@ -1127,20 +1127,20 @@ const resumeEn: ResumeContent = {
         { label: "Networking", value: "WebSockets, SSH" },
         { label: "Other", value: "Angular Material" },
         {
-          label: "Programming languages",
+          label: "Programming Languages",
           value: "JavaScript, TypeScript, ES6",
         },
-        { label: "Operating systems", value: "macOS" },
-        { label: "Methods / process", value: "CI/CD, web components, DevOps" },
-        { label: "Build tooling", value: "Buddy.Works" },
+        { label: "Operating Systems", value: "macOS" },
+        { label: "Methods / Process", value: "CI/CD, web components, DevOps" },
+        { label: "Build Tooling", value: "Buddy.Works" },
       ],
     },
     {
       id: "e-mobility-load-management",
       period: "09/2019 – 12/2019",
-      sector: "E-mobility",
+      sector: "E-Mobility",
       title:
-        "Architecture of an AWS cloud infrastructure for electric load management",
+        "Architecture of an AWS Cloud Infrastructure for Electric Load Management",
       summary: [
         "This project focused on a load management system for charging infrastructure, planned as a cloud-native AWS application.",
         "The system had to react to changing power limits from utility providers and to incoming consumption data from charging stations while taking advantage of automatic scaling in the cloud.",
@@ -1157,19 +1157,19 @@ const resumeEn: ResumeContent = {
       stack: [
         { label: "Service", value: "AWS Lambda" },
         {
-          label: "Cloud technologies",
+          label: "Cloud Technologies",
           value:
             "AWS IAM, AWS DynamoDB, AWS Cognito, AWS EventBridge, AWS API Gateway",
         },
         { label: "Frameworks", value: "Serverless Framework" },
-        { label: "Development environments", value: "IntelliJ, WebStorm" },
-        { label: "Programming languages", value: "Shell (Bash), Java 7" },
+        { label: "Development Environments", value: "IntelliJ, WebStorm" },
+        { label: "Programming Languages", value: "Shell (Bash), Java 7" },
         {
-          label: "Methods / process",
+          label: "Methods / Process",
           value:
             "RESTful architecture and web services, event-driven design, functional programming, cloud architecture, cloud computing",
         },
-        { label: "Operating systems", value: "macOS" },
+        { label: "Operating Systems", value: "macOS" },
         { label: "Networking", value: "SSH" },
         { label: "Tools", value: "npm" },
       ],
@@ -1177,8 +1177,8 @@ const resumeEn: ResumeContent = {
     {
       id: "remote-service-app",
       period: "07/2018 – 02/2019",
-      sector: "Industry / manufacturing",
-      title: "Remote service application for a machinery company",
+      sector: "Industry / Manufacturing",
+      title: "Remote Service Application for a Machinery Company",
       summary: [
         "This project delivered a remote service web application for the support department of a machinery manufacturer.",
         "The application connected customers with support staff through chat, audio, or video while also presenting extensive customer and machine data to help diagnose issues more quickly.",
@@ -1195,27 +1195,27 @@ const resumeEn: ResumeContent = {
         { label: "Frameworks", value: "Highcharts, Angular, Node.js" },
         { label: "Other", value: "Angular Material" },
         {
-          label: "Methods / process",
+          label: "Methods / Process",
           value: "Agile methods (Scrum), RESTful architecture and web services",
         },
         { label: "Tools", value: "Jira, GitHub, npm" },
         { label: "Documentation", value: "Confluence" },
         {
-          label: "Development environments",
+          label: "Development Environments",
           value: "IntelliJ, WebStorm, Visual Studio Code",
         },
         {
-          label: "Programming languages",
+          label: "Programming Languages",
           value: "TypeScript, JavaScript, ES6",
         },
-        { label: "Operating systems", value: "macOS" },
+        { label: "Operating Systems", value: "macOS" },
       ],
     },
     {
       id: "railway-monitoring",
       period: "02/2017 – 05/2018",
-      sector: "Rail freight",
-      title: "Railway monitoring systems",
+      sector: "Rail Freight",
+      title: "Railway Monitoring Systems",
       summary: [
         "The goal of this project was to build a system that automatically analyzes the operating condition of freight wagons using high-speed cameras, microphones, and other sensors placed in and beside the tracks.",
         "Edge computing devices uploaded the data to the cloud, where it was organized and enriched before being shown in a differentiated dashboard for multiple user groups.",
@@ -1239,40 +1239,40 @@ const resumeEn: ResumeContent = {
           value: "Sequelize, ExpressJS, Node.js, Angular, Socket.IO, AngularJS",
         },
         {
-          label: "Operating systems",
+          label: "Operating Systems",
           value: "Balena Cloud (formerly Resin.io), macOS",
         },
         {
-          label: "Cloud technologies",
+          label: "Cloud Technologies",
           value:
             "Azure SQL, Azure App Services, Azure Container Instances, Azure Container Registry, Azure Virtual Machines, Azure",
         },
         { label: "Tools", value: "Bitbucket, Jira, DBeaver, npm" },
         { label: "Documentation", value: "Confluence" },
         {
-          label: "Methods / process",
+          label: "Methods / Process",
           value:
             "Agile methods (Scrum), RESTful architecture and web services, event-driven design, CI/CD, DevOps",
         },
         {
-          label: "Development environments",
+          label: "Development Environments",
           value: "IntelliJ, WebStorm, IntelliJ IDEA",
         },
         {
-          label: "Programming languages",
+          label: "Programming Languages",
           value: "TypeScript, JavaScript, ES6",
         },
-        { label: "Build tooling", value: "Buddy.Works" },
+        { label: "Build Tooling", value: "Buddy.Works" },
         { label: "Other", value: "Docker Compose" },
-        { label: "Application server", value: "Web services" },
+        { label: "Application Server", value: "Web services" },
       ],
     },
     {
       id: "gold-trade-app",
       period: "03/2016 – 02/2017",
-      sector: "Cargo transport security",
+      sector: "Cargo Transport Security",
       title:
-        "Application for certified gold trading in the Republic of the Congo",
+        "Application for Certified Gold Trading in the Republic of the Congo",
       summary: [
         "This project addressed the issue of missing gold along the trading route by using plastic bags with integrated NFC chips.",
         "The chip stored the trading history and metadata of a specific quantity of gold, allowing the app to verify completeness and enable traceability for ethical certification.",
@@ -1282,17 +1282,17 @@ const resumeEn: ResumeContent = {
       teamSize: "3",
       roles: ["Software Developer"],
       stack: [
-        { label: "Operating systems", value: "Android, Windows" },
+        { label: "Operating Systems", value: "Android, Windows" },
         { label: "Frameworks", value: "Android 5.x" },
-        { label: "Programming languages", value: "Java 7" },
-        { label: "Development environments", value: "Android Studio" },
+        { label: "Programming Languages", value: "Java 7" },
+        { label: "Development Environments", value: "Android Studio" },
       ],
     },
     {
       id: "gps-tracking-portal",
       period: "10/2015 – 02/2017",
-      sector: "Information technology",
-      title: "Complete rebuild of an Android app for a GPS tracking portal",
+      sector: "Information Technology",
+      title: "Complete Rebuild of an Android App for a GPS Tracking Portal",
       summary: [
         "A legacy Android client for a proprietary GPS tracking portal from ibes AG was replaced with a newly built native Android app.",
       ],
@@ -1306,10 +1306,10 @@ const resumeEn: ResumeContent = {
       teamSize: "2",
       roles: ["Software Architect", "API Architect", "Lead Developer"],
       stack: [
-        { label: "Operating systems", value: "Android, Windows" },
-        { label: "Development environments", value: "Android Studio" },
+        { label: "Operating Systems", value: "Android, Windows" },
+        { label: "Development Environments", value: "Android Studio" },
         {
-          label: "Methods / process",
+          label: "Methods / Process",
           value: "RESTful architecture and web services",
         },
       ],
@@ -1317,8 +1317,8 @@ const resumeEn: ResumeContent = {
     {
       id: "modern-software-development",
       period: "10/2014 – 09/2016",
-      sector: "Information technology",
-      title: "Introduction of modern software development practices",
+      sector: "Information Technology",
+      title: "Introduction of Modern Software Development Practices",
       summary: [
         "Introduced modern software engineering practices in an IT software company.",
       ],
@@ -1332,9 +1332,9 @@ const resumeEn: ResumeContent = {
       roles: ["Consultant"],
       stack: [
         { label: "Tools", value: "GitLab, GitLab CI, Git" },
-        { label: "Methods / process", value: "Git Flow, CI/CD" },
-        { label: "Build tooling", value: "Artifactory" },
-        { label: "Operating systems", value: "Linux" },
+        { label: "Methods / Process", value: "Git Flow, CI/CD" },
+        { label: "Build Tooling", value: "Artifactory" },
+        { label: "Operating Systems", value: "Linux" },
         { label: "Networking", value: "SSH" },
       ],
     },
@@ -1342,7 +1342,7 @@ const resumeEn: ResumeContent = {
       id: "gps-raw-data-research",
       period: "10/2014 – 09/2016",
       sector: "Research",
-      title: "Application development for GPS raw data processing",
+      title: "Application Development for GPS Raw Data Processing",
       summary: [
         "Built a tool for reading and processing GPS raw data as part of a cooperation between ibes AG and the Fraunhofer Institute.",
       ],
@@ -1356,18 +1356,18 @@ const resumeEn: ResumeContent = {
       teamSize: "1",
       roles: ["Software Architect", "Software Developer"],
       stack: [
-        { label: "Operating systems", value: "Windows" },
+        { label: "Operating Systems", value: "Windows" },
         { label: "Frameworks", value: "GPS, .NET" },
         {
-          label: "Development environments",
+          label: "Development Environments",
           value: "Visual Studio 2008, Visual Studio 2010",
         },
         {
           label: "Tools",
           value: "Visual Studio 2015, ReSharper for Visual Studio",
         },
-        { label: "Methods / process", value: "Event-driven design" },
-        { label: "Programming languages", value: "C#, .NET 4" },
+        { label: "Methods / Process", value: "Event-driven design" },
+        { label: "Programming Languages", value: "C#, .NET 4" },
       ],
     },
   ],

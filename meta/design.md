@@ -191,6 +191,10 @@ Characteristics:
 
 This project uses a recurring border treatment that should feel like a pair of **technical braces** rather than a full box outline.
 
+This design element is also referred to as:
+
+- **dashed border braces**
+
 This is an important identity element for the CV page and similar dossier-like sections.
 
 #### Core visual intent
@@ -303,6 +307,114 @@ Good recurring uses:
 
 Avoid using it on every single element.
 It should feel like a **deliberate recurring signature**, not like every box received the same border utility.
+
+### D. Timeline Strip
+
+The project timeline cards use a dedicated accent element called the **timeline strip**.
+
+This is not a decorative gradient flourish.
+It is a structural marker that visually says:
+
+- this is one entry in a chronology
+- this card is anchored in the timeline
+- the content is being indexed, not just boxed
+
+#### Core visual intent
+
+The timeline strip should feel like:
+
+- a slim vertical rail
+- a technical locator line
+- a calm but clear accent that helps the eye scan the project history
+- part of the card architecture, not an overlay sticker
+
+It should never feel like:
+
+- a bright glowing progress bar
+- a colorful marketing gradient
+- a random left border utility
+- a generic status indicator from an app dashboard
+
+#### Color and material rule
+
+The timeline strip must use a **solid color**, not a gradient.
+
+Rules:
+
+- use one emerald / mint accent tone only
+- no top-to-bottom fade
+- no multicolor treatment
+- no glow bloom as a substitute for line quality
+
+The strip should be crisp, quiet, and intentional.
+
+#### Geometry rule
+
+The timeline strip should follow the same corner philosophy as the **dashed border braces**.
+
+That means:
+
+- it must not stop abruptly at a sharp angle
+- it should **wrap around the corner radius** of the card
+- the rounded turn should be clearly visible
+- the strip should feel integrated into the card silhouette
+
+In practice, this means the strip is not just a straight left-edge line.
+It should include a visible rounded continuation around the top and bottom corners so the accent feels built into the card frame.
+
+#### Form of the strip
+
+The canonical timeline strip is:
+
+- vertical in orientation
+- positioned on the leading edge of the project entry card
+- narrow and disciplined
+- continuous through the main middle run
+- gently wrapped around the top and bottom corners
+
+Visual impression:
+
+- like a timeline rail entering the card and hugging its shell
+- like a solid accent spine for chronological content
+
+#### Relationship to the card border
+
+The timeline strip is a **separate accent structure** from the card border.
+
+That distinction matters:
+
+- the card itself may still have its own border / frame logic
+- the timeline strip is the chronological marker
+- it should not visually merge into a full bordered rectangle
+
+Think of it as a highlighted spine attached to the card, not a recolored version of the entire card outline.
+
+#### Implementation guidance
+
+When implementing the timeline strip:
+
+- prefer pseudo-elements or dedicated layered backgrounds so the strip remains independent from the base card surface
+- preserve the card radius so the wrapped corners stay clean
+- do not approximate the effect with a flat `border-left` only
+- do not use a gradient for the strip body
+- keep the strip visually stable across screen and print variants unless print clarity requires simplification
+
+#### Usage guidance
+
+Use the timeline strip on:
+
+- project history cards
+- chronological entries
+- other timeline-like content where one edge should carry the sequencing accent
+
+Do not use it on:
+
+- generic buttons
+- support cards
+- unrelated utility panels
+- every inset card on the page
+
+It is a specialized recurring motif, not a universal accent line.
 
 ### Important border rule
 
