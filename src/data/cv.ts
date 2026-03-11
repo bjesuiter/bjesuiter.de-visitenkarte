@@ -167,15 +167,26 @@ const resumeDe: ResumeContent = {
       items: [
         "macOS",
         "Desktop Linux: Ubuntu, Debian",
-        "Server Linux: Ubuntu, Debian, Alpine",
         "Windows + cmder",
         "VSCode / Cursor",
+      ],
+    },
+    {
+      title: "Coding Agents & LLMs",
+      items: [
         {
           label: "Coding Agents",
           items: [
             "OpenCode + oh-my-opencode",
             "codex-cli",
             "pi-agent (pi.dev)",
+          ],
+        },
+        {
+          label: "Models tried & used",
+          items: [
+            "Claude Sonnet 4.1, 4.5, Opus 4.5, 4.6",
+            "GPT 5.2 Codex, 5.3 Codex and 5.4",
           ],
         },
       ],
@@ -198,7 +209,7 @@ const resumeDe: ResumeContent = {
         "Vite",
         "Angular (AngularJS 1 bis Angular 20)",
         "SolidJS",
-        "TanStack Query",
+        "TanStack Query, DB, Router & Start",
         "RxJS",
         "Microfrontends mit Angular Elements & Web Components",
         "Progressive Web Apps",
@@ -250,7 +261,7 @@ const resumeDe: ResumeContent = {
         "Deno Deploy",
         "AWS Cloud (EC2, VPC, EKS, RDS, IAM, Lambda, API Gateway)",
         "Railway",
-        "Linux-Server (Ubuntu, Debian)",
+        "Linux-Server (Ubuntu, Debian, Alpine)",
         "Traefik",
         "Nextcloud",
         "Vaultwarden",
@@ -798,15 +809,26 @@ const resumeEn: ResumeContent = {
       items: [
         "macOS",
         "Desktop Linux: Ubuntu, Debian",
-        "Server Linux: Ubuntu, Debian, Alpine",
         "Windows + cmder",
         "VSCode / Cursor",
+      ],
+    },
+    {
+      title: "Coding Agents & LLMs",
+      items: [
         {
           label: "Coding Agents",
           items: [
             "OpenCode + oh-my-opencode",
             "codex-cli",
             "pi-agent (pi.dev)",
+          ],
+        },
+        {
+          label: "Models tried & used",
+          items: [
+            "Claude Sonnet 4.1, 4.5, Opus 4.5, 4.6",
+            "GPT 5.2 Codex, 5.3 Codex and 5.4",
           ],
         },
       ],
@@ -829,7 +851,7 @@ const resumeEn: ResumeContent = {
         "Vite",
         "Angular (AngularJS 1 to Angular 20)",
         "SolidJS",
-        "TanStack Query",
+        "TanStack Query, DB, Router & Start",
         "RxJS",
         "Microfrontends with Angular Elements & Web Components",
         "Progressive Web Apps",
@@ -881,7 +903,7 @@ const resumeEn: ResumeContent = {
         "Deno Deploy",
         "AWS Cloud (EC2, VPC, EKS, RDS, IAM, Lambda, API Gateway)",
         "Railway",
-        "Linux servers (Ubuntu, Debian)",
+        "Linux servers (Ubuntu, Debian, Alpine)",
         "Traefik",
         "Nextcloud",
         "Vaultwarden",
