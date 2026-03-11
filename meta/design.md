@@ -187,6 +187,123 @@ Characteristics:
 - subtle inner wash / glow
 - should feel like “technical annotation boxes”, not Tailwind demo cards
 
+### C. Recurring “brace frame” motif
+
+This project uses a recurring border treatment that should feel like a pair of **technical braces** rather than a full box outline.
+
+This is an important identity element for the CV page and similar dossier-like sections.
+
+#### Core visual intent
+
+The motif should read like:
+
+- a partial frame
+- a technical annotation bracket
+- a border that **grips the content from two opposite sides**
+- more architectural than decorative
+
+It should never feel like:
+
+- a normal rectangle stroke
+- a standard card border
+- a vignette or glow effect pretending to be structure
+
+#### Border spec
+
+Always use:
+
+- **1px dashed border**
+- emerald-tinted line color consistent with the existing dossier border language
+- rounded corners matching the element’s existing radius
+
+#### Critical geometry rule
+
+The border must be handled in this order:
+
+1. remain **fully visible at the central edge span**
+2. stay fully visible while **wrapping around the rounded corner**
+3. only **after the corner turn** begin to fade out
+
+This rule is critical.
+
+The fade must **not** eat into the corner itself.
+The viewer should clearly see:
+
+- the straight border segment
+- the rounded turn
+- then the fade
+
+That sequencing is what makes the frame feel like a brace.
+
+#### Variant 1: horizontal brace frame
+
+Use this when the element should be framed from the **top and bottom**.
+
+Behavior:
+
+- draw only the **top** and **bottom** border runs
+- let each run wrap slightly down around the left and right corners
+- after the rounded corner turn, fade the border toward the side edges
+- do **not** complete the full left or right side as a full-height stroke
+
+Visual impression:
+
+- like a top brace and a bottom brace
+- ideal for section shells, dossier panels, grouped content blocks, and framed inner sections
+
+#### Variant 2: vertical brace frame
+
+Use this when the element should be framed from the **left and right**.
+
+Behavior:
+
+- draw only the **left** and **right** border runs
+- let each run wrap slightly across the top and bottom corners
+- after the rounded corner turn, fade the border toward the top and bottom edges
+- do **not** complete the full top or bottom side as a full-width stroke
+
+Visual impression:
+
+- like side braces holding the content column in place
+- ideal for stacked cards such as responsibilities, outcomes, notes, or highlighted detail blocks inside a larger section
+
+#### Fade behavior
+
+The fade should be:
+
+- subtle and smooth
+- symmetrical unless intentional asymmetry is required by composition
+- used only on the open ends of the brace
+
+The fade should never:
+
+- start before the corner is fully readable
+- overpower the dashed structure
+- become so long that the brace looks blurry
+
+#### Implementation guidance
+
+When implementing this pattern in CSS:
+
+- prefer pseudo-elements dedicated to the border treatment
+- use masking to control the fade rather than lowering the opacity of the entire border uniformly
+- keep the main content surface independent from the brace drawing logic
+- preserve clean corner radii so the brace remains crisp
+
+#### Usage rule
+
+Use this brace frame motif repeatedly across the page to create rhythm, but apply it with restraint.
+
+Good recurring uses:
+
+- major framed sections
+- sub-panels within the CV
+- detail cards such as responsibilities / outcomes / highlights
+- metadata groupings that need structural emphasis
+
+Avoid using it on every single element.
+It should feel like a **deliberate recurring signature**, not like every box received the same border utility.
+
 ### Important border rule
 
 The current design distinction is intentional:
