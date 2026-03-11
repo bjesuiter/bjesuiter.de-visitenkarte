@@ -19,6 +19,7 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
 ---
 
 <main class="resume-page">
+  <!-- Toolbar with language switch and print/download actions for the CV view. -->
   <div class="resume-toolbar print-hidden" aria-label={toolbarAriaLabel}>
     <div class="resume-toolbar-shell">
       <div class="resume-toolbar-copy gap-4">
@@ -52,6 +53,7 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
   </div>
 
   <article class="resume-sheet">
+    <!-- Hero section with the main heading, intro copy, and profile image. -->
     <header class="resume-hero gap-4">
       <div class="resume-hero-copy gap-4">
         <p class="resume-badge">{content.badge}</p>
@@ -69,7 +71,9 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
       </div>
     </header>
 
+    <!-- Top overview grid with personal facts on the left and contact details on the right. -->
     <section class="resume-grid resume-top-grid gap-4">
+      <!-- Quick facts section for personal and professional summary data. -->
       <section class="resume-panel resume-surface resume-surface-strong">
         <h2>{content.factsTitle}</h2>
         <dl class="resume-facts gap-4">
@@ -84,6 +88,7 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
         </dl>
       </section>
 
+      <!-- Contact links and industry focus section. -->
       <section
         class="resume-panel resume-panel-mirrored resume-surface resume-surface-strong"
       >
@@ -113,11 +118,13 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
       </section>
     </section>
 
+    <!-- Skills dossier section grouped by category and specialization. -->
     <section class="resume-panel resume-section resume-section-dossier">
       <div class="resume-section-heading">
         <h2>{content.skillsTitle}</h2>
       </div>
 
+      <!-- Skill cards break capabilities into clear categories for quick scanning. -->
       <div class="resume-skills-grid gap-4">
         {
           content.skillCategories.map((category) => (
@@ -152,6 +159,7 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
       </div>
     </section>
 
+    <!-- Project portfolio section with detailed case studies and technology stacks. -->
     <section class="resume-section">
       <div class="resume-section-heading">
         <div>
@@ -160,6 +168,7 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
         </div>
       </div>
 
+      <!-- Project cards highlight selected work with context, outcomes, and stack details. -->
       <div class="resume-projects gap-4">
         {
           content.projects.map((project, index) => (
@@ -197,12 +206,14 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
               </header>
 
               <div class="resume-project-body gap-4">
+                <!-- Narrative summary describing the challenge, work, and impact of the project. -->
                 <div class="resume-project-copy gap-4">
                   {project.summary.map((paragraph) => (
                     <p>{paragraph}</p>
                   ))}
                 </div>
 
+                <!-- Key highlights section calling out notable results and contributions. -->
                 <section class="resume-detail-card resume-surface-inset">
                   <h4>{content.highlightsTitle}</h4>
                   <ul class="gap-4">
@@ -212,6 +223,7 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
                   </ul>
                 </section>
 
+                <!-- Technology stack section listing the tools and platforms used. -->
                 <section class="resume-detail-card resume-surface-inset">
                   <h4>{content.stackTitle}</h4>
                   <dl class="resume-stack-list gap-4">
@@ -232,6 +244,7 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
   </article>
 </main>
 
+<!-- Inline script that switches styling modes before printing or downloading the CV. -->
 <script is:inline>
   (() => {
     const setMode = (mode) => {
@@ -253,6 +266,7 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
   })();
 </script>
 
+<!-- Global styles for the on-screen resume layout and print/download output. -->
 <style is:global>
   .resume-page {
     --resume-content-width: 1140px;
