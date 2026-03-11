@@ -10,9 +10,24 @@ export interface ResumeLink {
   href: string;
 }
 
+export interface ResumeSkillSublistItem {
+  label: string;
+  items: string[];
+}
+
+export interface ResumeSkillChipItem {
+  text: string;
+  chip: string;
+}
+
+export type ResumeSkillItem =
+  | string
+  | ResumeSkillSublistItem
+  | ResumeSkillChipItem;
+
 export interface ResumeSkillCategory {
   title: string;
-  items: string[];
+  items: ResumeSkillItem[];
 }
 
 export interface ResumeProjectStackItem {
@@ -142,22 +157,37 @@ const resumeDe: ResumeContent = {
       items: [
         "Anforderungsanalyse",
         "Projektsetup mit Git",
-        "Monorepos mit Nx, npm workspaces und TypeScript path aliases",
+        "Monorepos mit Nx, npm workspaces, bun workspaces und TypeScript path aliases",
         "Git-Workflows wie GitFlow und OneFlow",
         "GitLab, GitHub, Gitea und Bitbucket",
       ],
     },
     {
       title: "Entwicklungsumgebung",
-      items: ["macOS", "Linux / Ubuntu", "VS Code", "Cursor"],
+      items: [
+        "macOS",
+        "Desktop Linux: Ubuntu, Debian",
+        "Server Linux: Ubuntu, Debian, Alpine",
+        "Windows + cmder",
+        "VSCode / Cursor",
+        {
+          label: "Coding Agents",
+          items: [
+            "OpenCode + oh-my-opencode",
+            "codex-cli",
+            "pi-agent (pi.dev)",
+          ],
+        },
+      ],
     },
     {
       title: "Server-Entwicklung",
       items: [
         "Node.js, Bun, Deno",
-        "Express",
+        "Express, Elysia",
         "RESTful Architektur",
         "Event Driven Design",
+        "WebSockets: plain und mit tRPC",
         "Drizzle ORM + Drizzle Kit",
         "Turso und PlanetScale",
       ],
@@ -180,7 +210,13 @@ const resumeDe: ResumeContent = {
     },
     {
       title: "Programmiersprachen",
-      items: ["TypeScript", "JavaScript", "C#", "Java", "Shell / Bash"],
+      items: [
+        "TypeScript",
+        "JavaScript",
+        "Rust",
+        { text: "Java", chip: "legacy" },
+        "Shell / Bash / Fish",
+      ],
     },
     {
       title: "CI/CD & DevOps",
@@ -752,22 +788,37 @@ const resumeEn: ResumeContent = {
       items: [
         "Requirements analysis",
         "Project setup with Git",
-        "Monorepos with Nx, npm workspaces, and TypeScript path aliases",
+        "Monorepos with Nx, npm workspaces, bun workspaces, and TypeScript path aliases",
         "Git workflows such as GitFlow and OneFlow",
         "GitLab, GitHub, Gitea, and Bitbucket",
       ],
     },
     {
       title: "Development environment",
-      items: ["macOS", "Linux / Ubuntu", "VS Code", "Cursor"],
+      items: [
+        "macOS",
+        "Desktop Linux: Ubuntu, Debian",
+        "Server Linux: Ubuntu, Debian, Alpine",
+        "Windows + cmder",
+        "VSCode / Cursor",
+        {
+          label: "Coding Agents",
+          items: [
+            "OpenCode + oh-my-opencode",
+            "codex-cli",
+            "pi-agent (pi.dev)",
+          ],
+        },
+      ],
     },
     {
       title: "Server-side development",
       items: [
         "Node.js, Bun, Deno",
-        "Express",
+        "Express, Elysia",
         "RESTful architecture",
         "Event-driven design",
+        "Websockets: plain and with tRPC",
         "Drizzle ORM + Drizzle Kit",
         "Turso and PlanetScale",
       ],
@@ -790,7 +841,13 @@ const resumeEn: ResumeContent = {
     },
     {
       title: "Programming languages",
-      items: ["TypeScript", "JavaScript", "C#", "Java", "Shell / Bash"],
+      items: [
+        "TypeScript",
+        "JavaScript",
+        "Rust",
+        { text: "Java", chip: "legacy" },
+        "Shell / Bash / Fish",
+      ],
     },
     {
       title: "CI/CD & DevOps",

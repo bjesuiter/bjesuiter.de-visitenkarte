@@ -86,7 +86,7 @@ const profileImageAlt =
         </ul>
 
         <h2 class="resume-subheading">{content.industriesTitle}</h2>
-        <ul class="resume-inline-list">
+        <ul class="resume-industries-grid">
           {content.industries.map((industry) => <li>{industry}</li>)}
         </ul>
       </section>
@@ -103,9 +103,25 @@ const profileImageAlt =
             <section class="resume-skill-card">
               <h3>{category.title}</h3>
               <ul>
-                {category.items.map((item) => (
-                  <li>{item}</li>
-                ))}
+                {category.items.map((item) =>
+                  typeof item === "string" ? (
+                    <li>{item}</li>
+                  ) : "items" in item ? (
+                    <li>
+                      <span>{item.label}</span>
+                      <ul class="resume-skill-sublist">
+                        {item.items.map((subItem) => (
+                          <li>{subItem}</li>
+                        ))}
+                      </ul>
+                    </li>
+                  ) : (
+                    <li class="resume-skill-chip-row">
+                      <span>{item.text}</span>
+                      <span class="resume-chip">{item.chip}</span>
+                    </li>
+                  ),
+                )}
               </ul>
             </section>
           ))
@@ -526,7 +542,7 @@ const profileImageAlt =
   }
 
   .resume-link-list,
-  .resume-inline-list,
+  .resume-industries-grid,
   .resume-skill-card ul,
   .resume-detail-card ul {
     margin: 0;
@@ -571,24 +587,29 @@ const profileImageAlt =
     word-break: break-word;
   }
 
-  .resume-inline-list {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.3rem 0.55rem;
+  .resume-industries-grid {
+    display: grid;
+    gap: 0.45rem 1rem;
     margin-top: 1rem;
     color: #d7fbec;
   }
 
-  .resume-inline-list li {
-    display: inline-flex;
-    align-items: center;
+  .resume-industries-grid li {
+    position: relative;
+    padding-left: 0.95rem;
     line-height: 1.6;
+    text-wrap: balance;
   }
 
-  .resume-inline-list li + li::before {
-    content: "•";
-    margin-right: 0.55rem;
-    color: #6ee7b7;
+  .resume-industries-grid li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0.7rem;
+    width: 0.28rem;
+    height: 0.28rem;
+    border-radius: 999px;
+    background: #6ee7b7;
   }
 
   .resume-section {
@@ -629,6 +650,32 @@ const profileImageAlt =
   .resume-skill-card ul {
     display: grid;
     gap: 0.5rem;
+  }
+
+  .resume-skill-sublist {
+    margin-top: 0.35rem;
+    margin-left: 0.3rem;
+  }
+
+  .resume-skill-chip-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.45rem;
+  }
+
+  .resume-chip {
+    display: inline-block;
+    border: 1px solid rgba(110, 231, 183, 0.45);
+    background: rgba(16, 185, 129, 0.12);
+    color: #bbf7d0;
+    border-radius: 999px;
+    padding: 0.08rem 0.45rem;
+    font-size: 0.7rem;
+    font-weight: 700;
+    line-height: 1.3;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
   }
 
   .resume-skill-card li,
@@ -777,6 +824,10 @@ const profileImageAlt =
       padding-left: 1rem;
       border-top: 0;
       border-left: 1px dashed var(--resume-divider);
+    }
+
+    .resume-industries-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 
     .resume-skills-grid {
@@ -933,12 +984,12 @@ const profileImageAlt =
       border-color: var(--resume-divider) !important;
     }
 
-    .resume-inline-list li {
+    .resume-industries-grid li {
       color: var(--resume-print-text);
     }
 
-    .resume-inline-list li + li::before {
-      color: var(--resume-print-accent);
+    .resume-industries-grid li::before {
+      background: var(--resume-print-accent);
     }
 
     .resume-badge,
