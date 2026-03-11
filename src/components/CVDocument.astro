@@ -70,7 +70,7 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
     </header>
 
     <section class="resume-grid resume-top-grid">
-      <section class="resume-panel resume-panel-emphasis">
+      <section class="resume-panel resume-surface resume-surface-strong">
         <h2>{content.factsTitle}</h2>
         <dl class="resume-facts">
           {
@@ -84,13 +84,20 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
         </dl>
       </section>
 
-      <section class="resume-panel resume-panel-emphasis-mirrored">
+      <section
+        class="resume-panel resume-panel-mirrored resume-surface resume-surface-strong"
+      >
         <h2>{content.contactTitle}</h2>
         <ul class="resume-link-list">
           {
             content.contactLinks.map((link) => (
               <li>
-                <a href={link.href} target="_blank" rel="noreferrer">
+                <a
+                  href={link.href}
+                  target="_blank"
+                  rel="noreferrer"
+                  class="resume-link-card resume-surface-inset"
+                >
                   <span>{link.label}</span>
                   <span>{link.href.replace(/^https?:\/\//, "")}</span>
                 </a>
@@ -106,7 +113,7 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
       </section>
     </section>
 
-    <section class="resume-panel resume-section">
+    <section class="resume-panel resume-section resume-surface">
       <div class="resume-section-heading">
         <h2>{content.skillsTitle}</h2>
       </div>
@@ -114,7 +121,7 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
       <div class="resume-skills-grid">
         {
           content.skillCategories.map((category, index) => (
-            <section class="resume-skill-card">
+            <section class="resume-skill-card resume-surface-soft">
               <div class="resume-card-heading">
                 <p class="resume-card-index">
                   {String(index + 1).padStart(2, "0")}
@@ -159,8 +166,8 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
       <div class="resume-projects">
         {
           content.projects.map((project, index) => (
-            <article class="resume-project-card">
-              <header class="resume-project-header">
+            <article class="resume-project-card resume-surface resume-surface-project">
+              <header class="resume-project-header resume-surface-strong">
                 <div class="resume-project-title-block">
                   <div class="resume-project-eyebrow">
                     <span class="resume-card-index">
@@ -174,18 +181,18 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
 
                 <dl class="resume-project-meta">
                   {project.duration && (
-                    <div>
+                    <div class="resume-surface-inset">
                       <dt>{content.durationLabel}</dt>
                       <dd>{project.duration}</dd>
                     </div>
                   )}
                   {project.teamSize && (
-                    <div>
+                    <div class="resume-surface-inset">
                       <dt>{content.teamSizeLabel}</dt>
                       <dd>{project.teamSize}</dd>
                     </div>
                   )}
-                  <div>
+                  <div class="resume-surface-inset">
                     <dt>{content.rolesLabel}</dt>
                     <dd>{project.roles.join(" · ")}</dd>
                   </div>
@@ -199,7 +206,7 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
                   ))}
                 </div>
 
-                <section class="resume-detail-card">
+                <section class="resume-detail-card resume-surface-inset">
                   <h4>{content.highlightsTitle}</h4>
                   <ul>
                     {project.highlights.map((highlight) => (
@@ -208,7 +215,7 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
                   </ul>
                 </section>
 
-                <section class="resume-detail-card">
+                <section class="resume-detail-card resume-surface-inset">
                   <h4>{content.stackTitle}</h4>
                   <dl class="resume-stack-list">
                     {project.stack.map((item) => (
@@ -251,13 +258,13 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
 
 <style is:global>
   .resume-page {
-    --resume-page-padding: clamp(1rem, 2.4vw, 2.1rem);
-    --resume-dock-overlap: 5.8rem;
+    --resume-content-width: 1140px;
+    --resume-page-padding: 0.8rem;
+    --resume-dock-overlap: 8.25rem;
     --resume-divider: rgba(167, 243, 208, 0.12);
     --resume-divider-strong: rgba(167, 243, 208, 0.2);
     --resume-panel-radius: 14px;
     --resume-panel-border: rgba(167, 243, 208, 0.14);
-    --resume-panel-border-strong: rgba(167, 243, 208, 0.22);
     --resume-panel-surface: rgba(4, 23, 18, 0.84);
     --resume-panel-surface-strong: rgba(6, 28, 21, 0.9);
     min-height: 100vh;
@@ -268,9 +275,14 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
     color: #ecfdf5;
   }
 
+  .resume-toolbar,
+  .resume-sheet {
+    width: min(var(--resume-content-width), 100%);
+    margin-inline: auto;
+  }
+
   .resume-toolbar {
-    width: min(1140px, 100%);
-    margin: 0 auto 1rem;
+    margin-bottom: 1rem;
   }
 
   .resume-toolbar-shell {
@@ -278,8 +290,8 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
     flex-wrap: wrap;
     align-items: center;
     justify-content: space-between;
-    gap: 1rem;
-    padding: 0.85rem 1rem;
+    gap: 0.9rem 1rem;
+    padding: 0.9rem;
     border-radius: 20px;
     border: 1px solid rgba(167, 243, 208, 0.18);
     background: rgba(3, 21, 16, 0.8);
@@ -289,24 +301,52 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
     backdrop-filter: blur(16px);
   }
 
-  .resume-toolbar-copy {
+  .resume-toolbar-copy,
+  .resume-hero,
+  .resume-hero-copy,
+  .resume-grid,
+  .resume-facts,
+  .resume-skills-grid,
+  .resume-projects,
+  .resume-project-header,
+  .resume-project-title-block,
+  .resume-project-meta,
+  .resume-project-body,
+  .resume-project-copy,
+  .resume-stack-list,
+  .resume-skill-card ul,
+  .resume-detail-card ul {
     display: grid;
+  }
+
+  .resume-toolbar-copy {
     gap: 0.22rem;
     max-width: 54rem;
   }
 
+  .resume-toolbar-kicker,
+  .resume-badge,
+  .resume-card-index,
+  .resume-facts dt,
+  .resume-project-meta dt,
+  .resume-stack-list dt,
+  .resume-project-period,
+  .resume-link-list a span:first-child {
+    font-family: "Chakra Petch", sans-serif;
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+
   .resume-toolbar-kicker {
     margin: 0;
-    font-family: "Chakra Petch", sans-serif;
     font-size: 0.75rem;
-    font-weight: 700;
     letter-spacing: 0.14em;
-    text-transform: uppercase;
     color: #86efac;
   }
 
   .resume-toolbar-note {
     margin: 0;
+    font-size: 0.95rem;
     line-height: 1.55;
     color: #c7f3df;
   }
@@ -314,19 +354,21 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
   .resume-toolbar-actions {
     display: flex;
     flex-wrap: wrap;
-    justify-content: flex-end;
+    width: 100%;
+    justify-content: stretch;
     gap: 0.75rem;
   }
 
   .resume-action {
     appearance: none;
     display: inline-flex;
+    flex: 1 1 100%;
     align-items: center;
     justify-content: center;
     min-height: 3rem;
-    border-radius: 999px;
     padding: 0.7rem 1.1rem;
     border: 1px solid transparent;
+    border-radius: 999px;
     font-family: "Chakra Petch", sans-serif;
     font-size: 0.88rem;
     font-weight: 700;
@@ -361,7 +403,7 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
 
   .resume-action-download {
     color: #032015;
-    border: 1px solid rgba(255, 255, 255, 0.24);
+    border-color: rgba(255, 255, 255, 0.24);
     background: #9ef0c7;
     box-shadow: 0 10px 24px rgba(0, 0, 0, 0.2);
   }
@@ -373,7 +415,7 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
 
   .resume-action-print {
     color: #d8fbed;
-    border: 1px solid rgba(167, 243, 208, 0.28);
+    border-color: rgba(167, 243, 208, 0.28);
     background: rgba(3, 24, 18, 0.72);
     box-shadow:
       0 12px 26px rgba(1, 10, 7, 0.24),
@@ -387,9 +429,7 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
   }
 
   .resume-sheet {
-    width: min(1140px, 100%);
-    margin: 0 auto;
-    padding: clamp(1.1rem, 2vw, 1.8rem);
+    padding: 1.1rem;
     border-radius: 22px;
     overflow: hidden;
     border: 1px solid rgba(167, 243, 208, 0.18);
@@ -401,25 +441,20 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
   }
 
   .resume-hero {
-    display: grid;
     gap: 1.15rem;
     padding-bottom: 1.6rem;
     border-bottom: 1px dashed var(--resume-divider-strong);
   }
 
   .resume-hero-copy {
-    display: grid;
     gap: 0.95rem;
     align-content: start;
   }
 
   .resume-badge {
     margin: 0;
-    font-family: "Chakra Petch", sans-serif;
     font-size: 0.84rem;
-    font-weight: 700;
     letter-spacing: 0.14em;
-    text-transform: uppercase;
     color: #6ee7b7;
   }
 
@@ -429,16 +464,16 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
   .resume-project-card h3,
   .resume-detail-card h4,
   .resume-skill-card h3 {
+    margin: 0;
     font-family: "Fraunces", serif;
     text-wrap: balance;
+    color: #ecfdf5;
   }
 
   .resume-hero h1 {
-    margin: 0;
     font-size: clamp(2.4rem, 6vw, 4.6rem);
     line-height: 0.92;
     letter-spacing: -0.04em;
-    color: #ecfdf5;
   }
 
   .resume-intro {
@@ -463,9 +498,9 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
 
   .resume-hero-media {
     position: relative;
-    min-height: 20rem;
-    border-radius: 28px;
+    min-height: 18rem;
     overflow: hidden;
+    border-radius: 28px;
     border: 1px solid rgba(167, 243, 208, 0.18);
     background: rgba(5, 23, 19, 0.82);
     box-shadow: 0 24px 48px rgba(1, 10, 7, 0.28);
@@ -475,13 +510,13 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
     content: "";
     position: absolute;
     inset: 0;
+    pointer-events: none;
     background: linear-gradient(
       180deg,
       rgba(3, 16, 12, 0.02) 0%,
       rgba(4, 28, 19, 0.18) 70%,
       rgba(3, 16, 12, 0.5) 100%
     );
-    pointer-events: none;
   }
 
   .resume-hero-image {
@@ -492,26 +527,17 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
     filter: saturate(0.88) contrast(1.04) brightness(1);
   }
 
-  .resume-grid {
-    display: grid;
-    gap: 1rem;
-  }
-
-  .resume-top-grid {
+  .resume-top-grid,
+  .resume-section,
+  .resume-skills-grid,
+  .resume-projects {
     margin-top: 1rem;
   }
 
-  .resume-top-grid > * + * {
-    border-top: 0;
-  }
-
-  .resume-panel,
-  .resume-project-card,
-  .resume-skill-card {
-    position: relative;
+  .resume-surface {
     overflow: hidden;
-    border-radius: var(--resume-panel-radius);
     border: 1px solid var(--resume-panel-border);
+    border-radius: var(--resume-panel-radius);
     background: var(--resume-panel-surface);
     box-shadow:
       inset 0 1px 0 rgba(255, 255, 255, 0.04),
@@ -519,42 +545,65 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
     backdrop-filter: blur(8px);
   }
 
-  .resume-panel::before,
-  .resume-panel::after,
-  .resume-project-card::before,
-  .resume-project-card::after,
-  .resume-skill-card::before,
-  .resume-skill-card::after {
-    display: none;
+  .resume-surface-strong {
+    background: var(--resume-panel-surface-strong);
+  }
+
+  .resume-surface-soft {
+    overflow: hidden;
+    border: 1px solid rgba(167, 243, 208, 0.12);
+    border-radius: 18px;
+    background: rgba(4, 20, 16, 0.5);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.04),
+      0 12px 24px rgba(1, 10, 7, 0.14);
+    backdrop-filter: blur(8px);
+  }
+
+  .resume-surface-inset {
+    border: 1px solid rgba(167, 243, 208, 0.12);
+    border-radius: 16px;
+    background: rgba(4, 20, 16, 0.46);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03);
+  }
+
+  .resume-surface-project {
+    background:
+      linear-gradient(
+          180deg,
+          rgba(110, 231, 183, 0.82),
+          rgba(110, 231, 183, 0.18)
+        )
+        left top / 2px 100% no-repeat,
+      rgba(4, 21, 17, 0.78);
   }
 
   .resume-panel {
     padding: 1.1rem;
   }
 
-  .resume-panel-emphasis,
-  .resume-panel-emphasis-mirrored {
-    background: var(--resume-panel-surface-strong);
-  }
-
-  .resume-panel-emphasis-mirrored {
+  .resume-panel-mirrored {
     padding: 1.1rem 1.16rem 1.1rem 2rem;
   }
 
-  .resume-panel-emphasis::before,
-  .resume-panel-emphasis::after,
-  .resume-panel-emphasis-mirrored::before,
-  .resume-panel-emphasis-mirrored::after,
-  .resume-project-card::before,
-  .resume-project-card::after {
-    border-color: var(--resume-panel-border-strong);
+  .resume-section {
+    padding-top: 1rem;
+    border-top: 1px dashed var(--resume-divider-strong);
+  }
+
+  .resume-section-heading {
+    margin-bottom: 1rem;
   }
 
   .resume-panel h2,
   .resume-section h2 {
-    margin: 0;
     font-size: clamp(1.35rem, 2vw, 1.9rem);
-    color: #ecfdf5;
+  }
+
+  .resume-section-heading p {
+    margin: 0.45rem 0 0;
+    line-height: 1.6;
+    color: #bdeed8;
   }
 
   .resume-subheading {
@@ -562,31 +611,28 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
   }
 
   .resume-facts {
-    display: grid;
     gap: 0.9rem;
     margin-top: 1.05rem;
   }
 
-  .resume-facts div,
-  .resume-stack-list div {
+  .resume-facts > div,
+  .resume-stack-list > div,
+  .resume-project-meta > div {
     display: grid;
     gap: 0.2rem;
   }
 
-  .resume-facts div + div,
-  .resume-stack-list div + div {
-    border-top: 1px dashed var(--resume-divider);
+  .resume-facts > div + div,
+  .resume-stack-list > div + div {
     padding-top: 0.7rem;
+    border-top: 1px dashed var(--resume-divider);
   }
 
   .resume-facts dt,
   .resume-project-meta dt,
   .resume-stack-list dt {
-    font-family: "Chakra Petch", sans-serif;
     font-size: 0.75rem;
-    font-weight: 700;
     letter-spacing: 0.12em;
-    text-transform: uppercase;
     color: #6ee7b7;
   }
 
@@ -613,18 +659,11 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
     margin-top: 1.05rem;
   }
 
-  .resume-link-list li + li {
-    border-top: 1px dashed var(--resume-divider);
-    padding-top: 0.7rem;
-  }
-
-  .resume-link-list a {
+  .resume-link-card {
     display: grid;
     gap: 0.22rem;
     padding: 0.72rem 0.85rem;
-    border-radius: 16px;
-    border: 1px solid rgba(167, 243, 208, 0.1);
-    background: rgba(4, 20, 16, 0.46);
+    text-decoration: none;
     transition:
       color 170ms ease,
       transform 170ms ease,
@@ -632,23 +671,15 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
       background-color 170ms ease;
   }
 
-  .resume-link-list li + li {
-    border-top: 0;
-    padding-top: 0;
-  }
-
-  .resume-link-list a:hover {
+  .resume-link-card:hover {
     transform: translateX(2px);
     border-color: rgba(110, 231, 183, 0.28);
     background: rgba(6, 31, 24, 0.56);
   }
 
   .resume-link-list a span:first-child {
-    font-family: "Chakra Petch", sans-serif;
     font-size: 0.75rem;
-    font-weight: 700;
     letter-spacing: 0.12em;
-    text-transform: uppercase;
     color: #6ee7b7;
   }
 
@@ -665,49 +696,13 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
     margin-top: 1rem;
   }
 
-  /*
-    Keep these pills visually explicit.
-    A lighter/softer treatment made the industries read like plain wrapped text,
-    while this stronger background + border makes the intended tag grouping clear.
-    Reuse this approach if similar pill lists start looking too subtle again.
-  */
   .resume-chip-list li {
     padding: 0.5rem 0.8rem;
     border-radius: 999px;
+    border: 1px solid rgba(110, 231, 183, 0.24);
     background: rgba(4, 20, 16, 0.52);
     color: #ecfdf5;
-    border: 1px solid rgba(110, 231, 183, 0.24);
     line-height: 1.4;
-  }
-
-  .resume-section {
-    margin-top: 1rem;
-    padding-top: 1rem;
-    border-top: 1px dashed var(--resume-divider-strong);
-  }
-
-  .resume-panel.resume-section {
-    padding-bottom: 1rem;
-  }
-
-  .resume-panel.resume-section + .resume-section {
-    padding-top: 1rem;
-    border-top: 1px dashed var(--resume-divider-strong);
-  }
-
-  .resume-section-heading {
-    margin-bottom: 1rem;
-  }
-
-  .resume-section-heading p {
-    margin: 0.45rem 0 0;
-    line-height: 1.6;
-    color: #bdeed8;
-  }
-
-  .resume-skills-grid {
-    display: grid;
-    gap: 0.9rem 1rem;
   }
 
   .resume-card-heading {
@@ -719,39 +714,21 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
 
   .resume-card-index {
     margin: 0;
-    font-family: "Chakra Petch", sans-serif;
     font-size: 0.74rem;
-    font-weight: 700;
     letter-spacing: 0.16em;
-    text-transform: uppercase;
     color: #86efac;
     opacity: 0.92;
   }
 
   .resume-skill-card {
     padding: 1rem 1rem 1.05rem;
-    border-radius: 18px;
-    border: 1px solid rgba(167, 243, 208, 0.12);
-    background: rgba(4, 20, 16, 0.5);
-    box-shadow:
-      inset 0 1px 0 rgba(255, 255, 255, 0.04),
-      0 12px 24px rgba(1, 10, 7, 0.14);
-    backdrop-filter: blur(8px);
-  }
-
-  .resume-skill-card::before,
-  .resume-skill-card::after {
-    display: none;
   }
 
   .resume-skill-card h3 {
-    margin: 0;
     font-size: 1.08rem;
-    color: #ecfdf5;
   }
 
   .resume-skill-card ul {
-    display: grid;
     gap: 0.46rem;
   }
 
@@ -771,22 +748,19 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
   }
 
   .resume-skill-sublist .resume-skill-sublist-item {
-    list-style: none;
     position: static;
     padding-left: 0;
-    line-height: 1.35;
     font-size: 0.9em;
+    line-height: 1.35;
+    list-style: none;
   }
 
   .resume-skill-sublist .resume-skill-sublist-item::before {
     content: "·";
-    position: static;
     display: inline-block;
     width: auto;
     height: auto;
     margin-right: 0.35rem;
-    border-radius: 0;
-    background: none;
     color: rgba(110, 231, 183, 0.85);
   }
 
@@ -799,11 +773,11 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
 
   .resume-chip {
     display: inline-block;
+    padding: 0.08rem 0.45rem;
     border: 1px solid rgba(110, 231, 183, 0.24);
+    border-radius: 999px;
     background: rgba(16, 185, 129, 0.08);
     color: rgba(187, 247, 208, 0.8);
-    border-radius: 999px;
-    padding: 0.08rem 0.45rem;
     font-size: 0.7rem;
     font-weight: 600;
     line-height: 1.3;
@@ -814,8 +788,8 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
   .resume-skill-card li,
   .resume-detail-card li,
   .resume-project-copy p {
-    line-height: 1.7;
     color: #c7f3df;
+    line-height: 1.7;
   }
 
   .resume-skill-card li,
@@ -843,31 +817,16 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
   }
 
   .resume-projects {
-    display: grid;
     gap: 1.15rem;
   }
 
-  .resume-project-card {
-    background:
-      linear-gradient(
-          180deg,
-          rgba(110, 231, 183, 0.82),
-          rgba(110, 231, 183, 0.18)
-        )
-        left top / 2px 100% no-repeat,
-      rgba(4, 21, 17, 0.78);
-  }
-
   .resume-project-header {
-    display: grid;
     gap: 1rem;
     padding: 1.18rem 1.18rem 1.04rem 1.3rem;
     border-bottom: 1px dashed var(--resume-divider-strong);
-    background: rgba(6, 27, 21, 0.88);
   }
 
   .resume-project-title-block {
-    display: grid;
     gap: 0.45rem;
   }
 
@@ -886,10 +845,8 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
   }
 
   .resume-project-period {
-    font-family: "Chakra Petch", sans-serif;
     font-size: 0.84rem;
     letter-spacing: 0.1em;
-    text-transform: uppercase;
   }
 
   .resume-project-sector {
@@ -897,26 +854,20 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
   }
 
   .resume-project-card h3 {
-    margin: 0.15rem 0 0;
+    margin-top: 0.15rem;
     font-size: clamp(1.35rem, 2vw, 1.8rem);
     line-height: 1.15;
-    color: #ecfdf5;
   }
 
   .resume-project-meta {
-    display: grid;
     gap: 0.75rem;
   }
 
   .resume-project-meta > div {
     padding: 0.8rem 0.9rem;
-    border-radius: 14px;
-    border: 1px solid rgba(167, 243, 208, 0.12);
-    background: rgba(4, 20, 16, 0.42);
   }
 
   .resume-project-body {
-    display: grid;
     gap: 1rem;
     padding: 1.18rem 1.18rem 1.18rem 1.3rem;
   }
@@ -927,7 +878,6 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
   }
 
   .resume-project-copy {
-    display: grid;
     gap: 0.8rem;
   }
 
@@ -937,29 +887,52 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
 
   .resume-detail-card {
     padding: 0.95rem 1rem;
-    border: 1px solid rgba(167, 243, 208, 0.12);
-    border-radius: 16px;
-    background: rgba(4, 20, 16, 0.46);
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03);
   }
 
   .resume-detail-card h4 {
-    margin: 0 0 0.7rem;
+    margin-bottom: 0.7rem;
     font-size: 1.14rem;
-    color: #ecfdf5;
   }
 
-  .resume-detail-card ul {
-    display: grid;
+  .resume-detail-card ul,
+  .resume-stack-list {
     gap: 0.55rem;
   }
 
   .resume-stack-list {
-    display: grid;
     gap: 0.75rem;
   }
 
+  @media (min-width: 520px) {
+    .resume-page {
+      --resume-dock-overlap: 5.8rem;
+    }
+  }
+
+  @media (min-width: 640px) {
+    .resume-page {
+      --resume-page-padding: clamp(1rem, 2.4vw, 2.1rem);
+    }
+
+    .resume-toolbar-note {
+      font-size: 1rem;
+    }
+
+    .resume-action {
+      flex-basis: 14rem;
+    }
+  }
+
   @media (min-width: 760px) {
+    .resume-toolbar-actions {
+      width: auto;
+      justify-content: flex-end;
+    }
+
+    .resume-action {
+      flex: 0 1 auto;
+    }
+
     .resume-hero {
       grid-template-columns: minmax(0, 1.14fr) minmax(19rem, 0.86fr);
       align-items: stretch;
@@ -973,26 +946,14 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
       grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr);
     }
 
-    .resume-top-grid > * + * {
-      border-top: 0;
-      border-left: 0;
-    }
-
     .resume-facts {
       grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 1rem 1.35rem;
     }
 
-    .resume-facts div {
-      padding: 0;
-      border: 0;
-      border-radius: 0;
-      background: none;
-    }
-
-    .resume-facts div + div {
-      border-top: 0;
+    .resume-facts > div + div {
       padding-top: 0;
+      border-top: 0;
     }
 
     .resume-skills-grid {
@@ -1029,45 +990,6 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
       padding-left: 1rem;
       border-top: 0;
       border-left: 1px dashed var(--resume-divider);
-    }
-  }
-
-  @media (max-width: 760px) {
-    .resume-toolbar-shell {
-      padding: 0.9rem;
-    }
-
-    .resume-toolbar-actions {
-      width: 100%;
-      justify-content: stretch;
-    }
-
-    .resume-action {
-      flex: 1 1 14rem;
-    }
-  }
-
-  @media (max-width: 640px) {
-    .resume-page {
-      --resume-page-padding: 0.8rem;
-    }
-
-    .resume-toolbar-note {
-      font-size: 0.95rem;
-    }
-
-    .resume-action {
-      flex: 1 1 100%;
-    }
-
-    .resume-facts {
-      gap: 0.75rem;
-    }
-  }
-
-  @media (max-width: 520px) {
-    .resume-page {
-      --resume-dock-overlap: 8.25rem;
     }
   }
 
@@ -1163,34 +1085,25 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
       background: none;
     }
 
-    .resume-panel::before,
-    .resume-panel::after,
-    .resume-project-card::before,
-    .resume-project-card::after,
-    .resume-skill-card::before,
-    .resume-skill-card::after {
-      display: none;
-    }
-
-    .resume-panel,
-    .resume-project-card,
-    .resume-skill-card,
-    .resume-detail-card,
-    .resume-link-list a {
+    .resume-surface,
+    .resume-surface-soft,
+    .resume-surface-inset {
       background: var(--resume-print-panel-bg) !important;
       border-color: transparent !important;
       box-shadow: none;
+      backdrop-filter: none;
       break-inside: avoid;
       page-break-inside: avoid;
     }
 
-    .resume-panel-emphasis,
+    .resume-surface-strong,
     .resume-project-header {
       background: var(--resume-print-panel-muted-bg) !important;
       border-color: var(--resume-divider) !important;
     }
 
-    .resume-chip-list li {
+    .resume-chip-list li,
+    .resume-chip {
       background: var(--resume-print-chip-bg) !important;
       border-color: transparent !important;
       color: var(--resume-print-text);
