@@ -121,7 +121,7 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
       <div class="resume-skills-grid gap-4">
         {
           content.skillCategories.map((category) => (
-            <section class="resume-skill-card resume-surface-soft">
+            <section class="resume-skill-card">
               <div class="resume-card-heading">
                 <h3>{category.title}</h3>
               </div>
@@ -720,6 +720,7 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
   .resume-skill-card {
     padding: 1rem 1rem 1.05rem;
     border: 0;
+    background: transparent;
     box-shadow: none;
   }
 
