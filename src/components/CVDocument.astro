@@ -262,6 +262,16 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
     --resume-divider-strong: rgba(167, 243, 208, 0.2);
     --resume-panel-radius: 14px;
     --resume-panel-border: rgba(167, 243, 208, 0.14);
+    --resume-dossier-frame-depth: calc(var(--resume-panel-radius) + 12px);
+    --resume-dossier-frame-fade: linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(0, 0, 0, 0.2) 8%,
+      #000 16%,
+      #000 84%,
+      rgba(0, 0, 0, 0.2) 92%,
+      transparent 100%
+    );
     --resume-panel-surface: rgba(4, 23, 18, 0.84);
     --resume-panel-surface-strong: rgba(6, 28, 21, 0.9);
     min-height: 100vh;
@@ -589,8 +599,43 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
   }
 
   .resume-section-dossier {
+    position: relative;
+    overflow: hidden;
     padding-bottom: 1rem;
+    border-top: 0;
+    border-bottom: 0;
+    border-left: 0;
+    border-right: 0;
+  }
+
+  .resume-section-dossier::before,
+  .resume-section-dossier::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: var(--resume-dossier-frame-depth);
+    pointer-events: none;
+    -webkit-mask-image: var(--resume-dossier-frame-fade);
+    mask-image: var(--resume-dossier-frame-fade);
+  }
+
+  .resume-section-dossier::before {
+    top: 0;
+    border-top: 1px dashed var(--resume-divider-strong);
+    border-left: 1px dashed var(--resume-divider-strong);
+    border-right: 1px dashed var(--resume-divider-strong);
+    border-top-left-radius: var(--resume-panel-radius);
+    border-top-right-radius: var(--resume-panel-radius);
+  }
+
+  .resume-section-dossier::after {
+    bottom: 0;
     border-bottom: 1px dashed var(--resume-divider-strong);
+    border-left: 1px dashed var(--resume-divider-strong);
+    border-right: 1px dashed var(--resume-divider-strong);
+    border-bottom-left-radius: var(--resume-panel-radius);
+    border-bottom-right-radius: var(--resume-panel-radius);
   }
 
   .resume-section-heading {
@@ -1154,6 +1199,16 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
 
     .resume-section {
       margin-top: 0.8rem;
+    }
+
+    .resume-section-dossier {
+      border-top: 1px dashed var(--resume-divider-strong);
+      border-bottom: 1px dashed var(--resume-divider-strong);
+    }
+
+    .resume-section-dossier::before,
+    .resume-section-dossier::after {
+      display: none;
     }
 
     .resume-projects {
