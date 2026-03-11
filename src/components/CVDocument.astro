@@ -216,7 +216,7 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
                 </div>
 
                 {/* Key highlights section calling out notable results and contributions. */}
-                <section class="resume-detail-card resume-surface-inset">
+                <section class="resume-detail-card resume-surface-inset resume-brace-frame-vertical">
                   <h4>{content.highlightsTitle}</h4>
                   <ul class="gap-4">
                     {project.highlights.map((highlight) => (
@@ -226,7 +226,7 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
                 </section>
 
                 {/* Technology stack section listing the tools and platforms used. */}
-                <section class="resume-detail-card resume-surface-inset">
+                <section class="resume-detail-card resume-surface-inset resume-brace-frame-vertical">
                   <h4>{content.stackTitle}</h4>
                   <dl class="resume-stack-list gap-4">
                     {project.stack.map((item) => (
@@ -955,6 +955,69 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
 
   .resume-detail-card {
     padding: 0.95rem 1rem;
+  }
+
+  .resume-brace-frame-vertical {
+    --resume-brace-depth: 2.15rem;
+    position: relative;
+    border-color: transparent;
+    overflow: visible;
+  }
+
+  .resume-brace-frame-vertical::before,
+  .resume-brace-frame-vertical::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: var(--resume-brace-depth);
+    pointer-events: none;
+  }
+
+  .resume-brace-frame-vertical::before {
+    left: 0;
+    border-top: 1px dashed var(--resume-divider-strong);
+    border-bottom: 1px dashed var(--resume-divider-strong);
+    border-left: 1px dashed var(--resume-divider-strong);
+    border-top-left-radius: 16px;
+    border-bottom-left-radius: 16px;
+    -webkit-mask-image: linear-gradient(
+      90deg,
+      #000 0,
+      #000 calc(100% - 0.7rem),
+      rgba(0, 0, 0, 0.32) calc(100% - 0.24rem),
+      transparent 100%
+    );
+    mask-image: linear-gradient(
+      90deg,
+      #000 0,
+      #000 calc(100% - 0.7rem),
+      rgba(0, 0, 0, 0.32) calc(100% - 0.24rem),
+      transparent 100%
+    );
+  }
+
+  .resume-brace-frame-vertical::after {
+    right: 0;
+    border-top: 1px dashed var(--resume-divider-strong);
+    border-right: 1px dashed var(--resume-divider-strong);
+    border-bottom: 1px dashed var(--resume-divider-strong);
+    border-top-right-radius: 16px;
+    border-bottom-right-radius: 16px;
+    -webkit-mask-image: linear-gradient(
+      270deg,
+      #000 0,
+      #000 calc(100% - 0.7rem),
+      rgba(0, 0, 0, 0.32) calc(100% - 0.24rem),
+      transparent 100%
+    );
+    mask-image: linear-gradient(
+      270deg,
+      #000 0,
+      #000 calc(100% - 0.7rem),
+      rgba(0, 0, 0, 0.32) calc(100% - 0.24rem),
+      transparent 100%
+    );
   }
 
   .resume-detail-card h4 {
