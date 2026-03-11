@@ -16,11 +16,6 @@ const profileImageAlt =
     ? "Porträt von Benjamin Jesuiter"
     : "Portrait of Benjamin Jesuiter";
 const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
-const highlightFacts = [
-  content.facts[0],
-  content.facts[content.facts.length - 2],
-  content.facts[content.facts.length - 1],
-].filter(Boolean);
 ---
 
 <main class="resume-page">
@@ -62,17 +57,6 @@ const highlightFacts = [
         <p class="resume-badge">{content.badge}</p>
         <h1>{content.heading}</h1>
         <CVIntro locale={locale} />
-
-        <dl class="resume-hero-fact-strip" aria-label={content.factsTitle}>
-          {
-            highlightFacts.map((fact) => (
-              <div class="resume-hero-fact">
-                <dt>{fact.label}</dt>
-                <dd>{fact.value}</dd>
-              </div>
-            ))
-          }
-        </dl>
       </div>
 
       <div class="resume-hero-media">
@@ -269,48 +253,18 @@ const highlightFacts = [
   .resume-page {
     --resume-page-padding: clamp(1rem, 2.4vw, 2.1rem);
     --resume-dock-overlap: 5.8rem;
-    --resume-divider: rgba(167, 243, 208, 0.14);
-    --resume-divider-strong: rgba(167, 243, 208, 0.22);
+    --resume-divider: rgba(167, 243, 208, 0.12);
+    --resume-divider-strong: rgba(167, 243, 208, 0.2);
     --resume-panel-radius: 14px;
-    --resume-panel-border: rgba(167, 243, 208, 0.18);
-    --resume-panel-border-strong: rgba(167, 243, 208, 0.28);
-    --resume-panel-frame-depth: calc(var(--resume-panel-radius) + 12px);
-    --resume-panel-frame-fade: linear-gradient(
-      90deg,
-      transparent 0%,
-      rgba(0, 0, 0, 0.2) 8%,
-      #000 16%,
-      #000 84%,
-      rgba(0, 0, 0, 0.2) 92%,
-      transparent 100%
-    );
-    --resume-panel-surface: linear-gradient(
-      160deg,
-      rgba(4, 28, 21, 0.9),
-      rgba(4, 23, 18, 0.82)
-    );
-    --resume-panel-wash: radial-gradient(
-      120% 70% at 50% 0%,
-      rgba(110, 231, 183, 0.13),
-      transparent 58%
-    );
+    --resume-panel-border: rgba(167, 243, 208, 0.14);
+    --resume-panel-border-strong: rgba(167, 243, 208, 0.22);
+    --resume-panel-surface: rgba(4, 23, 18, 0.84);
+    --resume-panel-surface-strong: rgba(6, 28, 21, 0.9);
     min-height: 100vh;
     margin-top: calc(var(--resume-dock-overlap) * -1);
     padding: calc(var(--resume-page-padding) + var(--resume-dock-overlap))
       var(--resume-page-padding) var(--resume-page-padding);
-    background:
-      linear-gradient(0deg, rgba(4, 18, 15, 0.93), rgba(4, 18, 15, 0.93)),
-      radial-gradient(
-        circle at 82% 12%,
-        rgba(110, 231, 183, 0.34),
-        transparent 30%
-      ),
-      radial-gradient(
-        circle at 12% 88%,
-        rgba(34, 197, 94, 0.28),
-        transparent 30%
-      ),
-      #02110d;
+    background: #02110d;
     color: #ecfdf5;
   }
 
@@ -327,18 +281,12 @@ const highlightFacts = [
     gap: 1rem;
     padding: 0.85rem 1rem;
     border-radius: 20px;
-    border: 1px solid rgba(167, 243, 208, 0.2);
-    background:
-      linear-gradient(180deg, rgba(2, 19, 14, 0.9), rgba(4, 24, 19, 0.82)),
-      radial-gradient(
-        circle at 16% 0%,
-        rgba(110, 231, 183, 0.16),
-        transparent 34%
-      );
+    border: 1px solid rgba(167, 243, 208, 0.18);
+    background: rgba(3, 21, 16, 0.8);
     box-shadow:
-      0 16px 34px rgba(1, 10, 7, 0.24),
-      inset 0 1px 0 rgba(255, 255, 255, 0.05);
-    backdrop-filter: blur(18px);
+      0 16px 34px rgba(1, 10, 7, 0.18),
+      inset 0 1px 0 rgba(255, 255, 255, 0.04);
+    backdrop-filter: blur(16px);
   }
 
   .resume-toolbar-copy {
@@ -414,8 +362,8 @@ const highlightFacts = [
   .resume-action-download {
     color: #032015;
     border: 1px solid rgba(255, 255, 255, 0.24);
-    background: linear-gradient(90deg, #c5fbdc, #6ee7b7);
-    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.24);
+    background: #9ef0c7;
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.2);
   }
 
   .resume-action-download:hover {
@@ -444,14 +392,12 @@ const highlightFacts = [
     padding: clamp(1.1rem, 2vw, 1.8rem);
     border-radius: 22px;
     overflow: hidden;
-    border: 1px solid rgba(167, 243, 208, 0.24);
+    border: 1px solid rgba(167, 243, 208, 0.18);
     background:
-      linear-gradient(90deg, rgba(220, 252, 231, 0.02) 1px, transparent 1px) 0
+      linear-gradient(90deg, rgba(220, 252, 231, 0.015) 1px, transparent 1px) 0
         0 / 34px 100%,
-      linear-gradient(0deg, rgba(220, 252, 231, 0.015) 1px, transparent 1px) 0
-        0 / 100% 34px,
-      linear-gradient(135deg, rgba(7, 30, 24, 0.95), rgba(5, 24, 19, 0.84));
-    box-shadow: 0 24px 52px rgba(1, 10, 7, 0.55);
+      rgba(4, 21, 17, 0.92);
+    box-shadow: 0 24px 52px rgba(1, 10, 7, 0.42);
   }
 
   .resume-hero {
@@ -515,76 +461,26 @@ const highlightFacts = [
     color: #ecfdf5;
   }
 
-  .resume-hero-fact-strip {
-    display: grid;
-    gap: 0.8rem;
-    margin: 0;
-  }
-
-  .resume-hero-fact {
-    padding: 0.85rem 0.95rem;
-    border-radius: 18px;
-    border: 1px solid rgba(167, 243, 208, 0.12);
-    background:
-      linear-gradient(180deg, rgba(5, 27, 21, 0.9), rgba(3, 20, 16, 0.82)),
-      radial-gradient(
-        circle at 0% 0%,
-        rgba(110, 231, 183, 0.12),
-        transparent 38%
-      );
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
-  }
-
-  .resume-hero-fact dt {
-    margin: 0;
-    font-family: "Chakra Petch", sans-serif;
-    font-size: 0.72rem;
-    font-weight: 700;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: #86efac;
-  }
-
-  .resume-hero-fact dd {
-    margin: 0.32rem 0 0;
-    color: #ecfdf5;
-    line-height: 1.45;
-  }
-
   .resume-hero-media {
     position: relative;
     min-height: 20rem;
     border-radius: 28px;
     overflow: hidden;
     border: 1px solid rgba(167, 243, 208, 0.18);
-    background:
-      radial-gradient(
-        circle at 24% 22%,
-        rgba(110, 231, 183, 0.2),
-        transparent 28%
-      ),
-      linear-gradient(135deg, rgba(5, 26, 20, 0.82), rgba(3, 18, 14, 0.48));
-    box-shadow: 0 24px 48px rgba(1, 10, 7, 0.32);
+    background: rgba(5, 23, 19, 0.82);
+    box-shadow: 0 24px 48px rgba(1, 10, 7, 0.28);
   }
 
   .resume-hero-media::after {
     content: "";
     position: absolute;
     inset: 0;
-    background:
-      linear-gradient(
-        180deg,
-        rgba(3, 16, 12, 0.03) 0%,
-        rgba(6, 32, 22, 0.1) 38%,
-        rgba(4, 28, 19, 0.38) 68%,
-        rgba(3, 16, 12, 0.84) 100%
-      ),
-      linear-gradient(
-        135deg,
-        rgba(255, 255, 255, 0.16) 0%,
-        transparent 22%,
-        transparent 100%
-      );
+    background: linear-gradient(
+      180deg,
+      rgba(3, 16, 12, 0.02) 0%,
+      rgba(4, 28, 19, 0.18) 70%,
+      rgba(3, 16, 12, 0.5) 100%
+    );
     pointer-events: none;
   }
 
@@ -616,12 +512,12 @@ const highlightFacts = [
     position: relative;
     overflow: hidden;
     border-radius: var(--resume-panel-radius);
-    border: 0;
-    background: var(--resume-panel-wash), var(--resume-panel-surface);
+    border: 1px solid var(--resume-panel-border);
+    background: var(--resume-panel-surface);
     box-shadow:
-      inset 0 1px 0 rgba(255, 255, 255, 0.06),
-      0 14px 28px rgba(1, 10, 7, 0.2);
-    backdrop-filter: blur(10px);
+      inset 0 1px 0 rgba(255, 255, 255, 0.04),
+      0 14px 28px rgba(1, 10, 7, 0.16);
+    backdrop-filter: blur(8px);
   }
 
   .resume-panel::before,
@@ -630,37 +526,7 @@ const highlightFacts = [
   .resume-project-card::after,
   .resume-skill-card::before,
   .resume-skill-card::after {
-    content: "";
-    position: absolute;
-    left: 0;
-    right: 0;
-    height: var(--resume-panel-frame-depth);
-    pointer-events: none;
-    opacity: 0.95;
-    -webkit-mask-image: var(--resume-panel-frame-fade);
-    mask-image: var(--resume-panel-frame-fade);
-  }
-
-  .resume-panel::before,
-  .resume-project-card::before,
-  .resume-skill-card::before {
-    top: 0;
-    border-top: 1px dashed var(--resume-panel-border);
-    border-left: 1px dashed var(--resume-panel-border);
-    border-right: 1px dashed var(--resume-panel-border);
-    border-top-left-radius: var(--resume-panel-radius);
-    border-top-right-radius: var(--resume-panel-radius);
-  }
-
-  .resume-panel::after,
-  .resume-project-card::after,
-  .resume-skill-card::after {
-    bottom: 0;
-    border-bottom: 1px dashed var(--resume-panel-border);
-    border-left: 1px dashed var(--resume-panel-border);
-    border-right: 1px dashed var(--resume-panel-border);
-    border-bottom-left-radius: var(--resume-panel-radius);
-    border-bottom-right-radius: var(--resume-panel-radius);
+    display: none;
   }
 
   .resume-panel {
@@ -673,13 +539,7 @@ const highlightFacts = [
 
   .resume-panel-emphasis,
   .resume-panel-emphasis-mirrored {
-    background:
-      radial-gradient(
-        120% 70% at 50% 0%,
-        rgba(110, 231, 183, 0.18),
-        transparent 58%
-      ),
-      linear-gradient(160deg, rgba(5, 31, 24, 0.95), rgba(4, 26, 20, 0.86));
+    background: var(--resume-panel-surface-strong);
   }
 
   .resume-panel-emphasis::before,
@@ -765,12 +625,17 @@ const highlightFacts = [
     padding: 0.72rem 0.85rem;
     border-radius: 16px;
     border: 1px solid rgba(167, 243, 208, 0.1);
-    background: rgba(5, 26, 20, 0.34);
+    background: rgba(4, 20, 16, 0.46);
     transition:
       color 170ms ease,
       transform 170ms ease,
       border-color 170ms ease,
       background-color 170ms ease;
+  }
+
+  .resume-link-list li + li {
+    border-top: 0;
+    padding-top: 0;
   }
 
   .resume-link-list a:hover {
@@ -810,12 +675,9 @@ const highlightFacts = [
   .resume-chip-list li {
     padding: 0.5rem 0.8rem;
     border-radius: 999px;
-    background: rgba(6, 33, 25, 0.9);
+    background: rgba(4, 20, 16, 0.52);
     color: #ecfdf5;
-    border: 1px solid rgba(110, 231, 183, 0.3);
-    box-shadow:
-      inset 0 1px 0 rgba(255, 255, 255, 0.06),
-      0 0 0 1px rgba(3, 24, 18, 0.32);
+    border: 1px solid rgba(110, 231, 183, 0.24);
     line-height: 1.4;
   }
 
@@ -871,17 +733,11 @@ const highlightFacts = [
     padding: 1rem 1rem 1.05rem;
     border-radius: 18px;
     border: 1px solid rgba(167, 243, 208, 0.12);
-    background:
-      linear-gradient(180deg, rgba(5, 27, 21, 0.88), rgba(4, 22, 18, 0.8)),
-      radial-gradient(
-        circle at 0% 0%,
-        rgba(110, 231, 183, 0.12),
-        transparent 42%
-      );
+    background: rgba(4, 20, 16, 0.5);
     box-shadow:
       inset 0 1px 0 rgba(255, 255, 255, 0.04),
-      0 14px 28px rgba(1, 10, 7, 0.16);
-    backdrop-filter: blur(10px);
+      0 12px 24px rgba(1, 10, 7, 0.14);
+    backdrop-filter: blur(8px);
   }
 
   .resume-skill-card::before,
@@ -996,12 +852,11 @@ const highlightFacts = [
     background:
       linear-gradient(
           180deg,
-          rgba(110, 231, 183, 0.94),
-          rgba(110, 231, 183, 0.12)
+          rgba(110, 231, 183, 0.82),
+          rgba(110, 231, 183, 0.18)
         )
-        left top / 3px 100% no-repeat,
-      var(--resume-panel-wash),
-      var(--resume-panel-surface);
+        left top / 2px 100% no-repeat,
+      rgba(4, 21, 17, 0.78);
   }
 
   .resume-project-header {
@@ -1009,13 +864,7 @@ const highlightFacts = [
     gap: 1rem;
     padding: 1.18rem 1.18rem 1.04rem 1.3rem;
     border-bottom: 1px dashed var(--resume-divider-strong);
-    background:
-      radial-gradient(
-        110% 62% at 40% 0%,
-        rgba(110, 231, 183, 0.14),
-        transparent 60%
-      ),
-      linear-gradient(160deg, rgba(5, 30, 23, 0.95), rgba(5, 26, 20, 0.88));
+    background: rgba(6, 27, 21, 0.88);
   }
 
   .resume-project-title-block {
@@ -1064,7 +913,7 @@ const highlightFacts = [
     padding: 0.8rem 0.9rem;
     border-radius: 14px;
     border: 1px solid rgba(167, 243, 208, 0.12);
-    background: rgba(5, 26, 20, 0.48);
+    background: rgba(4, 20, 16, 0.42);
   }
 
   .resume-project-body {
@@ -1091,11 +940,7 @@ const highlightFacts = [
     padding: 0.95rem 1rem;
     border: 1px solid rgba(167, 243, 208, 0.12);
     border-radius: 16px;
-    background: linear-gradient(
-      180deg,
-      rgba(5, 27, 21, 0.82),
-      rgba(3, 20, 16, 0.7)
-    );
+    background: rgba(4, 20, 16, 0.46);
     box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03);
   }
 
@@ -1125,10 +970,6 @@ const highlightFacts = [
       min-height: 100%;
     }
 
-    .resume-hero-fact-strip {
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-    }
-
     .resume-top-grid {
       grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr);
     }
@@ -1149,7 +990,7 @@ const highlightFacts = [
       padding: 0.7rem 0.8rem;
       border-radius: 14px;
       border: 1px solid rgba(167, 243, 208, 0.12);
-      background: rgba(5, 26, 20, 0.34);
+      background: rgba(4, 20, 16, 0.42);
     }
 
     .resume-facts div + div {
