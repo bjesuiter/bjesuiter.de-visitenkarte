@@ -84,7 +84,9 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
         </dl>
       </section>
 
-      <section class="resume-panel resume-panel-emphasis-mirrored">
+      <section
+        class="resume-panel resume-panel-emphasis-mirrored py-[1.1rem] pr-[1.16rem] pl-8"
+      >
         <h2>{content.contactTitle}</h2>
         <ul class="resume-link-list">
           {
@@ -531,10 +533,6 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
 
   .resume-panel {
     padding: 1.1rem;
-  }
-
-  .resume-panel-emphasis-mirrored {
-    padding: 1.1rem 1.16rem 1.1rem 2rem;
   }
 
   .resume-panel-emphasis,
