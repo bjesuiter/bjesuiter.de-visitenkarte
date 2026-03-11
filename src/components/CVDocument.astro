@@ -113,7 +113,7 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
       </section>
     </section>
 
-    <section class="resume-panel resume-section resume-surface">
+    <section class="resume-panel resume-section resume-section-dossier">
       <div class="resume-section-heading">
         <h2>{content.skillsTitle}</h2>
       </div>
@@ -586,6 +586,11 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
   .resume-section {
     padding-top: 1rem;
     border-top: 1px dashed var(--resume-divider-strong);
+  }
+
+  .resume-section-dossier {
+    padding-bottom: 1rem;
+    border-bottom: 1px dashed var(--resume-divider-strong);
   }
 
   .resume-section-heading {
