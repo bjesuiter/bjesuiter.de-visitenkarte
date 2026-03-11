@@ -120,12 +120,9 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
 
       <div class="resume-skills-grid">
         {
-          content.skillCategories.map((category, index) => (
+          content.skillCategories.map((category) => (
             <section class="resume-skill-card resume-surface-soft">
               <div class="resume-card-heading">
-                <p class="resume-card-index">
-                  {String(index + 1).padStart(2, "0")}
-                </p>
                 <h3>{category.title}</h3>
               </div>
               <ul>
