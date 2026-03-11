@@ -226,8 +226,6 @@ const profileImageAlt =
 </script>
 
 <style is:global>
-  @import url("https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=Fraunces:opsz,wght@9..144,500;9..144,700&display=swap");
-
   .resume-page {
     --resume-page-padding: clamp(1rem, 2.4vw, 2.1rem);
     --resume-dock-overlap: 5.8rem;
@@ -236,6 +234,16 @@ const profileImageAlt =
     --resume-panel-radius: 14px;
     --resume-panel-border: rgba(167, 243, 208, 0.18);
     --resume-panel-border-strong: rgba(167, 243, 208, 0.28);
+    --resume-panel-frame-depth: calc(var(--resume-panel-radius) + 12px);
+    --resume-panel-frame-fade: linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(0, 0, 0, 0.2) 8%,
+      #000 16%,
+      #000 84%,
+      rgba(0, 0, 0, 0.2) 92%,
+      transparent 100%
+    );
     --resume-panel-surface: linear-gradient(
       160deg,
       rgba(4, 28, 21, 0.9),
@@ -340,7 +348,7 @@ const profileImageAlt =
     padding: clamp(1.1rem, 2vw, 1.8rem);
     border-radius: 22px;
     overflow: hidden;
-    border: 1px dashed rgba(167, 243, 208, 0.24);
+    border: 1px solid rgba(167, 243, 208, 0.24);
     background:
       linear-gradient(90deg, rgba(220, 252, 231, 0.02) 1px, transparent 1px) 0
         0 / 34px 100%,
@@ -486,13 +494,54 @@ const profileImageAlt =
   .resume-panel,
   .resume-project-card,
   .resume-skill-card {
+    position: relative;
+    overflow: hidden;
     border-radius: var(--resume-panel-radius);
-    border: 1px dashed var(--resume-panel-border);
+    border: 0;
     background: var(--resume-panel-wash), var(--resume-panel-surface);
     box-shadow:
       inset 0 1px 0 rgba(255, 255, 255, 0.06),
       0 14px 28px rgba(1, 10, 7, 0.2);
     backdrop-filter: blur(10px);
+  }
+
+  .resume-panel::before,
+  .resume-panel::after,
+  .resume-project-card::before,
+  .resume-project-card::after,
+  .resume-skill-card::before,
+  .resume-skill-card::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: var(--resume-panel-frame-depth);
+    pointer-events: none;
+    opacity: 0.95;
+    -webkit-mask-image: var(--resume-panel-frame-fade);
+    mask-image: var(--resume-panel-frame-fade);
+  }
+
+  .resume-panel::before,
+  .resume-project-card::before,
+  .resume-skill-card::before {
+    top: 0;
+    border-top: 1px dashed var(--resume-panel-border);
+    border-left: 1px dashed var(--resume-panel-border);
+    border-right: 1px dashed var(--resume-panel-border);
+    border-top-left-radius: var(--resume-panel-radius);
+    border-top-right-radius: var(--resume-panel-radius);
+  }
+
+  .resume-panel::after,
+  .resume-project-card::after,
+  .resume-skill-card::after {
+    bottom: 0;
+    border-bottom: 1px dashed var(--resume-panel-border);
+    border-left: 1px dashed var(--resume-panel-border);
+    border-right: 1px dashed var(--resume-panel-border);
+    border-bottom-left-radius: var(--resume-panel-radius);
+    border-bottom-right-radius: var(--resume-panel-radius);
   }
 
   .resume-panel {
@@ -505,7 +554,6 @@ const profileImageAlt =
 
   .resume-panel-emphasis,
   .resume-panel-emphasis-mirrored {
-    border-color: var(--resume-panel-border-strong);
     background:
       radial-gradient(
         120% 70% at 50% 0%,
@@ -513,6 +561,15 @@ const profileImageAlt =
         transparent 58%
       ),
       linear-gradient(160deg, rgba(5, 31, 24, 0.95), rgba(4, 26, 20, 0.86));
+  }
+
+  .resume-panel-emphasis::before,
+  .resume-panel-emphasis::after,
+  .resume-panel-emphasis-mirrored::before,
+  .resume-panel-emphasis-mirrored::after,
+  .resume-project-card::before,
+  .resume-project-card::after {
+    border-color: var(--resume-panel-border-strong);
   }
 
   .resume-panel h2,
@@ -670,7 +727,21 @@ const profileImageAlt =
   }
 
   .resume-skill-card {
-    padding: 1rem;
+    overflow: visible;
+    padding: 1rem 0 0;
+    background: transparent;
+    box-shadow: none;
+    backdrop-filter: none;
+  }
+
+  .resume-skill-card::before,
+  .resume-skill-card::after {
+    display: none;
+  }
+
+  .resume-skill-card + .resume-skill-card {
+    border-top: 1px dashed var(--resume-divider);
+    padding-top: 1rem;
   }
 
   .resume-skill-card h3 {
@@ -777,22 +848,15 @@ const profileImageAlt =
   }
 
   .resume-project-card {
-    position: relative;
-    overflow: hidden;
-    border-color: var(--resume-panel-border-strong);
-  }
-
-  .resume-project-card::before {
-    content: "";
-    position: absolute;
-    inset: 0 auto 0 0;
-    width: 3px;
-    background: linear-gradient(
-      180deg,
-      rgba(110, 231, 183, 0.94),
-      rgba(110, 231, 183, 0.12)
-    );
-    pointer-events: none;
+    background:
+      linear-gradient(
+          180deg,
+          rgba(110, 231, 183, 0.94),
+          rgba(110, 231, 183, 0.12)
+        )
+        left top / 3px 100% no-repeat,
+      var(--resume-panel-wash),
+      var(--resume-panel-surface);
   }
 
   .resume-project-header {
@@ -1048,6 +1112,15 @@ const profileImageAlt =
 
     .resume-hero-media::after {
       background: none;
+    }
+
+    .resume-panel::before,
+    .resume-panel::after,
+    .resume-project-card::before,
+    .resume-project-card::after,
+    .resume-skill-card::before,
+    .resume-skill-card::after {
+      display: none;
     }
 
     .resume-panel,

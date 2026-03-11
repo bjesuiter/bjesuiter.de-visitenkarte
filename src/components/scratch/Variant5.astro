@@ -2,6 +2,7 @@
 import { Image } from "astro:assets";
 import { Icon } from "astro-icon/components";
 import profilePic from "../../assets/2023-03-17_square_near_profilepic.jpeg";
+import SurfaceCard from "../ui/SurfaceCard.astro";
 import {
   getLocalizedProfileContent,
   type SupportedLocale,
@@ -55,37 +56,82 @@ const resumeCta =
           "My complete project history, core skills, and industry background are now available directly on the website and optimized for reading or printing as a PDF.",
         linkLabel: "Open CV",
       };
+
+const heroClass =
+  "relative isolate grid min-h-[clamp(320px,78vw,440px)] items-end overflow-hidden border-b border-dashed border-emerald-200/30 p-[clamp(1.1rem,3.8vw,2rem)] min-[641px]:min-h-[clamp(360px,50vw,460px)] min-[641px]:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] min-[641px]:items-center min-[641px]:p-[clamp(1.25rem,3.2vw,2rem)] before:absolute before:inset-0 before:z-[1] before:bg-[radial-gradient(circle_at_18%_18%,rgba(110,231,183,0.16),transparent_32%),linear-gradient(180deg,rgba(3,16,12,0.04)_0%,rgba(6,32,22,0.14)_42%,rgba(4,28,19,0.5)_72%,rgba(3,16,12,0.86)_100%)] min-[641px]:before:bg-[linear-gradient(90deg,rgba(3,16,12,0.18)_0%,rgba(3,16,12,0.12)_42%,rgba(3,16,12,0.22)_52%,rgba(3,16,12,0.08)_66%,rgba(3,16,12,0)_82%)]";
+const sectionClass =
+  "grid gap-[0.85rem] border-t border-dashed border-emerald-200/20 p-[clamp(1.2rem,3vw,1.8rem)]";
+const sectionTitleClass =
+  "font-display text-[clamp(1.2rem,2vw,1.55rem)] leading-[1.1] text-balance text-emerald-50";
+const supportTitleClass =
+  "font-display text-[clamp(1.3rem,2.2vw,1.7rem)] leading-[1.1] text-balance text-emerald-50";
+const sectionTextClass =
+  "max-w-[60ch] font-tech leading-[1.5] text-[#c9f7e3] text-balance";
+const ctaLinkBaseClass =
+  "w-fit rounded-full border px-[1.05rem] py-[0.55rem] font-tech text-sm font-bold uppercase tracking-[0.04em] transition duration-200 ease-out hover:-translate-y-px focus-visible:-translate-y-px focus-visible:outline-none";
+const profileLinkClass =
+  "grid grid-cols-[auto_1fr_auto] items-center gap-[0.6rem] rounded-xl border border-emerald-300/30 bg-[rgba(2,20,15,0.42)] px-[0.8rem] py-[0.65rem] font-tech text-emerald-50 transition duration-200 hover:border-emerald-300 focus-visible:border-emerald-300 focus-visible:outline-none";
 ---
 
-<article class="v5-pass">
-  <header class="v5-header">
+<SurfaceCard as="article" class="mx-auto max-w-[1140px]">
+  <header class={heroClass}>
     <Image
       src={profilePic}
       alt={identity.imageAlt}
       loading="lazy"
-      class="v5-hero-bg"
+      class="pointer-events-none absolute inset-0 z-0 h-full w-full object-cover object-top brightness-[0.98] contrast-[1.03] saturate-[0.84] min-[641px]:left-auto min-[641px]:w-1/2 min-[641px]:object-[center_10%] min-[951px]:top-4 min-[951px]:right-4 min-[951px]:bottom-auto min-[951px]:left-auto min-[951px]:h-[calc(100%-2rem)] min-[951px]:w-[min(420px,calc(46%_-_1rem))] min-[951px]:rounded-[18px] min-[951px]:object-[center_12%]"
     />
-    <div class="v5-header-copy">
-      <h1>{identity.name}</h1>
-      <p>{identity.tagline}</p>
+    <div
+      class="relative z-[2] max-w-[54ch] text-center min-[641px]:col-start-1 min-[641px]:max-w-[30ch] min-[641px]:self-center min-[641px]:pr-[clamp(0.5rem,1.8vw,1.25rem)] min-[641px]:text-left"
+    >
+      <h1
+        class="font-display mb-2 text-[clamp(2rem,6.2vw,3.4rem)] leading-[0.96] text-balance text-emerald-50"
+      >
+        {identity.name}
+      </h1>
+      <p
+        class="font-tech mx-auto max-w-[34ch] text-[clamp(0.95rem,2vw,1.15rem)] leading-[1.5] text-balance text-emerald-100 min-[641px]:mx-0 min-[641px]:max-w-[24ch] min-[641px]:text-left"
+      >
+        {identity.tagline}
+      </p>
     </div>
   </header>
 
-  <section class="v5-rows" aria-label={profileAriaLabel}>
+  <section class="grid" aria-label={profileAriaLabel}>
     {
       profileSections.map((section, sectionIndex) => (
-        <section class="v5-row" style={`--line:${sectionIndex};`}>
-          <aside>
-            <h2>{section.title}</h2>
-            <p>{section.description}</p>
+        <section
+          class="motion-safe:animate-v5-enter grid border-b border-dashed border-emerald-200/18 last:border-b-0 min-[900px]:grid-cols-[minmax(0,0.82fr)_minmax(0,1.18fr)]"
+          style={`animation-delay:${sectionIndex * 90}ms;`}
+        >
+          <aside class="p-[1.35rem] pb-[0.75rem] min-[900px]:border-r min-[900px]:border-dashed min-[900px]:border-emerald-200/15 min-[900px]:pb-[1.35rem]">
+            <h2 class="font-display mt-[0.3rem] mb-[0.6rem] text-[clamp(1.15rem,2vw,1.45rem)] leading-[1.2] text-balance text-emerald-50">
+              {section.title}
+            </h2>
+            <p class="font-tech leading-[1.5] text-balance text-[#bdeed8]">
+              {section.description}
+            </p>
           </aside>
-          <ul>
+          <ul class="grid list-none gap-[0.65rem] p-[1.35rem] pt-[0.7rem]">
             {section.links.map((link) => (
               <li>
-                <a href={link.href} target="_blank" rel="noreferrer">
-                  <Icon name={link.icon} />
+                <a
+                  href={link.href}
+                  target="_blank"
+                  rel="noreferrer"
+                  class={profileLinkClass}
+                >
+                  <Icon
+                    name={link.icon}
+                    class="size-[1.05rem] min-w-[1.05rem] text-emerald-300"
+                  />
                   <span>{link.label}</span>
-                  <span aria-hidden="true">{openLabel}</span>
+                  <span
+                    aria-hidden="true"
+                    class="hidden text-[0.65rem] tracking-[0.08em] text-emerald-200 uppercase min-[380px]:block"
+                  >
+                    {openLabel}
+                  </span>
                 </a>
               </li>
             ))}
@@ -95,24 +141,45 @@ const resumeCta =
     }
   </section>
 
-  <section class="v5-resume" aria-label={resumeCta.ariaLabel}>
-    <h2>{resumeCta.title}</h2>
-    <p>{resumeCta.description}</p>
-    <a href={resumeHref}>{resumeCta.linkLabel}</a>
+  <section
+    class:list={[
+      sectionClass,
+      "bg-[radial-gradient(circle_at_12%_16%,rgba(110,231,183,0.16),transparent_30%),linear-gradient(120deg,rgba(4,27,21,0.96),rgba(6,34,25,0.82))]",
+    ]}
+    aria-label={resumeCta.ariaLabel}
+  >
+    <h2 class={sectionTitleClass}>{resumeCta.title}</h2>
+    <p class={sectionTextClass}>{resumeCta.description}</p>
+    <a
+      href={resumeHref}
+      class:list={[
+        ctaLinkBaseClass,
+        "border-white/24 bg-[linear-gradient(90deg,#a7f3d0,#6ee7b7)] text-[#032015] hover:brightness-[1.04] focus-visible:brightness-[1.04]",
+      ]}
+    >
+      {resumeCta.linkLabel}
+    </a>
   </section>
 
   {
     showVerificationSection && (
       <section
-        class="v5-verification"
+        class:list={[
+          sectionClass,
+          "bg-[radial-gradient(circle_at_90%_20%,rgba(110,231,183,0.12),transparent_30%),linear-gradient(120deg,rgba(5,26,20,0.92),rgba(5,30,22,0.72))]",
+        ]}
         aria-label={verificationContent.ariaLabel}
       >
-        <h2>{verificationContent.title}</h2>
-        <p>{verificationContent.description}</p>
+        <h2 class={sectionTitleClass}>{verificationContent.title}</h2>
+        <p class={sectionTextClass}>{verificationContent.description}</p>
         <a
           href="https://keytrace.dev/@bjesuiter.de"
           target="_blank"
           rel="noreferrer"
+          class:list={[
+            ctaLinkBaseClass,
+            "border-emerald-300/50 bg-[rgba(3,24,18,0.6)] text-[#d9f9ec] hover:border-emerald-300 focus-visible:border-emerald-300",
+          ]}
         >
           keytrace.dev/@bjesuiter.de
         </a>
@@ -120,383 +187,23 @@ const resumeCta =
     )
   }
 
-  <section class="v5-support" aria-label={supportCta.ariaLabel}>
-    <h2>{supportCta.title}</h2>
-    <p>{supportCta.description}</p>
-    <a href={supportHref}>{supportCta.linkLabel}</a>
+  <section
+    class:list={[
+      sectionClass,
+      "bg-[radial-gradient(circle_at_10%_10%,rgba(110,231,183,0.14),transparent_28%),linear-gradient(120deg,rgba(4,24,18,0.9),rgba(5,30,22,0.7))]",
+    ]}
+    aria-label={supportCta.ariaLabel}
+  >
+    <h2 class={supportTitleClass}>{supportCta.title}</h2>
+    <p class={sectionTextClass}>{supportCta.description}</p>
+    <a
+      href={supportHref}
+      class:list={[
+        ctaLinkBaseClass,
+        "border-white/24 bg-[linear-gradient(90deg,#6ee7b7,#34d399)] text-[#032015] shadow-[0_8px_26px_rgba(0,0,0,0.26)] hover:brightness-[1.06] focus-visible:brightness-[1.06]",
+      ]}
+    >
+      {supportCta.linkLabel}
+    </a>
   </section>
-</article>
-
-<style is:global>
-  @import url("https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=Fraunces:opsz,wght@9..144,500;9..144,700&display=swap");
-
-  .v5-pass {
-    width: min(1140px, 100%);
-    margin: 0 auto;
-    border-radius: 22px;
-    overflow: hidden;
-    border: 1px solid rgba(167, 243, 208, 0.24);
-    background:
-      linear-gradient(90deg, rgba(220, 252, 231, 0.02) 1px, transparent 1px) 0
-        0 / 34px 100%,
-      linear-gradient(0deg, rgba(220, 252, 231, 0.015) 1px, transparent 1px) 0
-        0 / 100% 34px,
-      linear-gradient(135deg, rgba(7, 30, 24, 0.95), rgba(5, 24, 19, 0.84));
-    box-shadow: 0 24px 52px rgba(1, 10, 7, 0.55);
-  }
-
-  .v5-pass :where(h1, h2, p) {
-    text-wrap: balance;
-  }
-
-  .v5-header {
-    position: relative;
-    isolation: isolate;
-    display: grid;
-    align-items: end;
-    padding: clamp(1.1rem, 3.8vw, 2rem);
-    min-height: clamp(320px, 78vw, 440px);
-    border-bottom: 1px dashed rgba(167, 243, 208, 0.28);
-    overflow: hidden;
-  }
-
-  .v5-header::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    z-index: 1;
-    background:
-      radial-gradient(
-        circle at 18% 18%,
-        rgba(110, 231, 183, 0.16),
-        transparent 32%
-      ),
-      linear-gradient(
-        180deg,
-        rgba(3, 16, 12, 0.04) 0%,
-        rgba(6, 32, 22, 0.14) 42%,
-        rgba(4, 28, 19, 0.5) 72%,
-        rgba(3, 16, 12, 0.86) 100%
-      );
-  }
-
-  .v5-hero-bg {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: center top;
-    opacity: 1;
-    filter: saturate(0.84) contrast(1.03) brightness(0.98);
-    z-index: 0;
-    pointer-events: none;
-  }
-
-  .v5-header-copy {
-    position: relative;
-    z-index: 2;
-    max-width: 54ch;
-    text-align: center;
-  }
-
-  .v5-header h1 {
-    font-family: "Fraunces", serif;
-    font-size: clamp(2rem, 6.2vw, 3.4rem);
-    line-height: 0.96;
-    margin-bottom: 0.5rem;
-    text-wrap: balance;
-    color: #ecfdf5;
-  }
-
-  .v5-header p {
-    font-family: "Chakra Petch", sans-serif;
-    font-size: clamp(0.95rem, 2vw, 1.15rem);
-    line-height: 1.5;
-    max-width: 34ch;
-    margin-inline: auto;
-    text-align: center;
-    text-wrap: balance;
-    color: #d1fae5;
-  }
-
-  .v5-rows {
-    display: grid;
-  }
-
-  .v5-row {
-    display: grid;
-    grid-template-columns: 1fr;
-    border-bottom: 1px dashed rgba(167, 243, 208, 0.18);
-    animation: v5-enter 420ms ease both;
-    animation-delay: calc(var(--line) * 90ms);
-  }
-
-  .v5-row:last-child {
-    border-bottom: 0;
-  }
-
-  .v5-resume,
-  .v5-verification {
-    display: grid;
-    gap: 0.85rem;
-    padding: clamp(1.2rem, 3vw, 1.8rem);
-    border-top: 1px dashed rgba(167, 243, 208, 0.2);
-  }
-
-  .v5-resume {
-    background:
-      radial-gradient(
-        circle at 12% 16%,
-        rgba(110, 231, 183, 0.16),
-        transparent 30%
-      ),
-      linear-gradient(120deg, rgba(4, 27, 21, 0.96), rgba(6, 34, 25, 0.82));
-  }
-
-  .v5-verification {
-    background:
-      radial-gradient(
-        circle at 90% 20%,
-        rgba(110, 231, 183, 0.12),
-        transparent 30%
-      ),
-      linear-gradient(120deg, rgba(5, 26, 20, 0.92), rgba(5, 30, 22, 0.72));
-  }
-
-  .v5-resume h2,
-  .v5-verification h2 {
-    font-family: "Fraunces", serif;
-    font-size: clamp(1.2rem, 2vw, 1.55rem);
-    color: #ecfdf5;
-    line-height: 1.1;
-  }
-
-  .v5-resume p,
-  .v5-verification p {
-    font-family: "Chakra Petch", sans-serif;
-    color: #c9f7e3;
-    max-width: 60ch;
-    line-height: 1.5;
-  }
-
-  .v5-resume a,
-  .v5-verification a {
-    width: fit-content;
-    font-family: "Chakra Petch", sans-serif;
-    font-weight: 700;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
-    border-radius: 999px;
-    padding: 0.55rem 1.05rem;
-    transition:
-      transform 170ms ease,
-      border-color 170ms ease,
-      filter 170ms ease;
-  }
-
-  .v5-resume a {
-    color: #032015;
-    border: 1px solid rgba(255, 255, 255, 0.24);
-    background: linear-gradient(90deg, #a7f3d0, #6ee7b7);
-  }
-
-  .v5-verification a {
-    color: #d9f9ec;
-    border: 1px solid rgba(110, 231, 183, 0.5);
-    background: rgba(3, 24, 18, 0.6);
-  }
-
-  .v5-resume a:hover,
-  .v5-verification a:hover {
-    transform: translateY(-1px);
-    border-color: #6ee7b7;
-  }
-
-  .v5-resume a:hover {
-    filter: brightness(1.04);
-  }
-
-  .v5-support {
-    display: grid;
-    gap: 0.9rem;
-    padding: clamp(1.2rem, 3vw, 1.8rem);
-    border-top: 1px dashed rgba(167, 243, 208, 0.2);
-    background:
-      radial-gradient(
-        circle at 10% 10%,
-        rgba(110, 231, 183, 0.14),
-        transparent 28%
-      ),
-      linear-gradient(120deg, rgba(4, 24, 18, 0.9), rgba(5, 30, 22, 0.7));
-  }
-
-  .v5-support h2 {
-    font-family: "Fraunces", serif;
-    font-size: clamp(1.3rem, 2.2vw, 1.7rem);
-    color: #ecfdf5;
-    line-height: 1.1;
-  }
-
-  .v5-support p {
-    font-family: "Chakra Petch", sans-serif;
-    color: #c9f7e3;
-    max-width: 58ch;
-    line-height: 1.5;
-  }
-
-  .v5-support a {
-    width: fit-content;
-    font-family: "Chakra Petch", sans-serif;
-    font-weight: 700;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
-    color: #032015;
-    background: linear-gradient(90deg, #6ee7b7, #34d399);
-    border-radius: 999px;
-    padding: 0.62rem 1.05rem;
-    border: 1px solid rgba(255, 255, 255, 0.24);
-    box-shadow: 0 8px 26px rgba(0, 0, 0, 0.26);
-    transition:
-      transform 170ms ease,
-      filter 170ms ease;
-  }
-
-  .v5-support a:hover {
-    transform: translateY(-1px);
-    filter: brightness(1.06);
-  }
-
-  .v5-row aside {
-    padding: 1.35rem 1.35rem 0.75rem;
-    border-right: 0;
-    border-bottom: 0;
-  }
-
-  .v5-row h2 {
-    font-family: "Fraunces", serif;
-    font-size: clamp(1.15rem, 2vw, 1.45rem);
-    margin: 0.3rem 0 0.6rem;
-    line-height: 1.2;
-    color: #ecfdf5;
-  }
-
-  .v5-row aside p {
-    font-family: "Chakra Petch", sans-serif;
-    line-height: 1.5;
-    color: #bdeed8;
-  }
-
-  .v5-row ul {
-    padding: 0.7rem 1.35rem 1.35rem;
-    display: grid;
-    gap: 0.65rem;
-  }
-
-  .v5-row a {
-    display: grid;
-    align-items: center;
-    gap: 0.6rem;
-    grid-template-columns: auto 1fr auto;
-    font-family: "Chakra Petch", sans-serif;
-    padding: 0.65rem 0.8rem;
-    border-radius: 12px;
-    border: 1px solid rgba(134, 239, 172, 0.28);
-    background: rgba(2, 20, 15, 0.42);
-    color: #eafff5;
-    transition: border-color 170ms ease;
-  }
-
-  .v5-row a:hover {
-    border-color: #6ee7b7;
-  }
-
-  .v5-row svg {
-    color: #6ee7b7;
-    font-size: 1.05rem;
-    width: 1.05rem;
-    min-width: 1.05rem;
-    height: 1.05rem;
-  }
-
-  .v5-row a span:last-child {
-    display: none;
-    text-transform: uppercase;
-    font-size: 0.65rem;
-    letter-spacing: 0.08em;
-    color: #a7f3d0;
-  }
-
-  @media (min-width: 380px) {
-    .v5-row a span:last-child {
-      display: block;
-    }
-  }
-
-  @keyframes v5-enter {
-    from {
-      opacity: 0;
-      transform: translateY(12px);
-    }
-
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-
-  @media (min-width: 641px) {
-    .v5-header {
-      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-      align-items: center;
-      min-height: clamp(360px, 50vw, 460px);
-      padding: clamp(1.25rem, 3.2vw, 2rem);
-    }
-
-    .v5-header::before {
-      display: block;
-      background: linear-gradient(
-        90deg,
-        rgba(3, 16, 12, 0.18) 0%,
-        rgba(3, 16, 12, 0.12) 42%,
-        rgba(3, 16, 12, 0.22) 52%,
-        rgba(3, 16, 12, 0.08) 66%,
-        rgba(3, 16, 12, 0) 82%
-      );
-    }
-
-    .v5-header-copy {
-      grid-column: 1;
-      align-self: center;
-      text-align: left;
-      max-width: 30ch;
-      padding-right: clamp(0.5rem, 1.8vw, 1.25rem);
-    }
-
-    .v5-header p {
-      max-width: 24ch;
-      margin-inline: 0;
-      text-align: left;
-    }
-
-    .v5-hero-bg {
-      inset: 0 0 0 auto;
-      width: 50%;
-      object-position: center 10%;
-      opacity: 1;
-    }
-  }
-
-  @media (min-width: 951px) {
-    .v5-hero-bg {
-      top: 1rem;
-      right: 1rem;
-      bottom: auto;
-      left: auto;
-      width: min(420px, calc(46% - 1rem));
-      height: calc(100% - 2rem);
-      border-radius: 18px;
-      object-position: center 12%;
-    }
-  }
-</style>
+</SurfaceCard>

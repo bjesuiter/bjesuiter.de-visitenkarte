@@ -1,0 +1,28 @@
+---
+interface Props {
+  class?: string;
+  centered?: boolean;
+  subtleGrid?: boolean;
+}
+
+const {
+  class: className = "",
+  centered = false,
+  subtleGrid = false,
+} = Astro.props;
+
+const baseClass =
+  "min-h-screen bg-[linear-gradient(0deg,rgba(4,18,15,0.93),rgba(4,18,15,0.93)),radial-gradient(circle_at_82%_12%,rgba(110,231,183,0.34),transparent_30%),radial-gradient(circle_at_12%_88%,rgba(34,197,94,0.28),transparent_30%),#02110d]";
+const subtleGridClass =
+  "bg-[linear-gradient(90deg,rgba(220,252,231,0.018)_1px,transparent_1px)_0_0/34px_100%,linear-gradient(0deg,rgba(220,252,231,0.014)_1px,transparent_1px)_0_0/100%_34px,linear-gradient(0deg,rgba(4,18,15,0.93),rgba(4,18,15,0.93)),radial-gradient(circle_at_82%_12%,rgba(110,231,183,0.34),transparent_30%),radial-gradient(circle_at_12%_88%,rgba(34,197,94,0.28),transparent_30%),#02110d]";
+---
+
+<main
+  class:list={[
+    subtleGrid ? subtleGridClass : baseClass,
+    centered && "grid place-items-center",
+    className,
+  ]}
+>
+  <slot />
+</main>
