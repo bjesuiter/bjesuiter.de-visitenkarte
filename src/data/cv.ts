@@ -204,8 +204,8 @@ const resumeDe: ResumeContent = {
         "Progressive Web Apps",
         "StencilJS",
         "CSS3 & Tailwind CSS",
-        "Angular Material",
-        "PrimeNG 17",
+        { text: "Angular Material", chip: "legacy" },
+        { text: "PrimeNG 17", chip: "legacy" },
       ],
     },
     {
@@ -835,8 +835,8 @@ const resumeEn: ResumeContent = {
         "Progressive Web Apps",
         "StencilJS",
         "CSS3 & Tailwind CSS",
-        "Angular Material",
-        "PrimeNG 17",
+        { text: "Angular Material", chip: "legacy" },
+        { text: "PrimeNG 17", chip: "legacy" },
       ],
     },
     {
