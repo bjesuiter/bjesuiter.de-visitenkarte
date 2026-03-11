@@ -54,7 +54,7 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
 
   <article class="resume-sheet">
     <!-- Hero section with the main heading, intro copy, and profile image. -->
-    <header class="resume-hero gap-4">
+    <header class="resume-hero resume-panel resume-section-frame gap-4">
       <div class="resume-hero-copy gap-4">
         <p class="resume-badge">{content.badge}</p>
         <h1>{content.heading}</h1>
@@ -72,7 +72,9 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
     </header>
 
     <!-- Top overview grid with personal facts on the left and contact details on the right. -->
-    <section class="resume-grid resume-top-grid gap-4">
+    <section
+      class="resume-grid resume-top-grid resume-panel resume-section-frame gap-4"
+    >
       <!-- Quick facts section for personal and professional summary data. -->
       <section class="resume-panel resume-surface resume-surface-strong">
         <h2>{content.factsTitle}</h2>
@@ -119,7 +121,7 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
     </section>
 
     <!-- Skills dossier section grouped by category and specialization. -->
-    <section class="resume-panel resume-section resume-section-dossier">
+    <section class="resume-panel resume-section resume-section-frame">
       <div class="resume-section-heading">
         <h2>{content.skillsTitle}</h2>
       </div>
@@ -160,7 +162,7 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
     </section>
 
     <!-- Project portfolio section with detailed case studies and technology stacks. -->
-    <section class="resume-section">
+    <section class="resume-section resume-panel resume-section-frame">
       <div class="resume-section-heading">
         <div>
           <h2>{content.projectsTitle}</h2>
@@ -206,14 +208,14 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
               </header>
 
               <div class="resume-project-body gap-4">
-                <!-- Narrative summary describing the challenge, work, and impact of the project. -->
+                {/* Narrative summary describing the challenge, work, and impact of the project. */}
                 <div class="resume-project-copy gap-4">
                   {project.summary.map((paragraph) => (
                     <p>{paragraph}</p>
                   ))}
                 </div>
 
-                <!-- Key highlights section calling out notable results and contributions. -->
+                {/* Key highlights section calling out notable results and contributions. */}
                 <section class="resume-detail-card resume-surface-inset">
                   <h4>{content.highlightsTitle}</h4>
                   <ul class="gap-4">
@@ -223,7 +225,7 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
                   </ul>
                 </section>
 
-                <!-- Technology stack section listing the tools and platforms used. -->
+                {/* Technology stack section listing the tools and platforms used. */}
                 <section class="resume-detail-card resume-surface-inset">
                   <h4>{content.stackTitle}</h4>
                   <dl class="resume-stack-list gap-4">
@@ -463,8 +465,10 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
 
   .resume-hero {
     gap: 1.15rem;
+  }
+
+  .resume-hero.resume-section-frame {
     padding-bottom: 1.6rem;
-    border-bottom: 1px dashed var(--resume-divider-strong);
   }
 
   .resume-hero-copy {
@@ -566,10 +570,6 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
     backdrop-filter: blur(8px);
   }
 
-  .resume-surface-strong {
-    background: var(--resume-panel-surface-strong);
-  }
-
   .resume-surface-soft {
     overflow: hidden;
     border: 1px solid rgba(167, 243, 208, 0.12);
@@ -608,22 +608,18 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
   }
 
   .resume-section {
-    padding-top: 1rem;
-    border-top: 1px dashed var(--resume-divider-strong);
+    padding-top: 0;
+    border-top: 0;
   }
 
-  .resume-section-dossier {
+  .resume-section-frame {
     position: relative;
     overflow: hidden;
-    padding-bottom: 1rem;
-    border-top: 0;
-    border-bottom: 0;
-    border-left: 0;
-    border-right: 0;
+    border: 0;
   }
 
-  .resume-section-dossier::before,
-  .resume-section-dossier::after {
+  .resume-section-frame::before,
+  .resume-section-frame::after {
     content: "";
     position: absolute;
     left: 0;
@@ -634,7 +630,7 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
     mask-image: var(--resume-dossier-frame-fade);
   }
 
-  .resume-section-dossier::before {
+  .resume-section-frame::before {
     top: 0;
     border-top: 1px dashed var(--resume-divider-strong);
     border-left: 1px dashed var(--resume-divider-strong);
@@ -643,7 +639,7 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
     border-top-right-radius: var(--resume-panel-radius);
   }
 
-  .resume-section-dossier::after {
+  .resume-section-frame::after {
     bottom: 0;
     border-bottom: 1px dashed var(--resume-divider-strong);
     border-left: 1px dashed var(--resume-divider-strong);
@@ -1162,7 +1158,6 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
       page-break-inside: avoid;
     }
 
-    .resume-surface-strong,
     .resume-project-header {
       background: var(--resume-print-panel-muted-bg) !important;
       border-color: var(--resume-divider) !important;
@@ -1215,13 +1210,13 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
       margin-top: 0.8rem;
     }
 
-    .resume-section-dossier {
+    .resume-section-frame {
       border-top: 1px dashed var(--resume-divider-strong);
       border-bottom: 1px dashed var(--resume-divider-strong);
     }
 
-    .resume-section-dossier::before,
-    .resume-section-dossier::after {
+    .resume-section-frame::before,
+    .resume-section-frame::after {
       display: none;
     }
 
