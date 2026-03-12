@@ -193,7 +193,7 @@ This project uses a recurring border treatment that should feel like a pair of *
 
 This design element is also referred to as:
 
-- **dashed border braces**
+- **dashed border braces / dashed border clamp**
 
 This is an important identity element for the CV page and similar dossier-like sections.
 
