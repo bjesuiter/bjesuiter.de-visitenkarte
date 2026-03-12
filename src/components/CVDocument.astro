@@ -91,9 +91,7 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
 
       <!-- Contact links and industry focus section. -->
       <!-- English heading: Links -->
-      <section
-        class="resume-panel resume-panel-mirrored resume-surface resume-surface-strong"
-      >
+      <section class="resume-panel resume-panel-mirrored resume-surface">
         <h2>{content.contactTitle}</h2>
         <ul class="resume-link-list">
           {
@@ -123,9 +121,7 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
 
     <!-- Skills dossier section grouped by category and specialization. -->
     <!-- English heading: IT Skills -->
-    <section
-      class="resume-panel resume-section resume-section-frame resume-skills-section"
-    >
+    <section class="resume-panel resume-section resume-skills-section">
       <div class="resume-section-heading">
         <h2 class="pl-3">{content.skillsTitle}</h2>
       </div>
@@ -180,7 +176,7 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
         {
           content.projects.map((project, index) => (
             <article class="resume-project-card resume-surface resume-surface-project">
-              <header class="resume-project-header resume-surface-strong gap-4">
+              <header class="resume-project-header gap-4">
                 <div class="resume-project-title-block gap-4">
                   <div class="resume-project-eyebrow">
                     <span class="resume-card-index">

@@ -218,9 +218,11 @@ Always use:
 
 - **1px dashed border**
 - emerald-tinted line color consistent with the existing dossier border language
-- rounded corners matching the element’s existing radius
+- geometry that matches the element type:
+  - **brace frames:** rounded corners matching the element’s existing radius
+  - **divider clamps:** crisp square 90° turns with **no** corner radius
 
-#### Critical geometry rule
+#### Critical geometry rule for brace frames
 
 The border must be handled in this order:
 
@@ -271,13 +273,73 @@ Visual impression:
 - like side braces holding the content column in place
 - ideal for stacked cards such as responsibilities, outcomes, notes, or highlighted detail blocks inside a larger section
 
+#### Variant 3: horizontal divider clamp
+
+Use this when a section needs a **standalone horizontal divider** that belongs to the same brace language, but does **not** belong to a rounded box.
+
+Behavior:
+
+- draw one readable **horizontal dashed span** as the main divider line
+- at the left and right ends, turn the line with a **hard 90° corner** into a short vertical segment
+- only **after** that turn, let the open end fade out
+- keep the central horizontal span dominant; the turned end segments are supporting structure
+- do **not** render it like a generic blunt-ended `hr`
+
+Visual impression:
+
+- like a technical separator that has been cut from the brace system
+- more architectural than a plain dashed rule
+- quieter than a full framed box, but clearly part of the same dossier language
+
+Good uses:
+
+- between stacked CV subsections
+- between grouped metadata rows
+- between dense content clusters that need separation without becoming separate cards
+
+#### Variant 4: vertical divider clamp
+
+Use this when a layout needs a **standalone vertical divider** that echoes the brace language, but without any rounded frame corners.
+
+Behavior:
+
+- draw one readable **vertical dashed span** as the main divider line
+- at the top and bottom ends, turn the line with a **hard 90° corner** into a short horizontal segment
+- only **after** that turn, let the open end fade out
+- keep the central vertical span dominant; the turned end segments should stay compact
+- do **not** let the cap segments become long enough to read like shelves or tabs
+
+Visual impression:
+
+- like a locator rail with small orthogonal clamps
+- useful for separating columns, side-by-side detail groups, or internal dossier zones
+
+Good uses:
+
+- between compact columns
+- inside metadata grids
+- as a structural separator in denser editorial layouts
+
+#### Geometry rule for divider clamps
+
+These divider variants follow the same visual sequencing as the rounded brace frames, but with **orthogonal precision** instead of corner radius.
+
+The line must be handled in this order:
+
+1. remain fully visible at the main span
+2. make a clearly readable **90° turn**
+3. only then begin to fade out
+
+The fade must not soften or erase the corner itself.
+The corner is what makes the divider read as part of the brace family.
+
 #### Fade behavior
 
 The fade should be:
 
 - subtle and smooth
 - symmetrical unless intentional asymmetry is required by composition
-- used only on the open ends of the brace
+- used only on the open ends of the brace or divider clamp
 
 The fade should never:
 
