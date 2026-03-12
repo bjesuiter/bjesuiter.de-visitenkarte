@@ -279,17 +279,17 @@ const resumeDe: ResumeContent = {
       period: "10/2025 – 03/2026",
       sector: "Informationstechnologie",
       title:
-        "Senior Software Entwickler:in (Teilzeit) bei secunet International GmbH",
+        "Senior Software Engineer (Teilzeit) bei secunet International GmbH",
       summary: [
-        "Teilzeit-Engagement als Senior Software Entwickler:in bei secunet International GmbH.",
-        "Fokus auf die Mitarbeit in professioneller Softwareentwicklung auf Senior-Level im Unternehmensumfeld.",
+        "Teilzeit-Engagement als Senior Software Engineer bei secunet International GmbH.",
+        "Fokus auf Senior-Level-Softwareentwicklung in einem Enterprise-Umfeld.",
       ],
       highlights: [
-        "Senior-Level Softwareentwicklung im Teilzeitmodell.",
-        "Zusammenarbeit im Unternehmenskontext von secunet International GmbH.",
+        "Senior-Level-Softwareentwicklung in einer Teilzeitrolle.",
+        "Zusammenarbeit im professionellen Produkt- und Engineering-Kontext von secunet International GmbH.",
       ],
       duration: "6 Monate",
-      roles: ["Senior Software Entwickler:in"],
+      roles: ["Senior Software Engineer"],
       stack: [
         { label: "Kontext", value: "Teilzeit · secunet International GmbH" },
       ],
@@ -300,12 +300,11 @@ const resumeDe: ResumeContent = {
       sector: "Persönliche Entwicklung",
       title: "Berufliche Auszeit mit Fokus auf Gesundheit und Wohlbefinden",
       summary: [
-        "Bewusste berufliche Auszeit zur Stabilisierung von Gesundheit und Wohlbefinden.",
-        "Die Phase diente der Regeneration und der persönlichen Neuausrichtung vor dem nächsten beruflichen Abschnitt.",
+        "Bewusste berufliche Auszeit mit primärem Fokus auf Gesundheit und Wohlbefinden.",
       ],
       highlights: [
         "Strukturierte Auszeit mit klarem Fokus auf Regeneration.",
-        "Gezielte Vorbereitung auf den Wiedereinstieg in neue technische Aufgabenfelder.",
+        "Bewusste Vorbereitung auf den Wiedereinstieg in neue technische Arbeitskontexte.",
       ],
       duration: "6 Monate",
       roles: ["Berufliche Auszeit"],
