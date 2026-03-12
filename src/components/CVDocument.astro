@@ -72,9 +72,7 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
     </header>
 
     <!-- Top overview grid with personal facts on the left and contact details on the right. -->
-    <section
-      class="resume-grid resume-top-grid resume-panel resume-section-frame gap-4"
-    >
+    <section class="resume-grid resume-top-grid resume-panel gap-4">
       <!-- Quick facts section for personal and professional summary data. -->
       <!-- English heading: Profile -->
       <section class="resume-panel resume-surface resume-surface-strong">
@@ -219,6 +217,8 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
                 </dl>
               </header>
 
+              <div class="resume-project-divider" aria-hidden="true" />
+
               <div class="resume-project-body gap-4">
                 {/* Narrative summary describing the challenge, work, and impact of the project. */}
                 <div class="resume-project-copy gap-4">
@@ -228,7 +228,7 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
                     ))}
                   </section>
 
-                  <section class="resume-project-spacer" aria-hidden="true"></section>
+                  <section class="resume-project-spacer" aria-hidden="true" />
 
                   {/* Key highlights sit directly below the project description without card styling. */}
                   {/* English heading: Responsibilities & Outcomes */}
@@ -942,7 +942,38 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
   .resume-project-header {
     gap: 1rem;
     padding: 1.18rem 1.18rem 1.04rem 1.3rem;
-    border-bottom: 1px dashed var(--resume-divider-strong);
+    border-bottom: 0;
+  }
+
+  .resume-project-divider {
+    position: relative;
+    height: 0.8rem;
+    margin: 0 1.18rem 0 1.3rem;
+    border-top: 1px dashed var(--resume-divider-strong);
+  }
+
+  .resume-project-divider::before,
+  .resume-project-divider::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    width: 0.8rem;
+    height: 0.5rem;
+    pointer-events: none;
+  }
+
+  .resume-project-divider::before {
+    left: 0;
+    border-top: 1px dashed var(--resume-divider-strong);
+    border-left: 1px dashed var(--resume-divider-strong);
+    border-top-left-radius: 12px;
+  }
+
+  .resume-project-divider::after {
+    right: 0;
+    border-top: 1px dashed var(--resume-divider-strong);
+    border-right: 1px dashed var(--resume-divider-strong);
+    border-top-right-radius: 12px;
   }
 
   .resume-project-title-block {
@@ -1023,8 +1054,8 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
   .resume-project-highlights {
     display: grid;
     gap: 0.7rem;
-
     padding-top: 0.5rem;
+    padding-bottom: 1rem;
     align-content: start;
   }
 
