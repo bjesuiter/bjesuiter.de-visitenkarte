@@ -76,6 +76,7 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
       class="resume-grid resume-top-grid resume-panel resume-section-frame gap-4"
     >
       <!-- Quick facts section for personal and professional summary data. -->
+      <!-- English heading: Profile -->
       <section class="resume-panel resume-surface resume-surface-strong">
         <h2>{content.factsTitle}</h2>
         <dl class="resume-facts gap-4">
@@ -91,6 +92,7 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
       </section>
 
       <!-- Contact links and industry focus section. -->
+      <!-- English heading: Links -->
       <section
         class="resume-panel resume-panel-mirrored resume-surface resume-surface-strong"
       >
@@ -113,6 +115,7 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
           }
         </ul>
 
+        <!-- English heading: Industries -->
         <h2 class="resume-subheading">{content.industriesTitle}</h2>
         <ul class="resume-chip-list">
           {content.industries.map((industry) => <li>{industry}</li>)}
@@ -121,6 +124,7 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
     </section>
 
     <!-- Skills dossier section grouped by category and specialization. -->
+    <!-- English heading: IT Skills -->
     <section
       class="resume-panel resume-section resume-section-frame resume-skills-section"
     >
@@ -164,6 +168,7 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
     </section>
 
     <!-- Project portfolio section with detailed case studies and technology stacks. -->
+    <!-- English heading: Project History -->
     <section
       class="resume-section resume-panel resume-section-frame resume-project-history-section"
     >
@@ -194,17 +199,20 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
                 <dl class="resume-project-meta gap-4">
                   {project.duration && (
                     <div class="resume-surface-inset">
+                      {/* English label: Project Duration */}
                       <dt>{content.durationLabel}</dt>
                       <dd>{project.duration}</dd>
                     </div>
                   )}
                   {project.teamSize && (
                     <div class="resume-surface-inset">
+                      {/* English label: Team Size */}
                       <dt>{content.teamSizeLabel}</dt>
                       <dd>{project.teamSize}</dd>
                     </div>
                   )}
                   <div class="resume-surface-inset resume-project-meta-roles">
+                    {/* English label: Roles */}
                     <dt>{content.rolesLabel}</dt>
                     <dd>{project.roles.join(" · ")}</dd>
                   </div>
@@ -214,11 +222,16 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
               <div class="resume-project-body gap-4">
                 {/* Narrative summary describing the challenge, work, and impact of the project. */}
                 <div class="resume-project-copy gap-4">
-                  {project.summary.map((paragraph) => (
-                    <p>{paragraph}</p>
-                  ))}
+                  <section class="resume-project-summary">
+                    {project.summary.map((paragraph) => (
+                      <p>{paragraph}</p>
+                    ))}
+                  </section>
+
+                  <section class="resume-project-spacer" aria-hidden="true"></section>
 
                   {/* Key highlights sit directly below the project description without card styling. */}
+                  {/* English heading: Responsibilities & Outcomes */}
                   <section class="resume-project-highlights">
                     <h4>{content.highlightsTitle}</h4>
                     <ul class="resume-project-highlights-list gap-4">
@@ -230,6 +243,7 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
                 </div>
 
                 {/* Technical Context - Technology stack section listing the tools and platforms used. */}
+                {/* English heading: Technical Context */}
                 <section class="resume-detail-card resume-surface-inset resume-brace-frame-vertical">
                   <h4>{content.stackTitle}</h4>
                   <dl class="resume-stack-list gap-4">
@@ -987,7 +1001,19 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
   }
 
   .resume-project-copy {
+    display: flex;
+    flex-direction: column;
     gap: 0.8rem;
+    align-self: stretch;
+  }
+
+  .resume-project-summary {
+    display: grid;
+    gap: 0.8rem;
+  }
+
+  .resume-project-spacer {
+    flex-grow: 1;
   }
 
   .resume-project-copy p {
@@ -997,7 +1023,8 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
   .resume-project-highlights {
     display: grid;
     gap: 0.7rem;
-    margin-top: 0.5rem;
+
+    padding-top: 0.5rem;
     align-content: start;
   }
 
