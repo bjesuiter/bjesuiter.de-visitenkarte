@@ -109,7 +109,10 @@ const resumeDe: ResumeContent = {
   printHint:
     "Download öffnet den Browser-Dialog zum Speichern als PDF mit dem Website-Look. Drucken nutzt automatisch eine helle, tintensparende Variante mit demselben Layout.",
   facts: [
-    { label: "Beruf", value: "Senior Software Developer & Consultant" },
+    {
+      label: "Beruf",
+      value: "Agentic Engineer, Senior Software Developer & Consultant",
+    },
     { label: "Jahrgang", value: "1994" },
     {
       label: "Ausbildung",
@@ -751,7 +754,10 @@ const resumeEn: ResumeContent = {
   printHint:
     "Download opens the browser flow for saving a PDF with the site styling. Print automatically switches to a bright, ink-friendly version with the same layout.",
   facts: [
-    { label: "Role", value: "Senior Software Engineer & Consultant" },
+    {
+      label: "Role",
+      value: "Agentic Engineer, Senior Software Engineer & Consultant",
+    },
     { label: "Year of Birth", value: "1994" },
     {
       label: "Education",
