@@ -127,7 +127,7 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
       class="resume-panel resume-section resume-section-frame resume-skills-section"
     >
       <div class="resume-section-heading">
-        <h2>{content.skillsTitle}</h2>
+        <h2 class="pl-3">{content.skillsTitle}</h2>
       </div>
 
       <!-- Skill cards break capabilities into clear categories for quick scanning. -->
@@ -167,9 +167,7 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
 
     <!-- Project portfolio section with detailed case studies and technology stacks. -->
     <!-- English heading: Project History -->
-    <section
-      class="resume-section resume-panel resume-section-frame resume-project-history-section"
-    >
+    <section class="resume-section resume-panel resume-project-history-section">
       <div class="resume-section-heading">
         <div>
           <h2>{content.projectsTitle}</h2>
@@ -671,6 +669,12 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
     padding-top: 1rem;
   }
 
+  .resume-skills-section {
+    --resume-section-clamp-depth: 0.78rem;
+    --resume-section-clamp-inset-left: 1.1rem;
+    --resume-section-clamp-inset-right: 1.1rem;
+  }
+
   .resume-section-frame::before,
   .resume-section-frame::after {
     content: "";
@@ -699,6 +703,25 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
     border-right: 1px dashed var(--resume-divider-strong);
     border-bottom-left-radius: var(--resume-panel-radius);
     border-bottom-right-radius: var(--resume-panel-radius);
+  }
+
+  .resume-skills-section.resume-section-frame::before,
+  .resume-skills-section.resume-section-frame::after {
+    left: var(--resume-section-clamp-inset-left);
+    right: var(--resume-section-clamp-inset-right);
+    height: var(--resume-section-clamp-depth);
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+
+  .resume-skills-section.resume-section-frame::before {
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+  }
+
+  .resume-skills-section.resume-section-frame::after {
+    border-bottom-left-radius: 12px;
+    border-bottom-right-radius: 12px;
   }
 
   .resume-section-heading {
