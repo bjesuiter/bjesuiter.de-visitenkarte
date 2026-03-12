@@ -276,29 +276,27 @@ const resumeDe: ResumeContent = {
   projects: [
     {
       id: "secunet-part-time",
-      period: "10/2025 – 03/2026",
-      sector: "Informationstechnologie",
-      title:
-        "Senior Software Engineer (Teilzeit) bei secunet International GmbH",
+      period: "Okt. 2025 – März 2026",
+      sector: "secunet International GmbH · Teilzeit",
+      title: "Senior Software Entwickler:in",
       summary: [
-        "Teilzeit-Engagement als Senior Software Engineer bei secunet International GmbH.",
-        "Fokus auf Senior-Level-Softwareentwicklung in einem Enterprise-Umfeld.",
+        "Bei secunet International GmbH bestand meine Rolle in der Mitarbeit an einem sicherheitskritischen Kernmodul.",
+        "Dabei handelte es sich um ein natives Electron-Modul in Rust, ergänzt durch einen separaten Electron-Renderer-Prozess für eine besonders abgesicherte UI. Diese Oberfläche für sicherheitskritische Datenprüfungen wurde mit reinen Web Components umgesetzt, um im Vergleich zu React volle Kontrolle über den UI-Code zu behalten.",
       ],
       highlights: [
-        "Senior-Level-Softwareentwicklung in einer Teilzeitrolle.",
-        "Zusammenarbeit im professionellen Produkt- und Engineering-Kontext von secunet International GmbH.",
+        "Feature-Umsetzung über die gesamte Electron-Anwendung hinweg – vom nativen Rust-Modul bis zur abgesicherten TypeScript-UI.",
       ],
       duration: "6 Monate",
-      roles: ["Senior Software Engineer"],
+      roles: ["Senior Software Entwickler:in"],
       stack: [
         { label: "Kontext", value: "Teilzeit · secunet International GmbH" },
       ],
     },
     {
       id: "career-break-health",
-      period: "04/2025 – 09/2025",
-      sector: "Persönliche Entwicklung",
-      title: "Berufliche Auszeit mit Fokus auf Gesundheit und Wohlbefinden",
+      period: "Apr. 2025 – Sept. 2025",
+      sector: "Berufliche Auszeit",
+      title: "Gesundheit und Wohlbefinden",
       summary: [
         "Bewusste berufliche Auszeit mit primärem Fokus auf Gesundheit und Wohlbefinden.",
       ],
