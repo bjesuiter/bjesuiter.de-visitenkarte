@@ -145,7 +145,10 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
                     <li>{item}</li>
                   ) : "items" in item ? (
                     <li class="resume-skill-group">
-                      <span class="resume-skill-group-label">{item.label}</span>
+                      <span class="resume-skill-group-label">
+                        <span class="resume-skill-group-dot" aria-hidden="true"></span>
+                        <span>{item.label}</span>
+                      </span>
                       <ul class="resume-skill-sublist">
                         {item.items.map((subItem) => (
                           <li class="resume-skill-sublist-item">{subItem}</li>
@@ -881,9 +884,29 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
     gap: 0.46rem;
   }
 
+  .resume-skill-group {
+    padding-left: 0 !important;
+  }
+
+  .resume-skill-group::before {
+    display: none !important;
+  }
+
   .resume-skill-group-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
     font-weight: 500;
     color: #ddfced;
+  }
+
+  .resume-skill-group-dot {
+    display: inline-block;
+    width: 0.32rem;
+    height: 0.32rem;
+    border-radius: 999px;
+    background: #6ee7b7;
+    flex: 0 0 auto;
   }
 
   .resume-skill-sublist {
@@ -960,14 +983,6 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
     height: 0.38rem;
     border-radius: 999px;
     background: #6ee7b7;
-  }
-
-  .resume-skill-card li.resume-skill-group::before {
-    left: 0.08rem;
-    top: 0.46rem;
-    width: 0.22rem;
-    height: 1.15rem;
-    border-radius: 999px;
   }
 
   .resume-projects {
@@ -1437,6 +1452,10 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
     .resume-skill-card li::before,
     .resume-project-highlights li::before,
     .resume-detail-card li::before {
+      background: var(--resume-print-accent);
+    }
+
+    .resume-skill-group-dot {
       background: var(--resume-print-accent);
     }
 
