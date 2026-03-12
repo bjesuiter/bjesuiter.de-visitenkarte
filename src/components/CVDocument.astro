@@ -179,7 +179,7 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
       </div>
 
       <!-- Project cards highlight selected work with context, outcomes, and stack details. -->
-      <div class="resume-projects gap-4">
+      <div class="resume-projects">
         {
           content.projects.map((project, index) => (
             <article class="resume-project-card resume-surface resume-surface-project">
@@ -966,7 +966,7 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
   }
 
   .resume-projects {
-    gap: 1.15rem;
+    gap: 2rem;
   }
 
   .resume-project-header {
