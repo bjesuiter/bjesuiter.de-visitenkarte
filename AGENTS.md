@@ -1,6 +1,7 @@
 # Repository Guidelines
 
 ## Project Structure & Module Organization
+
 This repository is a static Astro site.
 
 - `src/pages/`: route entry points (`index.astro`).
@@ -11,6 +12,7 @@ This repository is a static Astro site.
 - Root config: `astro.config.mjs`, `tsconfig.json`, `deno.json`, `bunfig.toml`.
 
 ## Build, Test, and Development Commands
+
 Use Bun for local workflows:
 
 - `bun install`: install dependencies.
@@ -23,9 +25,11 @@ Use Bun for local workflows:
 - `bun run prettier`: format all files with Prettier.
 
 Deployment note:
+
 - Deno Deploy pulls from the repository directly; `package.json` does not need `deploy` or `rollout` scripts.
 
 ## Coding Style & Naming Conventions
+
 - Follow existing Astro + TypeScript strict setup (`tsconfig` extends `astro/tsconfigs/strict`).
 - Use 2-space indentation in `.astro`, `.ts`, `.css`, and config files.
 - Keep component files consistent with current naming style in this repo (`PascalCase` or `Pascal-Kebab`, e.g. `Social-Link.astro`).
@@ -34,14 +38,17 @@ Deployment note:
 - Run `bun run prettier` before opening a PR.
 
 ## Testing Guidelines
+
 There is currently no committed automated test suite (`test`/`spec` files are not present).
 
 Minimum validation before merge:
+
 - `bun run build` must succeed.
 - `bun run preview` and manually verify core page rendering, responsive layout, and social link behavior.
 - For UI changes, include before/after screenshots in the PR.
 
 ## Commit & Pull Request Guidelines
+
 Recent history favors short, imperative commit messages, often with a type prefix:
 
 - Preferred format: `<type>: <summary>` (examples: `fix: ...`, `refactor: ...`, `upgrade deps`).

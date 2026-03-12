@@ -121,7 +121,9 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
     </section>
 
     <!-- Skills dossier section grouped by category and specialization. -->
-    <section class="resume-panel resume-section resume-section-frame resume-skills-section">
+    <section
+      class="resume-panel resume-section resume-section-frame resume-skills-section"
+    >
       <div class="resume-section-heading">
         <h2>{content.skillsTitle}</h2>
       </div>
@@ -162,7 +164,9 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
     </section>
 
     <!-- Project portfolio section with detailed case studies and technology stacks. -->
-    <section class="resume-section resume-panel resume-section-frame resume-project-history-section">
+    <section
+      class="resume-section resume-panel resume-section-frame resume-project-history-section"
+    >
       <div class="resume-section-heading">
         <div>
           <h2>{content.projectsTitle}</h2>
@@ -225,7 +229,7 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
                   </section>
                 </div>
 
-                {/* Technology stack section listing the tools and platforms used. */}
+                {/* Technical Context - Technology stack section listing the tools and platforms used. */}
                 <section class="resume-detail-card resume-surface-inset resume-brace-frame-vertical">
                   <h4>{content.stackTitle}</h4>
                   <dl class="resume-stack-list gap-4">
@@ -599,7 +603,9 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
     content: "";
     position: absolute;
     inset: 0 auto 0 0;
-    width: calc(var(--resume-timeline-strip-wrap) + var(--resume-timeline-strip-width));
+    width: calc(
+      var(--resume-timeline-strip-wrap) + var(--resume-timeline-strip-width)
+    );
     border-top: var(--resume-timeline-strip-width) solid
       var(--resume-timeline-strip-color);
     border-bottom: var(--resume-timeline-strip-width) solid
