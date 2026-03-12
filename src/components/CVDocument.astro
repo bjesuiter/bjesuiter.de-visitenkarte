@@ -19,7 +19,8 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
 ---
 
 <main class="resume-page">
-  {/*
+  {
+    /*
     TODO(bjesuiter): Re-enable this CV toolbar once there is a real print/download mode.
     Keep the existing markup for the future print-mode implementation instead of deleting it.
   <div class="resume-toolbar print-hidden" aria-label={toolbarAriaLabel}>
@@ -53,7 +54,8 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
       </div>
     </div>
   </div>
-  */}
+  */
+  }
 
   <article class="resume-sheet">
     <!-- Hero section with the main heading, intro copy, and profile image. -->
@@ -75,7 +77,7 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
     </header>
 
     <!-- Top overview grid with personal facts on the left and contact details on the right. -->
-    <section class="resume-grid resume-top-grid resume-panel gap-4">
+    <section class="resume-grid resume-top-grid resume-section-shell gap-4">
       <!-- Quick facts section for personal and professional summary data. -->
       <!-- English heading: Profile -->
       <section class="resume-panel resume-surface resume-surface-strong">
@@ -124,9 +126,9 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
 
     <!-- Skills dossier section grouped by category and specialization. -->
     <!-- English heading: IT Skills -->
-    <section class="resume-panel resume-section resume-skills-section">
+    <section class="resume-section-shell resume-section resume-skills-section">
       <div class="resume-section-heading">
-        <h2 class="pl-3">{content.skillsTitle}</h2>
+        <h2 class="pl-2">{content.skillsTitle}</h2>
       </div>
 
       <!-- Skill cards break capabilities into clear categories for quick scanning. -->
@@ -166,11 +168,13 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
 
     <!-- Project portfolio section with detailed case studies and technology stacks. -->
     <!-- English heading: Project History -->
-    <section class="resume-section resume-panel resume-project-history-section">
+    <section
+      class="resume-section-shell resume-section resume-project-history-section"
+    >
       <div class="resume-section-heading">
         <div>
-          <h2>{content.projectsTitle}</h2>
-          <p>{content.projectsIntro}</p>
+          <h2 class="pl-1">{content.projectsTitle}</h2>
+          <p class="pl-1">{content.projectsIntro}</p>
         </div>
       </div>
 
@@ -646,6 +650,10 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
 
   .resume-panel {
     padding: 1.1rem;
+  }
+
+  .resume-section-shell {
+    padding-inline: 0;
   }
 
   .resume-panel-mirrored {
