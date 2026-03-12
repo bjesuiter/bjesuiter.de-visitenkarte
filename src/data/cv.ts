@@ -275,6 +275,45 @@ const resumeDe: ResumeContent = {
   ],
   projects: [
     {
+      id: "secunet-part-time",
+      period: "10/2025 – 03/2026",
+      sector: "Informationstechnologie",
+      title:
+        "Senior Software Entwickler:in (Teilzeit) bei secunet International GmbH",
+      summary: [
+        "Teilzeit-Engagement als Senior Software Entwickler:in bei secunet International GmbH.",
+        "Fokus auf die Mitarbeit in professioneller Softwareentwicklung auf Senior-Level im Unternehmensumfeld.",
+      ],
+      highlights: [
+        "Senior-Level Softwareentwicklung im Teilzeitmodell.",
+        "Zusammenarbeit im Unternehmenskontext von secunet International GmbH.",
+      ],
+      duration: "6 Monate",
+      roles: ["Senior Software Entwickler:in"],
+      stack: [
+        { label: "Kontext", value: "Teilzeit · secunet International GmbH" },
+      ],
+    },
+    {
+      id: "career-break-health",
+      period: "04/2025 – 09/2025",
+      sector: "Persönliche Entwicklung",
+      title: "Berufliche Auszeit mit Fokus auf Gesundheit und Wohlbefinden",
+      summary: [
+        "Bewusste berufliche Auszeit zur Stabilisierung von Gesundheit und Wohlbefinden.",
+        "Die Phase diente der Regeneration und der persönlichen Neuausrichtung vor dem nächsten beruflichen Abschnitt.",
+      ],
+      highlights: [
+        "Strukturierte Auszeit mit klarem Fokus auf Regeneration.",
+        "Gezielte Vorbereitung auf den Wiedereinstieg in neue technische Aufgabenfelder.",
+      ],
+      duration: "6 Monate",
+      roles: ["Berufliche Auszeit"],
+      stack: [
+        { label: "Fokus", value: "Gesundheit · Wohlbefinden · Neuausrichtung" },
+      ],
+    },
+    {
       id: "network-infrastructure",
       period: "10/2023 – 04/2025",
       sector: "IT-Netzwerkinfrastruktur",
@@ -919,6 +958,41 @@ const resumeEn: ResumeContent = {
     },
   ],
   projects: [
+    {
+      id: "secunet-part-time",
+      period: "10/2025 – 03/2026",
+      sector: "Information Technology",
+      title: "Senior Software Engineer at secunet International GmbH",
+      summary: [
+        `The role at secunet International GmbH consisted of contributing to a security core module.
+        It is a native module for Electron, written in Rust,
+        in conjunction with a separated Electron renderer process for a specially secured UI. This separate UI for security-critical data checks was written with pure webcomponents to have full control over the UI Code, compared to react`,
+      ],
+      highlights: [
+        "Implemented features covering the full Electron App, from the native module in Rust to the secured typescript ui",
+      ],
+      duration: "6 months",
+      roles: ["Senior Software Engineer"],
+      stack: [
+        { label: "Context", value: "Part-time · secunet International GmbH" },
+      ],
+    },
+    {
+      id: "career-break-health",
+      period: "04/2025 – 09/2025",
+      sector: "Personal Development",
+      title: "Career break focused on health and wellbeing",
+      summary: [
+        "Intentional career break with a primary focus on health and wellbeing.",
+      ],
+      highlights: [
+        "Structured break period with a clear focus on recovery.",
+        "Deliberate preparation for re-entering new technical work contexts.",
+      ],
+      duration: "6 months",
+      roles: ["Career Break"],
+      stack: [{ label: "Focus", value: "Health · Wellbeing · Realignment" }],
+    },
     {
       id: "network-infrastructure",
       period: "10/2023 – 04/2025",
