@@ -644,29 +644,29 @@ const paginatedProjectPages = [
     --cv-content-width: 1140px;
     --cv-page-padding: 0.8rem;
     --cv-dock-overlap: 8.25rem;
-    --cv-divider: rgba(167, 243, 208, 0.12);
-    --cv-divider-strong: rgba(167, 243, 208, 0.2);
+    --cv-divider: oklch(0.9049 0.0895 164.15 / 0.12);
+    --cv-divider-strong: oklch(0.9049 0.0895 164.15 / 0.2);
     --cv-panel-radius: 14px;
     --cv-sheet-padding: 1.1rem;
-    --cv-panel-border: rgba(167, 243, 208, 0.14);
+    --cv-panel-border: oklch(0.9049 0.0895 164.15 / 0.14);
     --cv-dossier-frame-depth: calc(var(--cv-panel-radius) + 12px);
     --cv-dossier-frame-fade: linear-gradient(
       90deg,
       transparent 0%,
-      rgba(0, 0, 0, 0.2) 8%,
-      #000 16%,
-      #000 84%,
-      rgba(0, 0, 0, 0.2) 92%,
+      oklch(0 0 0 / 0.2) 8%,
+      oklch(0 0 0) 16%,
+      oklch(0 0 0) 84%,
+      oklch(0 0 0 / 0.2) 92%,
       transparent 100%
     );
-    --cv-panel-surface: rgba(4, 23, 18, 0.84);
-    --cv-panel-surface-strong: rgba(6, 28, 21, 0.9);
+    --cv-panel-surface: oklch(0.1861 0.0283 174.33 / 0.84);
+    --cv-panel-surface-strong: oklch(0.2058 0.0319 169.79 / 0.9);
     min-height: 100vh;
     margin-top: calc(var(--cv-dock-overlap) * -1);
     padding: calc(var(--cv-page-padding) + var(--cv-dock-overlap))
       var(--cv-page-padding) var(--cv-page-padding);
-    background: #02110d;
-    color: #ecfdf5;
+    background: oklch(0.161 0.0255 175.92);
+    color: oklch(0.9793 0.0207 166.11);
   }
 
   .cv-toolbar,
@@ -700,11 +700,11 @@ const paginatedProjectPages = [
     gap: 0.9rem 1rem;
     padding: 0.9rem;
     border-radius: 20px;
-    border: 1px solid rgba(167, 243, 208, 0.18);
-    background: rgba(3, 21, 16, 0.8);
+    border: 1px solid oklch(0.9049 0.0895 164.15 / 0.18);
+    background: oklch(0.1775 0.0281 173.8 / 0.8);
     box-shadow:
-      0 16px 34px rgba(1, 10, 7, 0.18),
-      inset 0 1px 0 rgba(255, 255, 255, 0.04);
+      0 16px 34px oklch(0.131 0.0212 174.91 / 0.18),
+      inset 0 1px 0 oklch(1 0 89.88 / 0.04);
     backdrop-filter: blur(16px);
   }
 
@@ -749,14 +749,14 @@ const paginatedProjectPages = [
     margin: 0;
     font-size: 0.75rem;
     letter-spacing: 0.14em;
-    color: #86efac;
+    color: oklch(0.8712 0.1363 154.45);
   }
 
   .cv-toolbar-note {
     margin: 0;
     font-size: 0.95rem;
     line-height: 1.55;
-    color: #c7f3df;
+    color: oklch(0.9277 0.0528 165.89);
   }
 
   .cv-toolbar-actions {
@@ -798,51 +798,51 @@ const paginatedProjectPages = [
   }
 
   .cv-action-secondary {
-    color: #d8fbed;
-    border-color: rgba(167, 243, 208, 0.18);
-    background: rgba(7, 34, 26, 0.56);
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+    color: oklch(0.9593 0.0407 169.35);
+    border-color: oklch(0.9049 0.0895 164.15 / 0.18);
+    background: oklch(0.2283 0.0366 170.47 / 0.56);
+    box-shadow: inset 0 1px 0 oklch(1 0 89.88 / 0.04);
   }
 
   .cv-action-secondary:hover {
-    border-color: rgba(110, 231, 183, 0.5);
-    background: rgba(8, 39, 29, 0.82);
+    border-color: oklch(0.8452 0.1299 164.98 / 0.5);
+    background: oklch(0.2464 0.0413 168.22 / 0.82);
   }
 
   .cv-action-download {
-    color: #032015;
-    border-color: rgba(255, 255, 255, 0.24);
-    background: #9ef0c7;
-    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.2);
+    color: oklch(0.2177 0.0417 164.64);
+    border-color: oklch(1 0 89.88 / 0.24);
+    background: oklch(0.8912 0.0987 161.77);
+    box-shadow: 0 10px 24px oklch(0 0 0 / 0.2);
   }
 
   .cv-action-download:hover {
     filter: brightness(1.04);
-    box-shadow: 0 14px 28px rgba(0, 0, 0, 0.28);
+    box-shadow: 0 14px 28px oklch(0 0 0 / 0.28);
   }
 
   .cv-action-print {
-    color: #d8fbed;
-    border-color: rgba(167, 243, 208, 0.28);
-    background: rgba(3, 24, 18, 0.72);
+    color: oklch(0.9593 0.0407 169.35);
+    border-color: oklch(0.9049 0.0895 164.15 / 0.28);
+    background: oklch(0.1888 0.0313 172.43 / 0.72);
     box-shadow:
-      0 12px 26px rgba(1, 10, 7, 0.24),
-      inset 0 1px 0 rgba(255, 255, 255, 0.05);
+      0 12px 26px oklch(0.131 0.0212 174.91 / 0.24),
+      inset 0 1px 0 oklch(1 0 89.88 / 0.05);
     backdrop-filter: blur(18px);
   }
 
   .cv-action-print:hover {
-    border-color: #6ee7b7;
-    background: rgba(5, 30, 22, 0.92);
+    border-color: oklch(0.8452 0.1299 164.98);
+    background: oklch(0.2123 0.0354 169.1 / 0.92);
   }
 
   .cv-sheet {
     padding: 1.1rem;
     border-radius: 22px;
     overflow: hidden;
-    border: 1px solid rgba(167, 243, 208, 0.18);
-    background: rgba(4, 21, 17, 0.92);
-    box-shadow: 0 24px 52px rgba(1, 10, 7, 0.42);
+    border: 1px solid oklch(0.9049 0.0895 164.15 / 0.18);
+    background: oklch(0.1787 0.0258 176.8 / 0.92);
+    box-shadow: 0 24px 52px oklch(0.131 0.0212 174.91 / 0.42);
   }
 
   .cv-hero {
@@ -851,9 +851,13 @@ const paginatedProjectPages = [
       calc(var(--cv-sheet-padding) * -1) 0;
     padding: var(--cv-sheet-padding) var(--cv-sheet-padding) 1.6rem;
     background:
-      linear-gradient(90deg, rgba(220, 252, 231, 0.015) 1px, transparent 1px) 0
-        0 / 34px 100%,
-      rgba(4, 21, 17, 0.92);
+      linear-gradient(
+          90deg,
+          oklch(0.9624 0.0434 156.74 / 0.015) 1px,
+          transparent 1px
+        )
+        0 0 / 34px 100%,
+      oklch(0.1787 0.0258 176.8 / 0.92);
   }
 
   .cv-hero-copy {
@@ -865,7 +869,7 @@ const paginatedProjectPages = [
     margin: 0;
     font-size: 0.84rem;
     letter-spacing: 0.14em;
-    color: #6ee7b7;
+    color: oklch(0.8452 0.1299 164.98);
   }
 
   .cv-hero h1,
@@ -878,7 +882,7 @@ const paginatedProjectPages = [
     margin: 0;
     font-family: "Fraunces", serif;
     text-wrap: balance;
-    color: #ecfdf5;
+    color: oklch(0.9793 0.0207 166.11);
   }
 
   .cv-hero h1 {
@@ -892,7 +896,7 @@ const paginatedProjectPages = [
     margin: 0;
     font-size: clamp(1rem, 1.5vw, 1.08rem);
     line-height: 1.75;
-    color: #c7f3df;
+    color: oklch(0.9277 0.0528 165.89);
   }
 
   .cv-intro p {
@@ -904,7 +908,7 @@ const paginatedProjectPages = [
   }
 
   .cv-intro strong {
-    color: #ecfdf5;
+    color: oklch(0.9793 0.0207 166.11);
   }
 
   .cv-hero-media {
@@ -912,9 +916,9 @@ const paginatedProjectPages = [
     min-height: 18rem;
     overflow: hidden;
     border-radius: 28px;
-    border: 1px solid rgba(167, 243, 208, 0.18);
-    background: rgba(5, 23, 19, 0.82);
-    box-shadow: 0 24px 48px rgba(1, 10, 7, 0.28);
+    border: 1px solid oklch(0.9049 0.0895 164.15 / 0.18);
+    background: oklch(0.1873 0.0263 177.38 / 0.82);
+    box-shadow: 0 24px 48px oklch(0.131 0.0212 174.91 / 0.28);
   }
 
   .cv-hero-media::after {
@@ -924,9 +928,9 @@ const paginatedProjectPages = [
     pointer-events: none;
     background: linear-gradient(
       180deg,
-      rgba(3, 16, 12, 0.02) 0%,
-      rgba(4, 28, 19, 0.18) 70%,
-      rgba(3, 16, 12, 0.5) 100%
+      oklch(0.158 0.0229 173.73 / 0.02) 0%,
+      oklch(0.2038 0.036 165.86 / 0.18) 70%,
+      oklch(0.158 0.0229 173.73 / 0.5) 100%
     );
   }
 
@@ -951,36 +955,36 @@ const paginatedProjectPages = [
     border-radius: var(--cv-panel-radius);
     background: var(--cv-panel-surface);
     box-shadow:
-      inset 0 1px 0 rgba(255, 255, 255, 0.04),
-      0 14px 28px rgba(1, 10, 7, 0.16);
+      inset 0 1px 0 oklch(1 0 89.88 / 0.04),
+      0 14px 28px oklch(0.131 0.0212 174.91 / 0.16);
     backdrop-filter: blur(8px);
   }
 
   .cv-surface-soft {
     overflow: hidden;
-    border: 1px solid rgba(167, 243, 208, 0.12);
+    border: 1px solid oklch(0.9049 0.0895 164.15 / 0.12);
     border-radius: 18px;
-    background: rgba(4, 20, 16, 0.5);
+    background: oklch(0.1748 0.0249 176.05 / 0.5);
     box-shadow:
-      inset 0 1px 0 rgba(255, 255, 255, 0.04),
-      0 12px 24px rgba(1, 10, 7, 0.14);
+      inset 0 1px 0 oklch(1 0 89.88 / 0.04),
+      0 12px 24px oklch(0.131 0.0212 174.91 / 0.14);
     backdrop-filter: blur(8px);
   }
 
   .cv-surface-inset {
-    border: 1px solid rgba(167, 243, 208, 0.12);
+    border: 1px solid oklch(0.9049 0.0895 164.15 / 0.12);
     border-radius: 16px;
-    background: rgba(4, 20, 16, 0.46);
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03);
+    background: oklch(0.1748 0.0249 176.05 / 0.46);
+    box-shadow: inset 0 1px 0 oklch(1 0 89.88 / 0.03);
   }
 
   .cv-surface-project {
-    --cv-timeline-strip-color: rgba(110, 231, 183, 0.42);
+    --cv-timeline-strip-color: oklch(0.8452 0.1299 164.98 / 0.42);
     --cv-timeline-strip-width: 2px;
     --cv-timeline-strip-wrap: 1.5rem;
     position: relative;
     border: 0;
-    background: rgba(4, 21, 17, 0.78);
+    background: oklch(0.1787 0.0258 176.8 / 0.78);
   }
 
   .cv-surface-project::before {
@@ -999,18 +1003,18 @@ const paginatedProjectPages = [
     pointer-events: none;
     -webkit-mask-image: linear-gradient(
       90deg,
-      #000 0,
-      #000 calc(100% - 0.92rem),
-      rgba(0, 0, 0, 0.72) calc(100% - 0.56rem),
-      rgba(0, 0, 0, 0.28) calc(100% - 0.18rem),
+      oklch(0 0 0) 0,
+      oklch(0 0 0) calc(100% - 0.92rem),
+      oklch(0 0 0 / 0.72) calc(100% - 0.56rem),
+      oklch(0 0 0 / 0.28) calc(100% - 0.18rem),
       transparent 100%
     );
     mask-image: linear-gradient(
       90deg,
-      #000 0,
-      #000 calc(100% - 0.92rem),
-      rgba(0, 0, 0, 0.72) calc(100% - 0.56rem),
-      rgba(0, 0, 0, 0.28) calc(100% - 0.18rem),
+      oklch(0 0 0) 0,
+      oklch(0 0 0) calc(100% - 0.92rem),
+      oklch(0 0 0 / 0.72) calc(100% - 0.56rem),
+      oklch(0 0 0 / 0.28) calc(100% - 0.18rem),
       transparent 100%
     );
   }
@@ -1110,7 +1114,7 @@ const paginatedProjectPages = [
   .cv-section-heading p {
     margin: 0.45rem 0 0;
     line-height: 1.6;
-    color: #bdeed8;
+    color: oklch(0.9089 0.0586 165.94);
   }
 
   .cv-subheading {
@@ -1140,7 +1144,7 @@ const paginatedProjectPages = [
   .cv-stack-list dt {
     font-size: 0.75rem;
     letter-spacing: 0.12em;
-    color: #6ee7b7;
+    color: oklch(0.8452 0.1299 164.98);
   }
 
   .cv-facts dd,
@@ -1148,7 +1152,7 @@ const paginatedProjectPages = [
   .cv-stack-list dd {
     margin: 0;
     line-height: 1.6;
-    color: #d7fbec;
+    color: oklch(0.9583 0.0422 168.36);
   }
 
   .cv-link-list,
@@ -1181,18 +1185,18 @@ const paginatedProjectPages = [
 
   .cv-link-card:hover {
     transform: translateX(2px);
-    border-color: rgba(110, 231, 183, 0.28);
-    background: rgba(6, 31, 24, 0.56);
+    border-color: oklch(0.8452 0.1299 164.98 / 0.28);
+    background: oklch(0.217 0.0343 171.87 / 0.56);
   }
 
   .cv-link-list a span:first-child {
     font-size: 0.75rem;
     letter-spacing: 0.12em;
-    color: #6ee7b7;
+    color: oklch(0.8452 0.1299 164.98);
   }
 
   .cv-link-list a span:last-child {
-    color: #d7fbec;
+    color: oklch(0.9583 0.0422 168.36);
     line-height: 1.6;
     word-break: break-word;
   }
@@ -1207,9 +1211,9 @@ const paginatedProjectPages = [
   .cv-chip-list li {
     padding: 0.5rem 0.8rem;
     border-radius: 999px;
-    border: 1px solid rgba(110, 231, 183, 0.24);
-    background: rgba(4, 20, 16, 0.52);
-    color: #ecfdf5;
+    border: 1px solid oklch(0.8452 0.1299 164.98 / 0.24);
+    background: oklch(0.1748 0.0249 176.05 / 0.52);
+    color: oklch(0.9793 0.0207 166.11);
     line-height: 1.4;
   }
 
@@ -1224,7 +1228,7 @@ const paginatedProjectPages = [
     margin: 0;
     font-size: 0.74rem;
     letter-spacing: 0.16em;
-    color: #86efac;
+    color: oklch(0.8712 0.1363 154.45);
     opacity: 0.92;
   }
 
@@ -1256,7 +1260,7 @@ const paginatedProjectPages = [
     align-items: center;
     gap: 0.45rem;
     font-weight: 500;
-    color: #ddfced;
+    color: oklch(0.9647 0.0378 164.9);
   }
 
   .cv-skill-group-dot {
@@ -1265,7 +1269,7 @@ const paginatedProjectPages = [
     padding-top: 0.2rem;
     height: 0.32rem;
     border-radius: 999px;
-    background: #6ee7b7;
+    background: oklch(0.8452 0.1299 164.98);
     flex: 0 0 auto;
   }
 
@@ -1293,7 +1297,7 @@ const paginatedProjectPages = [
     width: auto;
     height: auto;
     margin-right: 0.35rem;
-    color: rgba(110, 231, 183, 0.85);
+    color: oklch(0.8452 0.1299 164.98 / 0.85);
   }
 
   .cv-skill-chip-row {
@@ -1306,10 +1310,10 @@ const paginatedProjectPages = [
   .cv-chip {
     display: inline-block;
     padding: 0.08rem 0.45rem;
-    border: 1px solid rgba(110, 231, 183, 0.24);
+    border: 1px solid oklch(0.8452 0.1299 164.98 / 0.24);
     border-radius: 999px;
-    background: rgba(16, 185, 129, 0.08);
-    color: rgba(187, 247, 208, 0.8);
+    background: oklch(0.6959 0.1491 162.48 / 0.08);
+    color: oklch(0.925 0.0806 155.99 / 0.8);
     font-size: 0.7rem;
     font-weight: 600;
     line-height: 1.3;
@@ -1321,7 +1325,7 @@ const paginatedProjectPages = [
   .cv-project-highlights li,
   .cv-detail-card li,
   .cv-project-copy p {
-    color: #c7f3df;
+    color: oklch(0.9277 0.0528 165.89);
     line-height: 1.7;
   }
 
@@ -1342,7 +1346,7 @@ const paginatedProjectPages = [
     width: 0.38rem;
     height: 0.38rem;
     border-radius: 999px;
-    background: #6ee7b7;
+    background: oklch(0.8452 0.1299 164.98);
   }
 
   .cv-projects {
@@ -1400,7 +1404,7 @@ const paginatedProjectPages = [
   .cv-project-period,
   .cv-project-sector {
     margin: 0;
-    color: #6ee7b7;
+    color: oklch(0.8452 0.1299 164.98);
     font-weight: 700;
   }
 
@@ -1488,7 +1492,7 @@ const paginatedProjectPages = [
     font-weight: 700;
     letter-spacing: 0.12em;
     text-transform: uppercase;
-    color: #6ee7b7;
+    color: oklch(0.8452 0.1299 164.98);
   }
 
   .cv-detail-card {
@@ -1537,16 +1541,16 @@ const paginatedProjectPages = [
     border-bottom-left-radius: 16px;
     -webkit-mask-image: linear-gradient(
       90deg,
-      #000 0,
-      #000 calc(100% - 0.7rem),
-      rgba(0, 0, 0, 0.32) calc(100% - 0.24rem),
+      oklch(0 0 0) 0,
+      oklch(0 0 0) calc(100% - 0.7rem),
+      oklch(0 0 0 / 0.32) calc(100% - 0.24rem),
       transparent 100%
     );
     mask-image: linear-gradient(
       90deg,
-      #000 0,
-      #000 calc(100% - 0.7rem),
-      rgba(0, 0, 0, 0.32) calc(100% - 0.24rem),
+      oklch(0 0 0) 0,
+      oklch(0 0 0) calc(100% - 0.7rem),
+      oklch(0 0 0 / 0.32) calc(100% - 0.24rem),
       transparent 100%
     );
   }
@@ -1560,16 +1564,16 @@ const paginatedProjectPages = [
     border-bottom-right-radius: 16px;
     -webkit-mask-image: linear-gradient(
       270deg,
-      #000 0,
-      #000 calc(100% - 0.7rem),
-      rgba(0, 0, 0, 0.32) calc(100% - 0.24rem),
+      oklch(0 0 0) 0,
+      oklch(0 0 0) calc(100% - 0.7rem),
+      oklch(0 0 0 / 0.32) calc(100% - 0.24rem),
       transparent 100%
     );
     mask-image: linear-gradient(
       270deg,
-      #000 0,
-      #000 calc(100% - 0.7rem),
-      rgba(0, 0, 0, 0.32) calc(100% - 0.24rem),
+      oklch(0 0 0) 0,
+      oklch(0 0 0) calc(100% - 0.7rem),
+      oklch(0 0 0 / 0.32) calc(100% - 0.24rem),
       transparent 100%
     );
   }
@@ -1688,40 +1692,56 @@ const paginatedProjectPages = [
   }
 
   :root[data-cv-print-active] {
-    --cv-print-page-bg: #ffffff;
-    --cv-print-sheet-bg: #ffffff;
-    --cv-print-panel-bg: #ffffff;
-    --cv-print-panel-muted-bg: #ffffff;
-    --cv-print-chip-bg: #f4f7f6;
-    --cv-print-border: rgba(0, 0, 0, 0.16);
-    --cv-print-border-soft: rgba(0, 0, 0, 0.12);
-    --cv-print-heading: #0f172a;
-    --cv-print-text: #1f2937;
-    --cv-print-muted: #475569;
-    --cv-print-accent: #0f766e;
-    --cv-divider: rgba(0, 0, 0, 0.12);
-    --cv-divider-strong: rgba(0, 0, 0, 0.16);
+    --cv-print-page-bg: oklch(1 0 89.88);
+    --cv-print-sheet-bg: oklch(1 0 89.88);
+    --cv-print-panel-bg: oklch(1 0 89.88);
+    --cv-print-panel-muted-bg: oklch(1 0 89.88);
+    --cv-print-chip-bg: oklch(0.9736 0.0034 174.48);
+    --cv-print-border: oklch(0 0 0 / 0.16);
+    --cv-print-border-soft: oklch(0 0 0 / 0.12);
+    --cv-print-heading: oklch(0.2077 0.0398 265.75);
+    --cv-print-text: oklch(0.24 0.0296 256.85);
+    --cv-print-muted: oklch(0.36 0.0374 257.28);
+    --cv-print-accent: oklch(0.42 0.0861 186.39);
+    --cv-print-display: oklch(0.7 0.0207 166.11);
+    --cv-print-emphasis: oklch(0.62 0.0528 165.89);
+    --cv-divider: oklch(0 0 0 / 0.12);
+    --cv-divider-strong: oklch(0 0 0 / 0.16);
   }
 
   :root[data-cv-print-active][cata-cv-output="download"] {
-    --cv-print-page-bg: #071712;
+    --cv-print-page-bg: oklch(0.1883 0.0246 171.43);
     --cv-print-sheet-bg:
-      linear-gradient(90deg, rgba(220, 252, 231, 0.02) 1px, transparent 1px) 0
-        0 / 24px 100%,
-      linear-gradient(0deg, rgba(220, 252, 231, 0.018) 1px, transparent 1px) 0
-        0 / 100% 24px,
-      linear-gradient(135deg, rgba(7, 30, 24, 0.98), rgba(5, 24, 19, 0.94));
-    --cv-print-panel-bg: rgba(6, 31, 24, 0.92);
-    --cv-print-panel-muted-bg: rgba(9, 39, 30, 0.96);
-    --cv-print-chip-bg: rgba(6, 33, 25, 0.95);
-    --cv-print-border: rgba(167, 243, 208, 0.26);
-    --cv-print-border-soft: rgba(167, 243, 208, 0.18);
-    --cv-print-heading: #ecfdf5;
-    --cv-print-text: #def7eb;
-    --cv-print-muted: #bfe8d5;
-    --cv-print-accent: #86efac;
-    --cv-divider: rgba(167, 243, 208, 0.18);
-    --cv-divider-strong: rgba(167, 243, 208, 0.26);
+      linear-gradient(
+          90deg,
+          oklch(0.9624 0.0434 156.74 / 0.02) 1px,
+          transparent 1px
+        )
+        0 0 / 24px 100%,
+      linear-gradient(
+          0deg,
+          oklch(0.9624 0.0434 156.74 / 0.018) 1px,
+          transparent 1px
+        )
+        0 0 / 100% 24px,
+      linear-gradient(
+        135deg,
+        oklch(0.2143 0.0317 173.62 / 0.98),
+        oklch(0.1907 0.0279 174.22 / 0.94)
+      );
+    --cv-print-panel-bg: oklch(0.217 0.0343 171.87 / 0.92);
+    --cv-print-panel-muted-bg: oklch(0.2472 0.0397 170.04 / 0.96);
+    --cv-print-chip-bg: oklch(0.2241 0.0367 170.4 / 0.95);
+    --cv-print-border: oklch(0.9049 0.0895 164.15 / 0.26);
+    --cv-print-border-soft: oklch(0.9049 0.0895 164.15 / 0.18);
+    --cv-print-heading: oklch(0.9793 0.0207 166.11);
+    --cv-print-text: oklch(0.9546 0.0306 165.31);
+    --cv-print-muted: oklch(0.8966 0.0499 165.47);
+    --cv-print-accent: oklch(0.8712 0.1363 154.45);
+    --cv-print-display: oklch(0.9793 0.0207 166.11);
+    --cv-print-emphasis: oklch(0.9277 0.0528 165.89);
+    --cv-divider: oklch(0.9049 0.0895 164.15 / 0.18);
+    --cv-divider-strong: oklch(0.9049 0.0895 164.15 / 0.26);
   }
 
   html[data-cv-print-active],
@@ -1752,10 +1772,10 @@ const paginatedProjectPages = [
     background:
       linear-gradient(
         180deg,
-        rgba(255, 255, 255, 0.5),
-        rgba(226, 232, 228, 0.9)
+        oklch(1 0 89.88 / 0.5),
+        oklch(0.9253 0.0083 157.08 / 0.9)
       ),
-      #d9dfdc;
+      oklch(0.8982 0.0076 164.92);
   }
 
   html[data-print-preview] .cv-print-stack {
@@ -1766,7 +1786,7 @@ const paginatedProjectPages = [
   html[data-print-preview] .cv-print-page {
     width: var(--cv-preview-page-width);
     height: calc(var(--cv-preview-page-width) * 1.4142857);
-    box-shadow: 0 18px 36px rgba(15, 23, 42, 0.12);
+    box-shadow: 0 18px 36px oklch(0.2077 0.0398 265.75 / 0.12);
   }
 
   html[data-print-preview] .cv-sheet-page {
@@ -1857,6 +1877,10 @@ const paginatedProjectPages = [
     color: var(--cv-print-heading);
   }
 
+  html[data-cv-print-active] .cv-hero h1 {
+    color: var(--cv-print-display);
+  }
+
   html[data-cv-print-active] .cv-intro,
   html[data-cv-print-active] .cv-facts dd,
   html[data-cv-print-active] .cv-project-meta dd,
@@ -1868,6 +1892,10 @@ const paginatedProjectPages = [
   html[data-cv-print-active] .cv-detail-card li,
   html[data-cv-print-active] .cv-project-copy p {
     color: var(--cv-print-muted);
+  }
+
+  html[data-cv-print-active] .cv-intro strong {
+    color: var(--cv-print-emphasis);
   }
 
   html[data-cv-print-active] .cv-skill-card li::before,
