@@ -2005,17 +2005,59 @@ const paginatedProjectPages = [
   }
 
   html[data-cv-print-active] .cv-project-header {
-    gap: 0.7rem;
-    padding: 0.82rem 0.82rem 0.74rem 0.96rem;
+    grid-template-columns: minmax(0, 1.7fr) minmax(10.8rem, 0.9fr);
+    align-items: start;
+    gap: 0.55rem 0.85rem;
+    padding: 0.7rem 0.78rem 0.58rem 0.86rem;
+  }
+
+  html[data-cv-print-active] .cv-project-title-block {
+    gap: 0.22rem;
+  }
+
+  html[data-cv-print-active] .cv-project-eyebrow {
+    gap: 0.42rem;
+  }
+
+  html[data-cv-print-active] .cv-project-period {
+    font-size: 0.78rem;
+  }
+
+  html[data-cv-print-active] .cv-project-sector {
+    font-size: 0.82rem;
+  }
+
+  html[data-cv-print-active] .cv-project-meta {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.42rem 0.52rem;
+    align-self: start;
+  }
+
+  html[data-cv-print-active] .cv-project-meta > div {
+    padding: 0.46rem 0.58rem;
+  }
+
+  html[data-cv-print-active] .cv-project-meta dt {
+    font-size: 0.64rem;
+    letter-spacing: 0.11em;
+  }
+
+  html[data-cv-print-active] .cv-project-meta dd {
+    font-size: 0.8rem;
+    line-height: 1.45;
+  }
+
+  html[data-cv-print-active] .cv-project-meta-roles {
+    grid-column: 1 / -1;
   }
 
   html[data-cv-print-active] .cv-project-divider {
-    margin: 0 0.82rem 0 0.96rem;
+    margin: 0 0.78rem 0 0.86rem;
   }
 
   html[data-cv-print-active] .cv-project-body {
     gap: 0.7rem;
-    padding: 0.82rem 0.82rem 0.82rem 0.96rem;
+    padding: 0.76rem 0.78rem 0.78rem 0.86rem;
   }
 
   html[data-cv-print-active] .cv-project-body > * + * {
