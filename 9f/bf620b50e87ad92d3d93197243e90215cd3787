@@ -1,0 +1,25 @@
+meta/design.md
+  409db5de6b26659c 778-779
+src/components/CVDocument.astro
+  409db5de6b26659c 9,12,20-125,167-176,179-185,187-201,203-215,217-219,221-230,233-240,243-294,296-503,505-528,530-531,534-551,556,560-570,572-574,576-583,585,593-594,678-683,685-688,1439-1440,1484-1491,1499-1510,1749-1763,1766-1775,1788-1791,1796,1802,1845-1846,1884,1901-1957,1960-2029,2034-2056
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.1.10",
+  "base_commit_sha": "9fbf620b50e87ad92d3d93197243e90215cd3787",
+  "prompts": {
+    "409db5de6b26659c": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "019ce195-ede9-71a3-ab6b-69642f9d3804",
+        "model": "gpt-5.4"
+      },
+      "human_author": "Benjamin Jesuiter <bjesuiter@gmail.com>",
+      "messages": [],
+      "total_additions": 755,
+      "total_deletions": 201,
+      "accepted_lines": 741,
+      "overriden_lines": 0
+    }
+  }
+}
