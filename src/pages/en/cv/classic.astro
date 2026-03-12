@@ -1,0 +1,24 @@
+---
+const target = "/en/cv/";
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>Redirecting…</title>
+    <meta name="robots" content="noindex, follow" />
+    <link rel="canonical" href={`https://bjesuiter.de${target}`} />
+    <meta http-equiv="refresh" content={`0;url=${target}`} />
+    <script is:inline>
+      window.location.replace("/en/cv/");
+    </script>
+  </head>
+  <body>
+    <p>
+      Redirecting to the reduced CV view.
+      <a href={target}>Continue</a>
+    </p>
+  </body>
+</html>

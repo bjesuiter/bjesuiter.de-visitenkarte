@@ -7,12 +7,15 @@
 }
 
 @theme {
-  /* This glow is not working right now */
   --drop-shadow-glow02:
     0px 65px rgba(255, 255, 255, 0.2), 0 0px 20px rgba(255, 255, 255, 0.35);
 
-  --font-headings: "Rubik", sans-serif;
+  --animate-v5-enter: v5-enter 420ms ease both;
+
+  --font-sans: "Rubik", system-ui, sans-serif;
   --font-motto: "Playwrite", sans-serif;
+  --font-display: "Fraunces", serif;
+  --font-tech: "Chakra Petch", sans-serif;
 
   --color-foreground-light: var(--color-slate-50);
   --color-codemonument-primary: #d843eb;
@@ -20,6 +23,18 @@
   --color-codemonument-dark: #5b1f65;
   --color-codemonument-light: #c842dd;
 
-  --screens-sm: 500px;
-  --screens-md: 860px;
+  --breakpoint-sm: 500px;
+  --breakpoint-md: 860px;
+
+  @keyframes v5-enter {
+    from {
+      opacity: 0;
+      transform: translateY(12px);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
 }

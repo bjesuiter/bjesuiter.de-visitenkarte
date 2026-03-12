@@ -193,7 +193,7 @@ const profileSectionsEn: ProfileSection[] = [
   },
   {
     id: "codemonument",
-    title: "CodeMonument: My English dev identity",
+    title: "CodeMonument: My English Dev Identity",
     description:
       "For more serious OSS work that I maintain on a best-effort basis, I use my English profile under CodeMonument.",
     links: [
@@ -257,7 +257,8 @@ const profileSectionsEn: ProfileSection[] = [
   {
     id: "private",
     title: "More private",
-    description: "Here are a few Instagram trails from photo and food projects.",
+    description:
+      "Here are a few Instagram trails from photo and food projects.",
     links: [
       {
         href: "https://www.instagram.com/bjesuiterphotography/",
@@ -294,19 +295,21 @@ const supportCtaEn: SupportCtaContent = {
   linkLabel: "Support now",
 };
 
-export const localizedProfileContent: Record<SupportedLocale, LocalizedProfileContent> =
-  {
-    de: {
-      identity: identityDe,
-      profileSections: profileSectionsDe,
-      supportCta: supportCtaDe,
-    },
-    en: {
-      identity: identityEn,
-      profileSections: profileSectionsEn,
-      supportCta: supportCtaEn,
-    },
-  };
+export const localizedProfileContent: Record<
+  SupportedLocale,
+  LocalizedProfileContent
+> = {
+  de: {
+    identity: identityDe,
+    profileSections: profileSectionsDe,
+    supportCta: supportCtaDe,
+  },
+  en: {
+    identity: identityEn,
+    profileSections: profileSectionsEn,
+    supportCta: supportCtaEn,
+  },
+};
 
 export function getLocalizedProfileContent(
   locale: SupportedLocale = "de",

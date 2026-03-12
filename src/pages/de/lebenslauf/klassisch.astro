@@ -1,0 +1,24 @@
+---
+const target = "/de/lebenslauf/";
+---
+
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>Weiterleitung…</title>
+    <meta name="robots" content="noindex, follow" />
+    <link rel="canonical" href={`https://bjesuiter.de${target}`} />
+    <meta http-equiv="refresh" content={`0;url=${target}`} />
+    <script is:inline>
+      window.location.replace("/de/lebenslauf/");
+    </script>
+  </head>
+  <body>
+    <p>
+      Weiterleitung zur reduzierten Lebenslauf-Ansicht.
+      <a href={target}>Weiter</a>
+    </p>
+  </body>
+</html>
