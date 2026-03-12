@@ -274,14 +274,31 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
 <!-- Inline script that switches styling modes before printing or downloading the CV. -->
 <script is:inline>
   (() => {
+    const syncPrintActiveState = () => {
+      const root = document.documentElement;
+      const isPreview = root.hasAttribute("data-print-preview");
+
+      if (isPreview) {
+        root.dataset.resumePrintActive = "true";
+        document.body?.setAttribute("data-resume-print-active", "true");
+        return;
+      }
+
+      delete root.dataset.resumePrintActive;
+      document.body?.removeAttribute("data-resume-print-active");
+    };
+
     const setMode = (mode) => {
       document.documentElement.dataset.resumeOutput = mode;
       document.body?.setAttribute("data-resume-output", mode);
+      document.documentElement.dataset.resumePrintActive = "true";
+      document.body?.setAttribute("data-resume-print-active", "true");
     };
 
     const clearMode = () => {
       delete document.documentElement.dataset.resumeOutput;
       document.body?.removeAttribute("data-resume-output");
+      syncPrintActiveState();
     };
 
     window.__resumePrintMode = (mode) => {
@@ -289,7 +306,12 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
       window.print();
     };
 
+    window.addEventListener("beforeprint", () => {
+      document.documentElement.dataset.resumePrintActive = "true";
+      document.body?.setAttribute("data-resume-print-active", "true");
+    });
     window.addEventListener("afterprint", clearMode);
+    syncPrintActiveState();
   })();
 </script>
 
@@ -906,7 +928,7 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
   .resume-skill-group-dot {
     display: inline-block;
     width: 0.32rem;
-    padding-top: 0.2rem
+    padding-top: 0.2rem;
     height: 0.32rem;
     border-radius: 999px;
     background: #6ee7b7;
@@ -1303,187 +1325,189 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
     margin: 12mm;
   }
 
-  @media print {
-    :root {
-      --resume-print-page-bg: #ffffff;
-      --resume-print-sheet-bg: #ffffff;
-      --resume-print-panel-bg: #ffffff;
-      --resume-print-panel-muted-bg: #ffffff;
-      --resume-print-chip-bg: #f4f7f6;
-      --resume-print-border: rgba(0, 0, 0, 0.16);
-      --resume-print-border-soft: rgba(0, 0, 0, 0.12);
-      --resume-print-heading: #0f172a;
-      --resume-print-text: #1f2937;
-      --resume-print-muted: #475569;
-      --resume-print-accent: #0f766e;
-      --resume-divider: rgba(0, 0, 0, 0.12);
-      --resume-divider-strong: rgba(0, 0, 0, 0.16);
-    }
+  :root[data-resume-print-active] {
+    --resume-print-page-bg: #ffffff;
+    --resume-print-sheet-bg: #ffffff;
+    --resume-print-panel-bg: #ffffff;
+    --resume-print-panel-muted-bg: #ffffff;
+    --resume-print-chip-bg: #f4f7f6;
+    --resume-print-border: rgba(0, 0, 0, 0.16);
+    --resume-print-border-soft: rgba(0, 0, 0, 0.12);
+    --resume-print-heading: #0f172a;
+    --resume-print-text: #1f2937;
+    --resume-print-muted: #475569;
+    --resume-print-accent: #0f766e;
+    --resume-divider: rgba(0, 0, 0, 0.12);
+    --resume-divider-strong: rgba(0, 0, 0, 0.16);
+  }
 
-    :root[data-resume-output="download"] {
-      --resume-print-page-bg: #071712;
-      --resume-print-sheet-bg:
-        linear-gradient(90deg, rgba(220, 252, 231, 0.02) 1px, transparent 1px) 0
-          0 / 24px 100%,
-        linear-gradient(0deg, rgba(220, 252, 231, 0.018) 1px, transparent 1px) 0
-          0 / 100% 24px,
-        linear-gradient(135deg, rgba(7, 30, 24, 0.98), rgba(5, 24, 19, 0.94));
-      --resume-print-panel-bg: rgba(6, 31, 24, 0.92);
-      --resume-print-panel-muted-bg: rgba(9, 39, 30, 0.96);
-      --resume-print-chip-bg: rgba(6, 33, 25, 0.95);
-      --resume-print-border: rgba(167, 243, 208, 0.26);
-      --resume-print-border-soft: rgba(167, 243, 208, 0.18);
-      --resume-print-heading: #ecfdf5;
-      --resume-print-text: #def7eb;
-      --resume-print-muted: #bfe8d5;
-      --resume-print-accent: #86efac;
-      --resume-divider: rgba(167, 243, 208, 0.18);
-      --resume-divider-strong: rgba(167, 243, 208, 0.26);
-    }
+  :root[data-resume-print-active][data-resume-output="download"] {
+    --resume-print-page-bg: #071712;
+    --resume-print-sheet-bg:
+      linear-gradient(90deg, rgba(220, 252, 231, 0.02) 1px, transparent 1px) 0
+        0 / 24px 100%,
+      linear-gradient(0deg, rgba(220, 252, 231, 0.018) 1px, transparent 1px) 0
+        0 / 100% 24px,
+      linear-gradient(135deg, rgba(7, 30, 24, 0.98), rgba(5, 24, 19, 0.94));
+    --resume-print-panel-bg: rgba(6, 31, 24, 0.92);
+    --resume-print-panel-muted-bg: rgba(9, 39, 30, 0.96);
+    --resume-print-chip-bg: rgba(6, 33, 25, 0.95);
+    --resume-print-border: rgba(167, 243, 208, 0.26);
+    --resume-print-border-soft: rgba(167, 243, 208, 0.18);
+    --resume-print-heading: #ecfdf5;
+    --resume-print-text: #def7eb;
+    --resume-print-muted: #bfe8d5;
+    --resume-print-accent: #86efac;
+    --resume-divider: rgba(167, 243, 208, 0.18);
+    --resume-divider-strong: rgba(167, 243, 208, 0.26);
+  }
 
-    html,
-    body {
-      background: var(--resume-print-page-bg) !important;
-    }
+  html[data-resume-print-active],
+  html[data-resume-print-active] body {
+    background: var(--resume-print-page-bg) !important;
+  }
 
-    body {
-      -webkit-print-color-adjust: exact;
-      print-color-adjust: exact;
-    }
+  html[data-resume-print-active] body {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
 
-    .print-hidden {
-      display: none !important;
-    }
+  html[data-resume-print-active] .print-hidden,
+  html[data-print-preview] .print\:hidden {
+    display: none !important;
+  }
 
-    .resume-page {
-      margin-top: 0;
-      padding: 0;
-      background: var(--resume-print-page-bg);
-      color: var(--resume-print-text);
-    }
+  html[data-resume-print-active] .resume-page {
+    margin-top: 0;
+    padding: 0;
+    background: var(--resume-print-page-bg);
+    color: var(--resume-print-text);
+  }
 
-    .resume-sheet {
-      width: 100%;
-      max-width: none;
-      margin: 0;
-      padding: 10mm 10mm 9mm;
-      border: 1px solid var(--resume-print-border);
-      border-radius: 20px;
-      box-shadow: none;
-      backdrop-filter: none;
-      background: var(--resume-print-sheet-bg);
-    }
+  html[data-resume-print-active] .resume-sheet {
+    width: 100%;
+    max-width: none;
+    margin: 0;
+    padding: 10mm 10mm 9mm;
+    border: 1px solid var(--resume-print-border);
+    border-radius: 20px;
+    box-shadow: none;
+    backdrop-filter: none;
+    background: var(--resume-print-sheet-bg);
+  }
 
-    .resume-hero {
-      margin: 0;
-      padding: 0 0 1.6rem;
-      background: none;
-      border-bottom-color: var(--resume-print-border-soft);
-    }
+  html[data-resume-print-active] .resume-hero {
+    margin: 0;
+    padding: 0 0 1.6rem;
+    background: none;
+    border-bottom-color: var(--resume-print-border-soft);
+  }
 
-    .resume-hero-media {
-      min-height: 54mm;
-      background: transparent;
-      box-shadow: none;
-      break-inside: avoid;
-      page-break-inside: avoid;
-    }
+  html[data-resume-print-active] .resume-hero-media {
+    min-height: 54mm;
+    background: transparent;
+    box-shadow: none;
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
 
-    .resume-hero-media::after {
-      background: none;
-    }
+  html[data-resume-print-active] .resume-hero-media::after {
+    background: none;
+  }
 
-    .resume-surface,
-    .resume-surface-soft,
-    .resume-surface-inset {
-      background: var(--resume-print-panel-bg) !important;
-      border-color: transparent !important;
-      box-shadow: none;
-      backdrop-filter: none;
-      break-inside: avoid;
-      page-break-inside: avoid;
-    }
+  html[data-resume-print-active] .resume-surface,
+  html[data-resume-print-active] .resume-surface-soft,
+  html[data-resume-print-active] .resume-surface-inset {
+    background: var(--resume-print-panel-bg) !important;
+    border-color: transparent !important;
+    box-shadow: none;
+    backdrop-filter: none;
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
 
-    .resume-project-header {
-      background: var(--resume-print-panel-muted-bg) !important;
-      border-color: var(--resume-divider) !important;
-    }
+  html[data-resume-print-active] .resume-project-header {
+    background: var(--resume-print-panel-muted-bg) !important;
+    border-color: var(--resume-divider) !important;
+  }
 
-    .resume-surface-project {
-      --resume-timeline-strip-color: var(--resume-print-accent);
-    }
+  html[data-resume-print-active] .resume-surface-project {
+    --resume-timeline-strip-color: var(--resume-print-accent);
+  }
 
-    .resume-chip-list li,
-    .resume-chip {
-      background: var(--resume-print-chip-bg) !important;
-      border-color: transparent !important;
-      color: var(--resume-print-text);
-    }
+  html[data-resume-print-active] .resume-chip-list li,
+  html[data-resume-print-active] .resume-chip {
+    background: var(--resume-print-chip-bg) !important;
+    border-color: transparent !important;
+    color: var(--resume-print-text);
+  }
 
-    .resume-badge,
-    .resume-facts dt,
-    .resume-project-meta dt,
-    .resume-stack-list dt,
-    .resume-project-period,
-    .resume-project-sector {
-      color: var(--resume-print-accent);
-    }
+  html[data-resume-print-active] .resume-badge,
+  html[data-resume-print-active] .resume-facts dt,
+  html[data-resume-print-active] .resume-project-meta dt,
+  html[data-resume-print-active] .resume-stack-list dt,
+  html[data-resume-print-active] .resume-project-period,
+  html[data-resume-print-active] .resume-project-sector {
+    color: var(--resume-print-accent);
+  }
 
-    .resume-hero h1,
-    .resume-section h2,
-    .resume-panel h2,
-    .resume-project-card h3,
-    .resume-project-highlights h4,
-    .resume-detail-card h4,
-    .resume-skill-card h3,
-    .resume-link-list a span:first-child {
-      color: var(--resume-print-heading);
-    }
+  html[data-resume-print-active] .resume-hero h1 {
+    color: red;
+  }
 
-    .resume-intro,
-    .resume-facts dd,
-    .resume-project-meta dd,
-    .resume-stack-list dd,
-    .resume-link-list a span:last-child,
-    .resume-section-heading p,
-    .resume-skill-card li,
-    .resume-project-highlights li,
-    .resume-detail-card li,
-    .resume-project-copy p {
-      color: var(--resume-print-muted);
-    }
+  html[data-resume-print-active] .resume-section h2,
+  html[data-resume-print-active] .resume-panel h2,
+  html[data-resume-print-active] .resume-project-card h3,
+  html[data-resume-print-active] .resume-project-highlights h4,
+  html[data-resume-print-active] .resume-detail-card h4,
+  html[data-resume-print-active] .resume-skill-card h3,
+  html[data-resume-print-active] .resume-link-list a span:first-child {
+    color: var(--resume-print-heading);
+  }
 
-    .resume-skill-card li::before,
-    .resume-project-highlights li::before,
-    .resume-detail-card li::before {
-      background: var(--resume-print-accent);
-    }
+  html[data-resume-print-active] .resume-intro,
+  html[data-resume-print-active] .resume-facts dd,
+  html[data-resume-print-active] .resume-project-meta dd,
+  html[data-resume-print-active] .resume-stack-list dd,
+  html[data-resume-print-active] .resume-link-list a span:last-child,
+  html[data-resume-print-active] .resume-section-heading p,
+  html[data-resume-print-active] .resume-skill-card li,
+  html[data-resume-print-active] .resume-project-highlights li,
+  html[data-resume-print-active] .resume-detail-card li,
+  html[data-resume-print-active] .resume-project-copy p {
+    color: var(--resume-print-muted);
+  }
 
-    .resume-skill-group-dot {
-      background: var(--resume-print-accent);
-    }
+  html[data-resume-print-active] .resume-skill-card li::before,
+  html[data-resume-print-active] .resume-project-highlights li::before,
+  html[data-resume-print-active] .resume-detail-card li::before {
+    background: var(--resume-print-accent);
+  }
 
-    .resume-section {
-      margin-top: 0.8rem;
-    }
+  html[data-resume-print-active] .resume-skill-group-dot {
+    background: var(--resume-print-accent);
+  }
 
-    .resume-section-frame {
-      border-top: 1px dashed var(--resume-divider-strong);
-      border-bottom: 1px dashed var(--resume-divider-strong);
-    }
+  html[data-resume-print-active] .resume-section {
+    margin-top: 0.8rem;
+  }
 
-    .resume-section-frame::before,
-    .resume-section-frame::after {
-      display: none;
-    }
+  html[data-resume-print-active] .resume-section-frame {
+    border-top: 1px dashed var(--resume-divider-strong);
+    border-bottom: 1px dashed var(--resume-divider-strong);
+  }
 
-    .resume-projects {
-      gap: 0.8rem;
-    }
+  html[data-resume-print-active] .resume-section-frame::before,
+  html[data-resume-print-active] .resume-section-frame::after {
+    display: none;
+  }
 
-    a {
-      color: inherit;
-      text-decoration: none;
-    }
+  html[data-resume-print-active] .resume-projects {
+    gap: 0.8rem;
+  }
+
+  html[data-resume-print-active] a {
+    color: inherit;
+    text-decoration: none;
   }
 </style>

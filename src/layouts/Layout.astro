@@ -10,6 +10,7 @@ interface Props {
   canonicalPath?: string;
   lang?: "de" | "en";
   bodyClass?: string;
+  printPreview?: boolean;
 }
 
 const {
@@ -20,6 +21,7 @@ const {
   canonicalPath,
   lang = "de",
   bodyClass = "",
+  printPreview = false,
 } = Astro.props;
 
 const site = Astro.site ?? new URL("https://bjesuiter.de");
@@ -28,7 +30,11 @@ const socialImageURL = new URL(image, site);
 ---
 
 <!doctype html>
-<html lang={lang}>
+<html
+  lang={lang}
+  data-print-preview={printPreview ? "true" : undefined}
+  data-resume-print-active={printPreview ? "true" : undefined}
+>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />

@@ -1,0 +1,26 @@
+---
+import DockNav from "../../../components/DockNav.astro";
+import CVDocument from "../../../components/CVDocument.astro";
+import Layout from "../../../layouts/Layout.astro";
+---
+
+<Layout
+  lang="de"
+  title="Benjamin Jesuiter · Lebenslauf · Druckansicht"
+  description="Druckvorschau des Lebenslaufs von Benjamin Jesuiter."
+  canonicalPath="/de/lebenslauf/"
+  noindex={true}
+  bodyClass="bg-[#02110d]"
+  printPreview={true}
+>
+  <DockNav
+    locale="de"
+    current="resume"
+    homeHref="/de/"
+    resumeHref="/de/lebenslauf/drucken/"
+    supportHref="/de/support/"
+    languageSwitchHref="/en/cv/print/"
+  />
+
+  <CVDocument locale="de" />
+</Layout>

@@ -130,9 +130,7 @@ ol.no-dot[role="list"] {
 }
 
 /* (from adrianrosseli.com blogpost, if print sizes are too big) */
-@media print {
-  body {
-    /* bjesuiter: changed 8pt to 10pt  */
-    font-size: 10pt;
-  }
+html[data-resume-print-active] body {
+  /* bjesuiter: changed 8pt to 10pt  */
+  font-size: 10pt;
 }
