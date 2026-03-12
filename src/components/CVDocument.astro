@@ -296,6 +296,7 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
     --resume-divider: rgba(167, 243, 208, 0.12);
     --resume-divider-strong: rgba(167, 243, 208, 0.2);
     --resume-panel-radius: 14px;
+    --resume-sheet-padding: 1.1rem;
     --resume-panel-border: rgba(167, 243, 208, 0.14);
     --resume-dossier-frame-depth: calc(var(--resume-panel-radius) + 12px);
     --resume-dossier-frame-fade: linear-gradient(
@@ -476,16 +477,19 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
     border-radius: 22px;
     overflow: hidden;
     border: 1px solid rgba(167, 243, 208, 0.18);
-    background:
-      linear-gradient(90deg, rgba(220, 252, 231, 0.015) 1px, transparent 1px) 0
-        0 / 34px 100%,
-      rgba(4, 21, 17, 0.92);
+    background: rgba(4, 21, 17, 0.92);
     box-shadow: 0 24px 52px rgba(1, 10, 7, 0.42);
   }
 
   .resume-hero {
     gap: 1.15rem;
-    padding-bottom: 1.6rem;
+    margin: calc(var(--resume-sheet-padding) * -1)
+      calc(var(--resume-sheet-padding) * -1) 0;
+    padding: var(--resume-sheet-padding) var(--resume-sheet-padding) 1.6rem;
+    background:
+      linear-gradient(90deg, rgba(220, 252, 231, 0.015) 1px, transparent 1px) 0
+        0 / 34px 100%,
+      rgba(4, 21, 17, 0.92);
   }
 
   .resume-hero-copy {
@@ -1250,6 +1254,10 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
   }
 
   @media (min-width: 980px) {
+    .resume-page {
+      --resume-sheet-padding: 1.7rem;
+    }
+
     .resume-sheet {
       padding: 1.7rem;
     }
@@ -1348,6 +1356,9 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
     }
 
     .resume-hero {
+      margin: 0;
+      padding: 0 0 1.6rem;
+      background: none;
       border-bottom-color: var(--resume-print-border-soft);
     }
 
