@@ -213,17 +213,17 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
                   {project.summary.map((paragraph) => (
                     <p>{paragraph}</p>
                   ))}
-                </div>
 
-                {/* Key highlights section calling out notable results and contributions. */}
-                <section class="resume-detail-card resume-surface-inset resume-brace-frame-vertical">
-                  <h4>{content.highlightsTitle}</h4>
-                  <ul class="gap-4">
-                    {project.highlights.map((highlight) => (
-                      <li>{highlight}</li>
-                    ))}
-                  </ul>
-                </section>
+                  {/* Key highlights sit directly below the project description without card styling. */}
+                  <section class="resume-project-highlights">
+                    <h4>{content.highlightsTitle}</h4>
+                    <ul class="resume-project-highlights-list gap-4">
+                      {project.highlights.map((highlight) => (
+                        <li>{highlight}</li>
+                      ))}
+                    </ul>
+                  </section>
+                </div>
 
                 {/* Technology stack section listing the tools and platforms used. */}
                 <section class="resume-detail-card resume-surface-inset resume-brace-frame-vertical">
@@ -337,6 +337,7 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
   .resume-project-body,
   .resume-project-copy,
   .resume-stack-list,
+  .resume-project-highlights-list,
   .resume-skill-card ul,
   .resume-detail-card ul {
     display: grid;
@@ -484,6 +485,7 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
   .resume-section h2,
   .resume-panel h2,
   .resume-project-card h3,
+  .resume-project-highlights h4,
   .resume-detail-card h4,
   .resume-skill-card h3 {
     margin: 0;
@@ -735,6 +737,7 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
   .resume-link-list,
   .resume-chip-list,
   .resume-skill-card ul,
+  .resume-project-highlights-list,
   .resume-detail-card ul {
     margin: 0;
     padding: 0;
@@ -877,6 +880,7 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
   }
 
   .resume-skill-card li,
+  .resume-project-highlights li,
   .resume-detail-card li,
   .resume-project-copy p {
     color: #c7f3df;
@@ -884,12 +888,14 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
   }
 
   .resume-skill-card li,
+  .resume-project-highlights li,
   .resume-detail-card li {
     position: relative;
     padding-left: 1rem;
   }
 
   .resume-skill-card li::before,
+  .resume-project-highlights li::before,
   .resume-detail-card li::before {
     content: "";
     position: absolute;
@@ -982,6 +988,20 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
     margin: 0;
   }
 
+  .resume-project-highlights {
+    display: grid;
+    gap: 0.7rem;
+    align-content: start;
+  }
+
+  .resume-project-highlights h4 {
+    font-size: 1.14rem;
+  }
+
+  .resume-project-highlights-list {
+    gap: 0.55rem;
+  }
+
   .resume-detail-card {
     padding: 1rem;
   }
@@ -989,6 +1009,7 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
   .resume-brace-frame-vertical {
     --resume-brace-depth: 2.15rem;
     position: relative;
+    padding-top: 1rem;
     border-color: transparent;
     overflow: visible;
   }
@@ -1141,7 +1162,7 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
     }
 
     .resume-project-body {
-      grid-template-columns: minmax(0, 1.45fr) minmax(0, 0.9fr) minmax(0, 0.9fr);
+      grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr);
       align-items: start;
     }
 
@@ -1285,6 +1306,7 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
     .resume-section h2,
     .resume-panel h2,
     .resume-project-card h3,
+    .resume-project-highlights h4,
     .resume-detail-card h4,
     .resume-skill-card h3,
     .resume-link-list a span:first-child {
@@ -1298,12 +1320,14 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
     .resume-link-list a span:last-child,
     .resume-section-heading p,
     .resume-skill-card li,
+    .resume-project-highlights li,
     .resume-detail-card li,
     .resume-project-copy p {
       color: var(--resume-print-muted);
     }
 
     .resume-skill-card li::before,
+    .resume-project-highlights li::before,
     .resume-detail-card li::before {
       background: var(--resume-print-accent);
     }
