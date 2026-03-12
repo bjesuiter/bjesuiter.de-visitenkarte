@@ -775,6 +775,8 @@ Print mode is allowed to simplify decorative effects.
 
 Brand screen styling is important, but print clarity wins when needed.
 
+Print styles should default to a light-mode presentation with a pure white background so real paper printing uses as little ink as possible.
+
 ---
 
 ## 11. Motion

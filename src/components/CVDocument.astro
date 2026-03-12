@@ -6,9 +6,10 @@ import CVIntro from "./CVIntro.astro";
 
 interface Props {
   locale?: CvLocale;
+  printPreview?: boolean;
 }
 
-const { locale = "de" } = Astro.props;
+const { locale = "de", printPreview = false } = Astro.props;
 const content = getLocalizedCvContent(locale);
 const toolbarAriaLabel = locale === "de" ? "Lebenslauf-Aktionen" : "CV actions";
 const profileImageAlt =
@@ -16,6 +17,112 @@ const profileImageAlt =
     ? "Porträt von Benjamin Jesuiter"
     : "Portrait of Benjamin Jesuiter";
 const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
+type CvPrintProjectMode = "full" | "summary" | "stack";
+const toIndexedPageItems = <T,>(items: T[], indices: number[]) =>
+  indices.flatMap((index) => {
+    const item = items[index];
+    return item ? [{ index, item }] : [];
+  });
+const paginatedSkillPages = [
+  toIndexedPageItems(content.skillCategories, [0, 1, 2, 3, 4]),
+  toIndexedPageItems(content.skillCategories, [5, 6, 7, 8]),
+].filter((page) => page.length > 0);
+const paginatedProjectPages = [
+  {
+    showHeading: true,
+    entries: [{ index: 0, mode: "full" }],
+  },
+  {
+    showHeading: false,
+    entries: [{ index: 1, mode: "full" }],
+  },
+  {
+    showHeading: false,
+    entries: [{ index: 2, mode: "summary" }],
+  },
+  {
+    showHeading: false,
+    entries: [{ index: 2, mode: "stack" }],
+  },
+  {
+    showHeading: false,
+    entries: [{ index: 3, mode: "summary" }],
+  },
+  {
+    showHeading: false,
+    entries: [{ index: 3, mode: "stack" }],
+  },
+  {
+    showHeading: false,
+    entries: [{ index: 4, mode: "full" }],
+  },
+  {
+    showHeading: false,
+    entries: [{ index: 5, mode: "full" }],
+  },
+  {
+    showHeading: false,
+    entries: [{ index: 6, mode: "full" }],
+  },
+  {
+    showHeading: false,
+    entries: [{ index: 7, mode: "summary" }],
+  },
+  {
+    showHeading: false,
+    entries: [{ index: 7, mode: "stack" }],
+  },
+  {
+    showHeading: false,
+    entries: [{ index: 8, mode: "summary" }],
+  },
+  {
+    showHeading: false,
+    entries: [{ index: 8, mode: "stack" }],
+  },
+  {
+    showHeading: false,
+    entries: [{ index: 9, mode: "summary" }],
+  },
+  {
+    showHeading: false,
+    entries: [{ index: 9, mode: "stack" }],
+  },
+  {
+    showHeading: false,
+    entries: [{ index: 10, mode: "summary" }],
+  },
+  {
+    showHeading: false,
+    entries: [{ index: 10, mode: "stack" }],
+  },
+  {
+    showHeading: false,
+    entries: [{ index: 11, mode: "full" }],
+  },
+  {
+    showHeading: false,
+    entries: [{ index: 12, mode: "full" }],
+  },
+  {
+    showHeading: false,
+    entries: [{ index: 13, mode: "full" }],
+  },
+  {
+    showHeading: false,
+    entries: [{ index: 14, mode: "full" }],
+  },
+]
+  .map((page) => ({
+    ...page,
+    entries: page.entries.flatMap(
+      ({ index, mode }: { index: number; mode: CvPrintProjectMode }) => {
+        const project = content.projects[index];
+        return project ? [{ index, mode, project }] : [];
+      },
+    ),
+  }))
+  .filter((page) => page.entries.length > 0);
 ---
 
 <main class="cv-page">
@@ -57,213 +164,434 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
   */
   }
 
-  <article class="cv-sheet">
-    <!-- Hero section with the main heading, intro copy, and profile image. -->
-    <header class="cv-hero gap-4">
-      <div class="cv-hero-copy gap-4">
-        <p class="cv-badge">{content.badge}</p>
-        <h1>{content.heading}</h1>
-        <CVIntro locale={locale} />
-      </div>
-
-      <div class="cv-hero-media">
-        <Image
-          src={profilePic}
-          alt={profileImageAlt}
-          loading="eager"
-          class="cv-hero-image"
-        />
-      </div>
-    </header>
-
-    <!-- Top overview grid with personal facts on the left and contact details on the right. -->
-    <section class="cv-grid cv-top-grid cv-section-shell gap-4">
-      <!-- Quick facts section for personal and professional summary data. -->
-      <!-- English heading: Profile -->
-      <section class="cv-panel cv-surface cv-surface-strong">
-        <h2>{content.factsTitle}</h2>
-        <dl class="cv-facts gap-4">
-          {
-            content.facts.map((fact) => (
-              <div>
-                <dt>{fact.label}</dt>
-                <dd class="text-balance">{fact.value}</dd>
+  {
+    printPreview ? (
+      <div class="cv-print-stack">
+        <article class="cv-print-page cv-print-page-hero">
+          <div class="cv-sheet cv-sheet-page">
+            <header class="cv-hero gap-4">
+              <div class="cv-hero-copy gap-4">
+                <p class="cv-badge">{content.badge}</p>
+                <h1>{content.heading}</h1>
+                <CVIntro locale={locale} />
               </div>
-            ))
-          }
-        </dl>
-      </section>
 
-      <!-- Contact links and industry focus section. -->
-      <!-- English heading: Links -->
-      <section class="cv-panel cv-panel-mirrored cv-surface">
-        <h2>{content.contactTitle}</h2>
-        <ul class="cv-link-list">
-          {
-            content.contactLinks.map((link) => (
-              <li>
-                <a
-                  href={link.href}
-                  target="_blank"
-                  rel="noreferrer"
-                  class="cv-link-card cv-surface-inset"
-                >
-                  <span>{link.label}</span>
-                  <span>{link.href.replace(/^https?:\/\//, "")}</span>
-                </a>
-              </li>
-            ))
-          }
-        </ul>
-
-        <!-- English heading: Industries -->
-        <h2 class="cv-subheading">{content.industriesTitle}</h2>
-        <ul class="cv-chip-list">
-          {content.industries.map((industry) => <li>{industry}</li>)}
-        </ul>
-      </section>
-    </section>
-
-    <!-- Skills dossier section grouped by category and specialization. -->
-    <!-- English heading: IT Skills -->
-    <section class="cv-section-shell cv-section cv-skills-section">
-      <div class="cv-section-heading">
-        <h2 class="pl-2">{content.skillsTitle}</h2>
-      </div>
-
-      <!-- Skill cards break capabilities into clear categories for quick scanning. -->
-      <div class="cv-skills-grid gap-4">
-        {
-          content.skillCategories.map((category) => (
-            <section class="cv-skill-card">
-              <div class="cv-card-heading">
-                <h3>{category.title}</h3>
+              <div class="cv-hero-media">
+                <Image
+                  src={profilePic}
+                  alt={profileImageAlt}
+                  loading="eager"
+                  class="cv-hero-image"
+                />
               </div>
-              <ul class="gap-4">
-                {category.items.map((item) =>
-                  typeof item === "string" ? (
-                    <li>{item}</li>
-                  ) : "items" in item ? (
-                    <li class="cv-skill-group">
-                      <span class="cv-skill-group-label">
-                        <span class="cv-skill-group-dot" aria-hidden="true" />
-                        <span>{item.label}</span>
+            </header>
+          </div>
+        </article>
+
+        <article class="cv-print-page cv-print-page-overview">
+          <div class="cv-sheet cv-sheet-page">
+            <section class="cv-grid cv-top-grid cv-section-shell gap-4">
+              <section class="cv-panel cv-surface cv-surface-strong">
+                <h2>{content.factsTitle}</h2>
+                <dl class="cv-facts gap-4">
+                  {content.facts.map((fact) => (
+                    <div>
+                      <dt>{fact.label}</dt>
+                      <dd class="text-balance">{fact.value}</dd>
+                    </div>
+                  ))}
+                </dl>
+              </section>
+
+              <section class="cv-panel cv-panel-mirrored cv-surface">
+                <h2>{content.contactTitle}</h2>
+                <ul class="cv-link-list">
+                  {content.contactLinks.map((link) => (
+                    <li>
+                      <a
+                        href={link.href}
+                        target="_blank"
+                        rel="noreferrer"
+                        class="cv-link-card cv-surface-inset"
+                      >
+                        <span>{link.label}</span>
+                        <span>{link.href.replace(/^https?:\/\//, "")}</span>
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+
+                <h2 class="cv-subheading">{content.industriesTitle}</h2>
+                <ul class="cv-chip-list">
+                  {content.industries.map((industry) => (
+                    <li>{industry}</li>
+                  ))}
+                </ul>
+              </section>
+            </section>
+          </div>
+        </article>
+
+        {paginatedSkillPages.map((skillPage) => (
+          <article class="cv-print-page cv-print-page-skills">
+            <div class="cv-sheet cv-sheet-page">
+              <section class="cv-section-shell cv-section cv-skills-section">
+                <div class="cv-section-heading">
+                  <h2 class="pl-2">{content.skillsTitle}</h2>
+                </div>
+
+                <div class="cv-skills-grid gap-4">
+                  {skillPage.map(({ item: category }) => (
+                    <section class="cv-skill-card">
+                      <div class="cv-card-heading">
+                        <h3>{category.title}</h3>
+                      </div>
+                      <ul class="gap-4">
+                        {category.items.map((item) =>
+                          typeof item === "string" ? (
+                            <li>{item}</li>
+                          ) : "items" in item ? (
+                            <li class="cv-skill-group">
+                              <span class="cv-skill-group-label">
+                                <span
+                                  class="cv-skill-group-dot"
+                                  aria-hidden="true"
+                                />
+                                <span>{item.label}</span>
+                              </span>
+                              <ul class="cv-skill-sublist">
+                                {item.items.map((subItem) => (
+                                  <li class="cv-skill-sublist-item">
+                                    {subItem}
+                                  </li>
+                                ))}
+                              </ul>
+                            </li>
+                          ) : (
+                            <li class="cv-skill-chip-row">
+                              <span>{item.text}</span>
+                              <span class="cv-chip">{item.chip}</span>
+                            </li>
+                          ),
+                        )}
+                      </ul>
+                    </section>
+                  ))}
+                </div>
+              </section>
+            </div>
+          </article>
+        ))}
+
+        {paginatedProjectPages.map((projectPage) => (
+          <article class="cv-print-page cv-print-page-projects">
+            <div class="cv-sheet cv-sheet-page">
+              {projectPage.showHeading && (
+                <section class="cv-section-shell cv-section cv-project-history-section">
+                  <div class="cv-section-heading">
+                    <div>
+                      <h2 class="pl-1">{content.projectsTitle}</h2>
+                      <p class="pl-1">{content.projectsIntro}</p>
+                    </div>
+                  </div>
+                </section>
+              )}
+
+              <div class="cv-projects">
+                {projectPage.entries.map(({ project, index, mode }) => (
+                  <article
+                    class:list={[
+                      "cv-project-card cv-surface cv-surface-project",
+                      mode === "stack" && "cv-project-card-stack",
+                    ]}
+                  >
+                    <header class="cv-project-header gap-4">
+                      <div class="cv-project-title-block gap-4">
+                        <div class="cv-project-eyebrow">
+                          <span class="cv-card-index">
+                            {String(index + 1).padStart(2, "0")}
+                          </span>
+                          <p class="cv-project-period">{project.period}</p>
+                        </div>
+                        <p class="cv-project-sector">{project.sector}</p>
+                        <h3>{project.title}</h3>
+                        {mode === "stack" && (
+                          <p class="cv-project-page-kicker">
+                            {content.stackTitle}
+                          </p>
+                        )}
+                      </div>
+
+                      <dl class="cv-project-meta gap-4">
+                        {project.duration && (
+                          <div class="cv-surface-inset">
+                            <dt>{content.durationLabel}</dt>
+                            <dd>{project.duration}</dd>
+                          </div>
+                        )}
+                        {project.teamSize && (
+                          <div class="cv-surface-inset">
+                            <dt>{content.teamSizeLabel}</dt>
+                            <dd>{project.teamSize}</dd>
+                          </div>
+                        )}
+                        <div class="cv-surface-inset cv-project-meta-roles">
+                          <dt>{content.rolesLabel}</dt>
+                          <dd>{project.roles.join(" · ")}</dd>
+                        </div>
+                      </dl>
+                    </header>
+
+                    <div class="cv-project-divider" aria-hidden="true" />
+
+                    {mode === "stack" ? (
+                      <section class="cv-project-stack-page">
+                        <section class="cv-detail-card cv-surface-inset cv-brace-frame-vertical">
+                          <h4>{content.stackTitle}</h4>
+                          <dl class="cv-stack-list gap-4">
+                            {project.stack.map((item) => (
+                              <div>
+                                <dt>{item.label}</dt>
+                                <dd>{item.value}</dd>
+                              </div>
+                            ))}
+                          </dl>
+                        </section>
+                      </section>
+                    ) : (
+                      <div
+                        class:list={[
+                          "cv-project-body gap-4",
+                          mode === "summary" && "cv-project-body-summary",
+                        ]}
+                      >
+                        <div class="cv-project-copy gap-4">
+                          <section class="cv-project-summary">
+                            {project.summary.map((paragraph) => (
+                              <p>{paragraph}</p>
+                            ))}
+                          </section>
+
+                          <section
+                            class="cv-project-spacer"
+                            aria-hidden="true"
+                          />
+
+                          <section class="cv-project-highlights">
+                            <h4>{content.highlightsTitle}</h4>
+                            <ul class="cv-project-highlights-list gap-4">
+                              {project.highlights.map((highlight) => (
+                                <li>{highlight}</li>
+                              ))}
+                            </ul>
+                          </section>
+                        </div>
+
+                        {mode === "full" && (
+                          <section class="cv-detail-card cv-surface-inset cv-brace-frame-vertical">
+                            <h4>{content.stackTitle}</h4>
+                            <dl class="cv-stack-list gap-4">
+                              {project.stack.map((item) => (
+                                <div>
+                                  <dt>{item.label}</dt>
+                                  <dd>{item.value}</dd>
+                                </div>
+                              ))}
+                            </dl>
+                          </section>
+                        )}
+                      </div>
+                    )}
+                  </article>
+                ))}
+              </div>
+            </div>
+          </article>
+        ))}
+      </div>
+    ) : (
+      <article class="cv-sheet">
+        <header class="cv-hero gap-4">
+          <div class="cv-hero-copy gap-4">
+            <p class="cv-badge">{content.badge}</p>
+            <h1>{content.heading}</h1>
+            <CVIntro locale={locale} />
+          </div>
+
+          <div class="cv-hero-media">
+            <Image
+              src={profilePic}
+              alt={profileImageAlt}
+              loading="eager"
+              class="cv-hero-image"
+            />
+          </div>
+        </header>
+
+        <section class="cv-grid cv-top-grid cv-section-shell gap-4">
+          <section class="cv-panel cv-surface cv-surface-strong">
+            <h2>{content.factsTitle}</h2>
+            <dl class="cv-facts gap-4">
+              {content.facts.map((fact) => (
+                <div>
+                  <dt>{fact.label}</dt>
+                  <dd class="text-balance">{fact.value}</dd>
+                </div>
+              ))}
+            </dl>
+          </section>
+
+          <section class="cv-panel cv-panel-mirrored cv-surface">
+            <h2>{content.contactTitle}</h2>
+            <ul class="cv-link-list">
+              {content.contactLinks.map((link) => (
+                <li>
+                  <a
+                    href={link.href}
+                    target="_blank"
+                    rel="noreferrer"
+                    class="cv-link-card cv-surface-inset"
+                  >
+                    <span>{link.label}</span>
+                    <span>{link.href.replace(/^https?:\/\//, "")}</span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+
+            <h2 class="cv-subheading">{content.industriesTitle}</h2>
+            <ul class="cv-chip-list">
+              {content.industries.map((industry) => (
+                <li>{industry}</li>
+              ))}
+            </ul>
+          </section>
+        </section>
+
+        <section class="cv-section-shell cv-section cv-skills-section">
+          <div class="cv-section-heading">
+            <h2 class="pl-2">{content.skillsTitle}</h2>
+          </div>
+
+          <div class="cv-skills-grid gap-4">
+            {content.skillCategories.map((category) => (
+              <section class="cv-skill-card">
+                <div class="cv-card-heading">
+                  <h3>{category.title}</h3>
+                </div>
+                <ul class="gap-4">
+                  {category.items.map((item) =>
+                    typeof item === "string" ? (
+                      <li>{item}</li>
+                    ) : "items" in item ? (
+                      <li class="cv-skill-group">
+                        <span class="cv-skill-group-label">
+                          <span class="cv-skill-group-dot" aria-hidden="true" />
+                          <span>{item.label}</span>
+                        </span>
+                        <ul class="cv-skill-sublist">
+                          {item.items.map((subItem) => (
+                            <li class="cv-skill-sublist-item">{subItem}</li>
+                          ))}
+                        </ul>
+                      </li>
+                    ) : (
+                      <li class="cv-skill-chip-row">
+                        <span>{item.text}</span>
+                        <span class="cv-chip">{item.chip}</span>
+                      </li>
+                    ),
+                  )}
+                </ul>
+              </section>
+            ))}
+          </div>
+        </section>
+
+        <section class="cv-section-shell cv-section cv-project-history-section">
+          <div class="cv-section-heading">
+            <div>
+              <h2 class="pl-1">{content.projectsTitle}</h2>
+              <p class="pl-1">{content.projectsIntro}</p>
+            </div>
+          </div>
+
+          <div class="cv-projects">
+            {content.projects.map((project, index) => (
+              <article class="cv-project-card cv-surface cv-surface-project">
+                <header class="cv-project-header gap-4">
+                  <div class="cv-project-title-block gap-4">
+                    <div class="cv-project-eyebrow">
+                      <span class="cv-card-index">
+                        {String(index + 1).padStart(2, "0")}
                       </span>
-                      <ul class="cv-skill-sublist">
-                        {item.items.map((subItem) => (
-                          <li class="cv-skill-sublist-item">{subItem}</li>
+                      <p class="cv-project-period">{project.period}</p>
+                    </div>
+                    <p class="cv-project-sector">{project.sector}</p>
+                    <h3>{project.title}</h3>
+                  </div>
+
+                  <dl class="cv-project-meta gap-4">
+                    {project.duration && (
+                      <div class="cv-surface-inset">
+                        <dt>{content.durationLabel}</dt>
+                        <dd>{project.duration}</dd>
+                      </div>
+                    )}
+                    {project.teamSize && (
+                      <div class="cv-surface-inset">
+                        <dt>{content.teamSizeLabel}</dt>
+                        <dd>{project.teamSize}</dd>
+                      </div>
+                    )}
+                    <div class="cv-surface-inset cv-project-meta-roles">
+                      <dt>{content.rolesLabel}</dt>
+                      <dd>{project.roles.join(" · ")}</dd>
+                    </div>
+                  </dl>
+                </header>
+
+                <div class="cv-project-divider" aria-hidden="true" />
+
+                <div class="cv-project-body gap-4">
+                  <div class="cv-project-copy gap-4">
+                    <section class="cv-project-summary">
+                      {project.summary.map((paragraph) => (
+                        <p>{paragraph}</p>
+                      ))}
+                    </section>
+
+                    <section class="cv-project-spacer" aria-hidden="true" />
+
+                    <section class="cv-project-highlights">
+                      <h4>{content.highlightsTitle}</h4>
+                      <ul class="cv-project-highlights-list gap-4">
+                        {project.highlights.map((highlight) => (
+                          <li>{highlight}</li>
                         ))}
                       </ul>
-                    </li>
-                  ) : (
-                    <li class="cv-skill-chip-row">
-                      <span>{item.text}</span>
-                      <span class="cv-chip">{item.chip}</span>
-                    </li>
-                  ),
-                )}
-              </ul>
-            </section>
-          ))
-        }
-      </div>
-    </section>
-
-    <!-- Project portfolio section with detailed case studies and technology stacks. -->
-    <!-- English heading: Project History -->
-    <section class="cv-section-shell cv-section cv-project-history-section">
-      <div class="cv-section-heading">
-        <div>
-          <h2 class="pl-1">{content.projectsTitle}</h2>
-          <p class="pl-1">{content.projectsIntro}</p>
-        </div>
-      </div>
-
-      <!-- Project cards highlight selected work with context, outcomes, and stack details. -->
-      <div class="cv-projects">
-        {
-          content.projects.map((project, index) => (
-            <article class="cv-project-card cv-surface cv-surface-project">
-              <header class="cv-project-header gap-4">
-                <div class="cv-project-title-block gap-4">
-                  <div class="cv-project-eyebrow">
-                    <span class="cv-card-index">
-                      {String(index + 1).padStart(2, "0")}
-                    </span>
-                    <p class="cv-project-period">{project.period}</p>
+                    </section>
                   </div>
-                  <p class="cv-project-sector">{project.sector}</p>
-                  <h3>{project.title}</h3>
-                </div>
 
-                <dl class="cv-project-meta gap-4">
-                  {project.duration && (
-                    <div class="cv-surface-inset">
-                      {/* English label: Project Duration */}
-                      <dt>{content.durationLabel}</dt>
-                      <dd>{project.duration}</dd>
-                    </div>
-                  )}
-                  {project.teamSize && (
-                    <div class="cv-surface-inset">
-                      {/* English label: Team Size */}
-                      <dt>{content.teamSizeLabel}</dt>
-                      <dd>{project.teamSize}</dd>
-                    </div>
-                  )}
-                  <div class="cv-surface-inset cv-project-meta-roles">
-                    {/* English label: Roles */}
-                    <dt>{content.rolesLabel}</dt>
-                    <dd>{project.roles.join(" · ")}</dd>
-                  </div>
-                </dl>
-              </header>
-
-              <div class="cv-project-divider" aria-hidden="true" />
-
-              <div class="cv-project-body gap-4">
-                {/* Narrative summary describing the challenge, work, and impact of the project. */}
-                <div class="cv-project-copy gap-4">
-                  <section class="cv-project-summary">
-                    {project.summary.map((paragraph) => (
-                      <p>{paragraph}</p>
-                    ))}
-                  </section>
-
-                  <section class="cv-project-spacer" aria-hidden="true" />
-
-                  {/* Key highlights sit directly below the project description without card styling. */}
-                  {/* English heading: Responsibilities & Outcomes */}
-                  <section class="cv-project-highlights">
-                    <h4>{content.highlightsTitle}</h4>
-                    <ul class="cv-project-highlights-list gap-4">
-                      {project.highlights.map((highlight) => (
-                        <li>{highlight}</li>
+                  <section class="cv-detail-card cv-surface-inset cv-brace-frame-vertical">
+                    <h4>{content.stackTitle}</h4>
+                    <dl class="cv-stack-list gap-4">
+                      {project.stack.map((item) => (
+                        <div>
+                          <dt>{item.label}</dt>
+                          <dd>{item.value}</dd>
+                        </div>
                       ))}
-                    </ul>
+                    </dl>
                   </section>
                 </div>
-
-                {/* Technical Context - Technology stack section listing the tools and platforms used. */}
-                {/* English heading: Technical Context */}
-                <section class="cv-detail-card cv-surface-inset cv-brace-frame-vertical">
-                  <h4>{content.stackTitle}</h4>
-                  <dl class="cv-stack-list gap-4">
-                    {project.stack.map((item) => (
-                      <div>
-                        <dt>{item.label}</dt>
-                        <dd>{item.value}</dd>
-                      </div>
-                    ))}
-                  </dl>
-                </section>
-              </div>
-            </article>
-          ))
-        }
-      </div>
-    </section>
-  </article>
+              </article>
+            ))}
+          </div>
+        </section>
+      </article>
+    )
+  }
 </main>
 
 <!-- Inline script that switches styling modes before printing or downloading the CV. -->
@@ -345,6 +673,19 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
   .cv-sheet {
     width: min(var(--cv-content-width), 100%);
     margin-inline: auto;
+  }
+
+  .cv-print-stack {
+    display: grid;
+  }
+
+  .cv-print-page {
+    width: 100%;
+    margin-inline: auto;
+  }
+
+  .cv-sheet-page {
+    min-height: 100%;
   }
 
   .cv-toolbar {
@@ -1095,6 +1436,10 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
     padding: 1.18rem 1.18rem 1.18rem 1.3rem;
   }
 
+  .cv-project-body-summary {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
   .cv-project-body > * + * {
     padding-top: 1rem;
     border-top: 1px dashed var(--cv-divider);
@@ -1136,9 +1481,33 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
     gap: 0.55rem;
   }
 
+  .cv-project-page-kicker {
+    margin: 0;
+    font-family: "Chakra Petch", sans-serif;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #6ee7b7;
+  }
+
   .cv-detail-card {
     padding: 1rem;
     padding-top: 1rem;
+  }
+
+  .cv-project-stack-page {
+    padding: 1rem 1.18rem 1.18rem 1.3rem;
+  }
+
+  .cv-project-card-stack .cv-stack-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: 0.8rem;
+  }
+
+  .cv-project-card-stack .cv-stack-list > div + div {
+    padding-top: 0;
+    border-top: 0;
   }
 
   .cv-brace-frame-vertical {
@@ -1377,6 +1746,33 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
     color: var(--cv-print-text);
   }
 
+  html[data-print-preview] .cv-page {
+    --cv-preview-page-width: min(210mm, calc(100vw - 1.5rem));
+    padding: 1rem 0 2rem;
+    background:
+      linear-gradient(
+        180deg,
+        rgba(255, 255, 255, 0.5),
+        rgba(226, 232, 228, 0.9)
+      ),
+      #d9dfdc;
+  }
+
+  html[data-print-preview] .cv-print-stack {
+    gap: 1rem;
+    justify-items: center;
+  }
+
+  html[data-print-preview] .cv-print-page {
+    width: var(--cv-preview-page-width);
+    height: calc(var(--cv-preview-page-width) * 1.4142857);
+    box-shadow: 0 18px 36px rgba(15, 23, 42, 0.12);
+  }
+
+  html[data-print-preview] .cv-sheet-page {
+    height: 100%;
+  }
+
   html[data-cv-print-active] .cv-sheet {
     width: 100%;
     max-width: none;
@@ -1389,15 +1785,21 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
     background: var(--cv-print-sheet-bg);
   }
 
+  html[data-cv-print-active] .cv-sheet-page {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+  }
+
   html[data-cv-print-active] .cv-hero {
     margin: 0;
-    padding: 0 0 1.6rem;
+    padding: 0 0 1rem;
     background: none;
     border-bottom-color: var(--cv-print-border-soft);
   }
 
   html[data-cv-print-active] .cv-hero-media {
-    min-height: 54mm;
+    min-height: 48mm;
     background: transparent;
     box-shadow: none;
     break-inside: avoid;
@@ -1440,12 +1842,9 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
   html[data-cv-print-active] .cv-project-meta dt,
   html[data-cv-print-active] .cv-stack-list dt,
   html[data-cv-print-active] .cv-project-period,
-  html[data-cv-print-active] .cv-project-sector {
+  html[data-cv-print-active] .cv-project-sector,
+  html[data-cv-print-active] .cv-project-page-kicker {
     color: var(--cv-print-accent);
-  }
-
-  html[data-cv-print-active] .cv-hero h1 {
-    color: red;
   }
 
   html[data-cv-print-active] .cv-section h2,
@@ -1482,7 +1881,7 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
   }
 
   html[data-cv-print-active] .cv-section {
-    margin-top: 0.8rem;
+    margin-top: 0.7rem;
   }
 
   html[data-cv-print-active] .cv-section-frame {
@@ -1499,8 +1898,161 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
     gap: 0.8rem;
   }
 
+  html[data-cv-print-active] .cv-page,
+  html[data-cv-print-active] .cv-sheet,
+  html[data-cv-print-active] .cv-panel,
+  html[data-cv-print-active] .cv-facts dd,
+  html[data-cv-print-active] .cv-project-meta dd,
+  html[data-cv-print-active] .cv-stack-list dd,
+  html[data-cv-print-active] .cv-project-copy p,
+  html[data-cv-print-active] .cv-skill-card li,
+  html[data-cv-print-active] .cv-project-highlights li,
+  html[data-cv-print-active] .cv-link-list a span:last-child {
+    font-size: 0.88rem;
+  }
+
+  html[data-cv-print-active] .cv-sheet {
+    padding: 8mm 8mm 7mm;
+    border-radius: 0;
+  }
+
+  html[data-cv-print-active] .cv-hero h1 {
+    font-size: 2.8rem;
+  }
+
+  html[data-cv-print-active] .cv-panel h2,
+  html[data-cv-print-active] .cv-section h2 {
+    font-size: 1.2rem;
+  }
+
+  html[data-cv-print-active] .cv-project-card h3,
+  html[data-cv-print-active] .cv-project-highlights h4,
+  html[data-cv-print-active] .cv-detail-card h4,
+  html[data-cv-print-active] .cv-skill-card h3 {
+    font-size: 1rem;
+  }
+
+  html[data-cv-print-active] .cv-top-grid,
+  html[data-cv-print-active] .cv-skills-grid,
+  html[data-cv-print-active] .cv-projects {
+    margin-top: 0.7rem;
+  }
+
+  html[data-cv-print-active] .cv-panel,
+  html[data-cv-print-active] .cv-panel-mirrored,
+  html[data-cv-print-active] .cv-detail-card,
+  html[data-cv-print-active] .cv-skill-card {
+    padding: 0.8rem;
+  }
+
+  html[data-cv-print-active] .cv-section-heading {
+    margin-bottom: 0.7rem;
+  }
+
+  html[data-cv-print-active] .cv-facts,
+  html[data-cv-print-active] .cv-project-meta,
+  html[data-cv-print-active] .cv-stack-list,
+  html[data-cv-print-active] .cv-project-summary,
+  html[data-cv-print-active] .cv-project-highlights-list {
+    gap: 0.55rem;
+  }
+
+  html[data-cv-print-active] .cv-link-list {
+    gap: 0.45rem;
+    margin-top: 0.8rem;
+  }
+
+  html[data-cv-print-active] .cv-link-card {
+    padding: 0.55rem 0.65rem;
+  }
+
+  html[data-cv-print-active] .cv-chip-list {
+    gap: 0.4rem;
+    margin-top: 0.7rem;
+  }
+
+  html[data-cv-print-active] .cv-chip-list li {
+    padding: 0.34rem 0.6rem;
+    font-size: 0.76rem;
+  }
+
+  html[data-cv-print-active] .cv-project-header {
+    gap: 0.7rem;
+    padding: 0.82rem 0.82rem 0.74rem 0.96rem;
+  }
+
+  html[data-cv-print-active] .cv-project-divider {
+    margin: 0 0.82rem 0 0.96rem;
+  }
+
+  html[data-cv-print-active] .cv-project-body {
+    gap: 0.7rem;
+    padding: 0.82rem 0.82rem 0.82rem 0.96rem;
+  }
+
+  html[data-cv-print-active] .cv-project-body > * + * {
+    padding-top: 0.7rem;
+  }
+
+  html[data-cv-print-active] .cv-project-stack-page {
+    padding: 0.82rem 0.82rem 0.82rem 0.96rem;
+  }
+
+  html[data-cv-print-active] .cv-project-card-stack .cv-detail-card {
+    padding: 0.75rem;
+    padding-top: 0.75rem;
+  }
+
+  html[data-cv-print-active] .cv-project-card-stack .cv-stack-list {
+    gap: 0.55rem 0.7rem;
+  }
+
+  html[data-cv-print-active] .cv-project-highlights {
+    gap: 0.45rem;
+    padding-top: 0.2rem;
+    padding-bottom: 0.2rem;
+  }
+
+  html[data-cv-print-active] .cv-brace-frame-vertical {
+    --cv-brace-depth: 1.65rem;
+    padding-top: 0.9rem;
+  }
+
+  html[data-cv-print-active] .cv-skill-card ul {
+    gap: 0.3rem;
+  }
+
+  html[data-cv-print-active] .cv-skill-sublist {
+    margin-top: 0.18rem;
+    row-gap: 0.12rem;
+  }
+
   html[data-cv-print-active] a {
     color: inherit;
     text-decoration: none;
+  }
+
+  @media print {
+    html[data-print-preview] .cv-page {
+      padding: 0;
+      background: none;
+    }
+
+    html[data-print-preview] .cv-print-stack {
+      gap: 0;
+    }
+
+    html[data-print-preview] .cv-print-page {
+      width: auto;
+      min-height: auto;
+      box-shadow: none;
+      break-after: page;
+      page-break-after: always;
+    }
+
+    html[data-print-preview] .cv-print-page:last-child {
+      break-after: auto;
+      page-break-after: auto;
+    }
   }
 </style>
