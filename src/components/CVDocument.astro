@@ -1,15 +1,15 @@
 ---
 import { Image } from "astro:assets";
 import profilePic from "../assets/2023-03-17_square_near_profilepic.jpeg";
-import { getLocalizedResumeContent, type ResumeLocale } from "../data/cv";
+import { getLocalizedCvContent, type CvLocale } from "../data/cv";
 import CVIntro from "./CVIntro.astro";
 
 interface Props {
-  locale?: ResumeLocale;
+  locale?: CvLocale;
 }
 
 const { locale = "de" } = Astro.props;
-const content = getLocalizedResumeContent(locale);
+const content = getLocalizedCvContent(locale);
 const toolbarAriaLabel = locale === "de" ? "Lebenslauf-Aktionen" : "CV actions";
 const profileImageAlt =
   locale === "de"
@@ -18,36 +18,36 @@ const profileImageAlt =
 const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
 ---
 
-<main class="resume-page">
+<main class="cv-page">
   {
     /*
     TODO(bjesuiter): Re-enable this CV toolbar once there is a real print/download mode.
     Keep the existing markup for the future print-mode implementation instead of deleting it.
-  <div class="resume-toolbar print-hidden" aria-label={toolbarAriaLabel}>
-    <div class="resume-toolbar-shell">
-      <div class="resume-toolbar-copy gap-4">
-        <p class="resume-toolbar-kicker">{content.badge}</p>
-        <p class="resume-toolbar-note">{content.printHint}</p>
+  <div class="cv-toolbar print-hidden" aria-label={toolbarAriaLabel}>
+    <div class="cv-toolbar-shell">
+      <div class="cv-toolbar-copy gap-4">
+        <p class="cv-toolbar-kicker">{content.badge}</p>
+        <p class="cv-toolbar-note">{content.printHint}</p>
       </div>
 
-      <div class="resume-toolbar-actions">
+      <div class="cv-toolbar-actions">
         <a
           href={languageSwitchHref}
-          class="resume-action resume-action-secondary"
+          class="cv-action cv-action-secondary"
         >
           {content.navigation.languageSwitchLabel}
         </a>
         <button
           type="button"
-          class="resume-action resume-action-print"
-          onclick="window.__resumePrintMode('print')"
+          class="cv-action cv-action-print"
+          onclick="window.__cvPrintMode('print')"
         >
           {content.navigation.printLabel}
         </button>
         <button
           type="button"
-          class="resume-action resume-action-download"
-          onclick="window.__resumePrintMode('download')"
+          class="cv-action cv-action-download"
+          onclick="window.__cvPrintMode('download')"
         >
           {content.navigation.downloadLabel}
         </button>
@@ -57,32 +57,32 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
   */
   }
 
-  <article class="resume-sheet">
+  <article class="cv-sheet">
     <!-- Hero section with the main heading, intro copy, and profile image. -->
-    <header class="resume-hero gap-4">
-      <div class="resume-hero-copy gap-4">
-        <p class="resume-badge">{content.badge}</p>
+    <header class="cv-hero gap-4">
+      <div class="cv-hero-copy gap-4">
+        <p class="cv-badge">{content.badge}</p>
         <h1>{content.heading}</h1>
         <CVIntro locale={locale} />
       </div>
 
-      <div class="resume-hero-media">
+      <div class="cv-hero-media">
         <Image
           src={profilePic}
           alt={profileImageAlt}
           loading="eager"
-          class="resume-hero-image"
+          class="cv-hero-image"
         />
       </div>
     </header>
 
     <!-- Top overview grid with personal facts on the left and contact details on the right. -->
-    <section class="resume-grid resume-top-grid resume-section-shell gap-4">
+    <section class="cv-grid cv-top-grid cv-section-shell gap-4">
       <!-- Quick facts section for personal and professional summary data. -->
       <!-- English heading: Profile -->
-      <section class="resume-panel resume-surface resume-surface-strong">
+      <section class="cv-panel cv-surface cv-surface-strong">
         <h2>{content.factsTitle}</h2>
-        <dl class="resume-facts gap-4">
+        <dl class="cv-facts gap-4">
           {
             content.facts.map((fact) => (
               <div>
@@ -96,9 +96,9 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
 
       <!-- Contact links and industry focus section. -->
       <!-- English heading: Links -->
-      <section class="resume-panel resume-panel-mirrored resume-surface">
+      <section class="cv-panel cv-panel-mirrored cv-surface">
         <h2>{content.contactTitle}</h2>
-        <ul class="resume-link-list">
+        <ul class="cv-link-list">
           {
             content.contactLinks.map((link) => (
               <li>
@@ -106,7 +106,7 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
                   href={link.href}
                   target="_blank"
                   rel="noreferrer"
-                  class="resume-link-card resume-surface-inset"
+                  class="cv-link-card cv-surface-inset"
                 >
                   <span>{link.label}</span>
                   <span>{link.href.replace(/^https?:\/\//, "")}</span>
@@ -117,8 +117,8 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
         </ul>
 
         <!-- English heading: Industries -->
-        <h2 class="resume-subheading">{content.industriesTitle}</h2>
-        <ul class="resume-chip-list">
+        <h2 class="cv-subheading">{content.industriesTitle}</h2>
+        <ul class="cv-chip-list">
           {content.industries.map((industry) => <li>{industry}</li>)}
         </ul>
       </section>
@@ -126,17 +126,17 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
 
     <!-- Skills dossier section grouped by category and specialization. -->
     <!-- English heading: IT Skills -->
-    <section class="resume-section-shell resume-section resume-skills-section">
-      <div class="resume-section-heading">
+    <section class="cv-section-shell cv-section cv-skills-section">
+      <div class="cv-section-heading">
         <h2 class="pl-2">{content.skillsTitle}</h2>
       </div>
 
       <!-- Skill cards break capabilities into clear categories for quick scanning. -->
-      <div class="resume-skills-grid gap-4">
+      <div class="cv-skills-grid gap-4">
         {
           content.skillCategories.map((category) => (
-            <section class="resume-skill-card">
-              <div class="resume-card-heading">
+            <section class="cv-skill-card">
+              <div class="cv-card-heading">
                 <h3>{category.title}</h3>
               </div>
               <ul class="gap-4">
@@ -144,24 +144,21 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
                   typeof item === "string" ? (
                     <li>{item}</li>
                   ) : "items" in item ? (
-                    <li class="resume-skill-group">
-                      <span class="resume-skill-group-label">
-                        <span
-                          class="resume-skill-group-dot"
-                          aria-hidden="true"
-                        />
+                    <li class="cv-skill-group">
+                      <span class="cv-skill-group-label">
+                        <span class="cv-skill-group-dot" aria-hidden="true" />
                         <span>{item.label}</span>
                       </span>
-                      <ul class="resume-skill-sublist">
+                      <ul class="cv-skill-sublist">
                         {item.items.map((subItem) => (
-                          <li class="resume-skill-sublist-item">{subItem}</li>
+                          <li class="cv-skill-sublist-item">{subItem}</li>
                         ))}
                       </ul>
                     </li>
                   ) : (
-                    <li class="resume-skill-chip-row">
+                    <li class="cv-skill-chip-row">
                       <span>{item.text}</span>
-                      <span class="resume-chip">{item.chip}</span>
+                      <span class="cv-chip">{item.chip}</span>
                     </li>
                   ),
                 )}
@@ -174,10 +171,8 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
 
     <!-- Project portfolio section with detailed case studies and technology stacks. -->
     <!-- English heading: Project History -->
-    <section
-      class="resume-section-shell resume-section resume-project-history-section"
-    >
-      <div class="resume-section-heading">
+    <section class="cv-section-shell cv-section cv-project-history-section">
+      <div class="cv-section-heading">
         <div>
           <h2 class="pl-1">{content.projectsTitle}</h2>
           <p class="pl-1">{content.projectsIntro}</p>
@@ -185,38 +180,38 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
       </div>
 
       <!-- Project cards highlight selected work with context, outcomes, and stack details. -->
-      <div class="resume-projects">
+      <div class="cv-projects">
         {
           content.projects.map((project, index) => (
-            <article class="resume-project-card resume-surface resume-surface-project">
-              <header class="resume-project-header gap-4">
-                <div class="resume-project-title-block gap-4">
-                  <div class="resume-project-eyebrow">
-                    <span class="resume-card-index">
+            <article class="cv-project-card cv-surface cv-surface-project">
+              <header class="cv-project-header gap-4">
+                <div class="cv-project-title-block gap-4">
+                  <div class="cv-project-eyebrow">
+                    <span class="cv-card-index">
                       {String(index + 1).padStart(2, "0")}
                     </span>
-                    <p class="resume-project-period">{project.period}</p>
+                    <p class="cv-project-period">{project.period}</p>
                   </div>
-                  <p class="resume-project-sector">{project.sector}</p>
+                  <p class="cv-project-sector">{project.sector}</p>
                   <h3>{project.title}</h3>
                 </div>
 
-                <dl class="resume-project-meta gap-4">
+                <dl class="cv-project-meta gap-4">
                   {project.duration && (
-                    <div class="resume-surface-inset">
+                    <div class="cv-surface-inset">
                       {/* English label: Project Duration */}
                       <dt>{content.durationLabel}</dt>
                       <dd>{project.duration}</dd>
                     </div>
                   )}
                   {project.teamSize && (
-                    <div class="resume-surface-inset">
+                    <div class="cv-surface-inset">
                       {/* English label: Team Size */}
                       <dt>{content.teamSizeLabel}</dt>
                       <dd>{project.teamSize}</dd>
                     </div>
                   )}
-                  <div class="resume-surface-inset resume-project-meta-roles">
+                  <div class="cv-surface-inset cv-project-meta-roles">
                     {/* English label: Roles */}
                     <dt>{content.rolesLabel}</dt>
                     <dd>{project.roles.join(" · ")}</dd>
@@ -224,24 +219,24 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
                 </dl>
               </header>
 
-              <div class="resume-project-divider" aria-hidden="true" />
+              <div class="cv-project-divider" aria-hidden="true" />
 
-              <div class="resume-project-body gap-4">
+              <div class="cv-project-body gap-4">
                 {/* Narrative summary describing the challenge, work, and impact of the project. */}
-                <div class="resume-project-copy gap-4">
-                  <section class="resume-project-summary">
+                <div class="cv-project-copy gap-4">
+                  <section class="cv-project-summary">
                     {project.summary.map((paragraph) => (
                       <p>{paragraph}</p>
                     ))}
                   </section>
 
-                  <section class="resume-project-spacer" aria-hidden="true" />
+                  <section class="cv-project-spacer" aria-hidden="true" />
 
                   {/* Key highlights sit directly below the project description without card styling. */}
                   {/* English heading: Responsibilities & Outcomes */}
-                  <section class="resume-project-highlights">
+                  <section class="cv-project-highlights">
                     <h4>{content.highlightsTitle}</h4>
-                    <ul class="resume-project-highlights-list gap-4">
+                    <ul class="cv-project-highlights-list gap-4">
                       {project.highlights.map((highlight) => (
                         <li>{highlight}</li>
                       ))}
@@ -251,9 +246,9 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
 
                 {/* Technical Context - Technology stack section listing the tools and platforms used. */}
                 {/* English heading: Technical Context */}
-                <section class="resume-detail-card resume-surface-inset resume-brace-frame-vertical">
+                <section class="cv-detail-card cv-surface-inset cv-brace-frame-vertical">
                   <h4>{content.stackTitle}</h4>
-                  <dl class="resume-stack-list gap-4">
+                  <dl class="cv-stack-list gap-4">
                     {project.stack.map((item) => (
                       <div>
                         <dt>{item.label}</dt>
@@ -279,55 +274,55 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
       const isPreview = root.hasAttribute("data-print-preview");
 
       if (isPreview) {
-        root.dataset.resumePrintActive = "true";
-        document.body?.setAttribute("data-resume-print-active", "true");
+        root.dataset.cvPrintActive = "true";
+        document.body?.setAttribute("data-cv-print-active", "true");
         return;
       }
 
-      delete root.dataset.resumePrintActive;
-      document.body?.removeAttribute("data-resume-print-active");
+      delete root.dataset.cvPrintActive;
+      document.body?.removeAttribute("data-cv-print-active");
     };
 
     const setMode = (mode) => {
-      document.documentElement.dataset.resumeOutput = mode;
-      document.body?.setAttribute("data-resume-output", mode);
-      document.documentElement.dataset.resumePrintActive = "true";
-      document.body?.setAttribute("data-resume-print-active", "true");
+      document.documentElement.setAttribute("cata-cv-output", mode);
+      document.body?.setAttribute("cata-cv-output", mode);
+      document.documentElement.dataset.cvPrintActive = "true";
+      document.body?.setAttribute("data-cv-print-active", "true");
     };
 
     const clearMode = () => {
-      delete document.documentElement.dataset.resumeOutput;
-      document.body?.removeAttribute("data-resume-output");
+      document.documentElement.removeAttribute("cata-cv-output");
+      document.body?.removeAttribute("cata-cv-output");
       syncPrintActiveState();
     };
 
-    window.__resumePrintMode = (mode) => {
+    window.__cvPrintMode = (mode) => {
       setMode(mode);
       window.print();
     };
 
     window.addEventListener("beforeprint", () => {
-      document.documentElement.dataset.resumePrintActive = "true";
-      document.body?.setAttribute("data-resume-print-active", "true");
+      document.documentElement.dataset.cvPrintActive = "true";
+      document.body?.setAttribute("data-cv-print-active", "true");
     });
     window.addEventListener("afterprint", clearMode);
     syncPrintActiveState();
   })();
 </script>
 
-<!-- Global styles for the on-screen resume layout and print/download output. -->
+<!-- Global styles for the on-screen cv layout and print/download output. -->
 <style is:global>
-  .resume-page {
-    --resume-content-width: 1140px;
-    --resume-page-padding: 0.8rem;
-    --resume-dock-overlap: 8.25rem;
-    --resume-divider: rgba(167, 243, 208, 0.12);
-    --resume-divider-strong: rgba(167, 243, 208, 0.2);
-    --resume-panel-radius: 14px;
-    --resume-sheet-padding: 1.1rem;
-    --resume-panel-border: rgba(167, 243, 208, 0.14);
-    --resume-dossier-frame-depth: calc(var(--resume-panel-radius) + 12px);
-    --resume-dossier-frame-fade: linear-gradient(
+  .cv-page {
+    --cv-content-width: 1140px;
+    --cv-page-padding: 0.8rem;
+    --cv-dock-overlap: 8.25rem;
+    --cv-divider: rgba(167, 243, 208, 0.12);
+    --cv-divider-strong: rgba(167, 243, 208, 0.2);
+    --cv-panel-radius: 14px;
+    --cv-sheet-padding: 1.1rem;
+    --cv-panel-border: rgba(167, 243, 208, 0.14);
+    --cv-dossier-frame-depth: calc(var(--cv-panel-radius) + 12px);
+    --cv-dossier-frame-fade: linear-gradient(
       90deg,
       transparent 0%,
       rgba(0, 0, 0, 0.2) 8%,
@@ -336,27 +331,27 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
       rgba(0, 0, 0, 0.2) 92%,
       transparent 100%
     );
-    --resume-panel-surface: rgba(4, 23, 18, 0.84);
-    --resume-panel-surface-strong: rgba(6, 28, 21, 0.9);
+    --cv-panel-surface: rgba(4, 23, 18, 0.84);
+    --cv-panel-surface-strong: rgba(6, 28, 21, 0.9);
     min-height: 100vh;
-    margin-top: calc(var(--resume-dock-overlap) * -1);
-    padding: calc(var(--resume-page-padding) + var(--resume-dock-overlap))
-      var(--resume-page-padding) var(--resume-page-padding);
+    margin-top: calc(var(--cv-dock-overlap) * -1);
+    padding: calc(var(--cv-page-padding) + var(--cv-dock-overlap))
+      var(--cv-page-padding) var(--cv-page-padding);
     background: #02110d;
     color: #ecfdf5;
   }
 
-  .resume-toolbar,
-  .resume-sheet {
-    width: min(var(--resume-content-width), 100%);
+  .cv-toolbar,
+  .cv-sheet {
+    width: min(var(--cv-content-width), 100%);
     margin-inline: auto;
   }
 
-  .resume-toolbar {
+  .cv-toolbar {
     margin-bottom: 1rem;
   }
 
-  .resume-toolbar-shell {
+  .cv-toolbar-shell {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
@@ -372,58 +367,58 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
     backdrop-filter: blur(16px);
   }
 
-  .resume-toolbar-copy,
-  .resume-hero,
-  .resume-hero-copy,
-  .resume-grid,
-  .resume-facts,
-  .resume-skills-grid,
-  .resume-projects,
-  .resume-project-header,
-  .resume-project-title-block,
-  .resume-project-meta,
-  .resume-project-body,
-  .resume-project-copy,
-  .resume-stack-list,
-  .resume-project-highlights-list,
-  .resume-skill-card ul,
-  .resume-detail-card ul {
+  .cv-toolbar-copy,
+  .cv-hero,
+  .cv-hero-copy,
+  .cv-grid,
+  .cv-facts,
+  .cv-skills-grid,
+  .cv-projects,
+  .cv-project-header,
+  .cv-project-title-block,
+  .cv-project-meta,
+  .cv-project-body,
+  .cv-project-copy,
+  .cv-stack-list,
+  .cv-project-highlights-list,
+  .cv-skill-card ul,
+  .cv-detail-card ul {
     display: grid;
   }
 
-  .resume-toolbar-copy {
+  .cv-toolbar-copy {
     gap: 0.22rem;
     max-width: 54rem;
   }
 
-  .resume-toolbar-kicker,
-  .resume-badge,
-  .resume-card-index,
-  .resume-facts dt,
-  .resume-project-meta dt,
-  .resume-stack-list dt,
-  .resume-project-period,
-  .resume-link-list a span:first-child {
+  .cv-toolbar-kicker,
+  .cv-badge,
+  .cv-card-index,
+  .cv-facts dt,
+  .cv-project-meta dt,
+  .cv-stack-list dt,
+  .cv-project-period,
+  .cv-link-list a span:first-child {
     font-family: "Chakra Petch", sans-serif;
     font-weight: 700;
     text-transform: uppercase;
   }
 
-  .resume-toolbar-kicker {
+  .cv-toolbar-kicker {
     margin: 0;
     font-size: 0.75rem;
     letter-spacing: 0.14em;
     color: #86efac;
   }
 
-  .resume-toolbar-note {
+  .cv-toolbar-note {
     margin: 0;
     font-size: 0.95rem;
     line-height: 1.55;
     color: #c7f3df;
   }
 
-  .resume-toolbar-actions {
+  .cv-toolbar-actions {
     display: flex;
     flex-wrap: wrap;
     width: 100%;
@@ -431,7 +426,7 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
     gap: 0.75rem;
   }
 
-  .resume-action {
+  .cv-action {
     appearance: none;
     display: inline-flex;
     flex: 1 1 100%;
@@ -457,35 +452,35 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
       box-shadow 170ms ease;
   }
 
-  .resume-action:hover {
+  .cv-action:hover {
     transform: translateY(-1px);
   }
 
-  .resume-action-secondary {
+  .cv-action-secondary {
     color: #d8fbed;
     border-color: rgba(167, 243, 208, 0.18);
     background: rgba(7, 34, 26, 0.56);
     box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
   }
 
-  .resume-action-secondary:hover {
+  .cv-action-secondary:hover {
     border-color: rgba(110, 231, 183, 0.5);
     background: rgba(8, 39, 29, 0.82);
   }
 
-  .resume-action-download {
+  .cv-action-download {
     color: #032015;
     border-color: rgba(255, 255, 255, 0.24);
     background: #9ef0c7;
     box-shadow: 0 10px 24px rgba(0, 0, 0, 0.2);
   }
 
-  .resume-action-download:hover {
+  .cv-action-download:hover {
     filter: brightness(1.04);
     box-shadow: 0 14px 28px rgba(0, 0, 0, 0.28);
   }
 
-  .resume-action-print {
+  .cv-action-print {
     color: #d8fbed;
     border-color: rgba(167, 243, 208, 0.28);
     background: rgba(3, 24, 18, 0.72);
@@ -495,12 +490,12 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
     backdrop-filter: blur(18px);
   }
 
-  .resume-action-print:hover {
+  .cv-action-print:hover {
     border-color: #6ee7b7;
     background: rgba(5, 30, 22, 0.92);
   }
 
-  .resume-sheet {
+  .cv-sheet {
     padding: 1.1rem;
     border-radius: 22px;
     overflow: hidden;
@@ -509,49 +504,49 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
     box-shadow: 0 24px 52px rgba(1, 10, 7, 0.42);
   }
 
-  .resume-hero {
+  .cv-hero {
     gap: 1.15rem;
-    margin: calc(var(--resume-sheet-padding) * -1)
-      calc(var(--resume-sheet-padding) * -1) 0;
-    padding: var(--resume-sheet-padding) var(--resume-sheet-padding) 1.6rem;
+    margin: calc(var(--cv-sheet-padding) * -1)
+      calc(var(--cv-sheet-padding) * -1) 0;
+    padding: var(--cv-sheet-padding) var(--cv-sheet-padding) 1.6rem;
     background:
       linear-gradient(90deg, rgba(220, 252, 231, 0.015) 1px, transparent 1px) 0
         0 / 34px 100%,
       rgba(4, 21, 17, 0.92);
   }
 
-  .resume-hero-copy {
+  .cv-hero-copy {
     gap: 0.95rem;
     align-content: start;
   }
 
-  .resume-badge {
+  .cv-badge {
     margin: 0;
     font-size: 0.84rem;
     letter-spacing: 0.14em;
     color: #6ee7b7;
   }
 
-  .resume-hero h1,
-  .resume-section h2,
-  .resume-panel h2,
-  .resume-project-card h3,
-  .resume-project-highlights h4,
-  .resume-detail-card h4,
-  .resume-skill-card h3 {
+  .cv-hero h1,
+  .cv-section h2,
+  .cv-panel h2,
+  .cv-project-card h3,
+  .cv-project-highlights h4,
+  .cv-detail-card h4,
+  .cv-skill-card h3 {
     margin: 0;
     font-family: "Fraunces", serif;
     text-wrap: balance;
     color: #ecfdf5;
   }
 
-  .resume-hero h1 {
+  .cv-hero h1 {
     font-size: clamp(2.4rem, 6vw, 4.6rem);
     line-height: 0.92;
     letter-spacing: -0.04em;
   }
 
-  .resume-intro {
+  .cv-intro {
     max-width: 72ch;
     margin: 0;
     font-size: clamp(1rem, 1.5vw, 1.08rem);
@@ -559,19 +554,19 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
     color: #c7f3df;
   }
 
-  .resume-intro p {
+  .cv-intro p {
     margin: 0;
   }
 
-  .resume-intro p + p {
+  .cv-intro p + p {
     margin-top: 0.45rem;
   }
 
-  .resume-intro strong {
+  .cv-intro strong {
     color: #ecfdf5;
   }
 
-  .resume-hero-media {
+  .cv-hero-media {
     position: relative;
     min-height: 18rem;
     overflow: hidden;
@@ -581,7 +576,7 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
     box-shadow: 0 24px 48px rgba(1, 10, 7, 0.28);
   }
 
-  .resume-hero-media::after {
+  .cv-hero-media::after {
     content: "";
     position: absolute;
     inset: 0;
@@ -594,7 +589,7 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
     );
   }
 
-  .resume-hero-image {
+  .cv-hero-image {
     width: 100%;
     height: 100%;
     object-fit: cover;
@@ -602,25 +597,25 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
     filter: saturate(0.88) contrast(1.04) brightness(1);
   }
 
-  .resume-top-grid,
-  .resume-section,
-  .resume-skills-grid,
-  .resume-projects {
+  .cv-top-grid,
+  .cv-section,
+  .cv-skills-grid,
+  .cv-projects {
     margin-top: 1rem;
   }
 
-  .resume-surface {
+  .cv-surface {
     overflow: hidden;
-    border: 1px solid var(--resume-panel-border);
-    border-radius: var(--resume-panel-radius);
-    background: var(--resume-panel-surface);
+    border: 1px solid var(--cv-panel-border);
+    border-radius: var(--cv-panel-radius);
+    background: var(--cv-panel-surface);
     box-shadow:
       inset 0 1px 0 rgba(255, 255, 255, 0.04),
       0 14px 28px rgba(1, 10, 7, 0.16);
     backdrop-filter: blur(8px);
   }
 
-  .resume-surface-soft {
+  .cv-surface-soft {
     overflow: hidden;
     border: 1px solid rgba(167, 243, 208, 0.12);
     border-radius: 18px;
@@ -631,37 +626,35 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
     backdrop-filter: blur(8px);
   }
 
-  .resume-surface-inset {
+  .cv-surface-inset {
     border: 1px solid rgba(167, 243, 208, 0.12);
     border-radius: 16px;
     background: rgba(4, 20, 16, 0.46);
     box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03);
   }
 
-  .resume-surface-project {
-    --resume-timeline-strip-color: rgba(110, 231, 183, 0.42);
-    --resume-timeline-strip-width: 2px;
-    --resume-timeline-strip-wrap: 1.5rem;
+  .cv-surface-project {
+    --cv-timeline-strip-color: rgba(110, 231, 183, 0.42);
+    --cv-timeline-strip-width: 2px;
+    --cv-timeline-strip-wrap: 1.5rem;
     position: relative;
     border: 0;
     background: rgba(4, 21, 17, 0.78);
   }
 
-  .resume-surface-project::before {
+  .cv-surface-project::before {
     content: "";
     position: absolute;
     inset: 0 auto 0 0;
-    width: calc(
-      var(--resume-timeline-strip-wrap) + var(--resume-timeline-strip-width)
-    );
-    border-top: var(--resume-timeline-strip-width) solid
-      var(--resume-timeline-strip-color);
-    border-bottom: var(--resume-timeline-strip-width) solid
-      var(--resume-timeline-strip-color);
-    border-left: var(--resume-timeline-strip-width) solid
-      var(--resume-timeline-strip-color);
-    border-top-left-radius: var(--resume-panel-radius);
-    border-bottom-left-radius: var(--resume-panel-radius);
+    width: calc(var(--cv-timeline-strip-wrap) + var(--cv-timeline-strip-width));
+    border-top: var(--cv-timeline-strip-width) solid
+      var(--cv-timeline-strip-color);
+    border-bottom: var(--cv-timeline-strip-width) solid
+      var(--cv-timeline-strip-color);
+    border-left: var(--cv-timeline-strip-width) solid
+      var(--cv-timeline-strip-color);
+    border-top-left-radius: var(--cv-panel-radius);
+    border-bottom-left-radius: var(--cv-panel-radius);
     pointer-events: none;
     -webkit-mask-image: linear-gradient(
       90deg,
@@ -681,159 +674,159 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
     );
   }
 
-  .resume-panel {
+  .cv-panel {
     padding: 1.1rem;
   }
 
-  .resume-section-shell {
+  .cv-section-shell {
     padding-inline: 0;
   }
 
-  .resume-panel-mirrored {
+  .cv-panel-mirrored {
     padding: 1.1rem 1.16rem 1.1rem 1.1rem;
   }
 
-  .resume-section {
+  .cv-section {
     padding-top: 0;
     border-top: 0;
   }
 
-  .resume-section-frame {
+  .cv-section-frame {
     position: relative;
     overflow: hidden;
     border: 0;
   }
 
-  .resume-skills-section,
-  .resume-project-history-section {
+  .cv-skills-section,
+  .cv-project-history-section {
     padding-top: 1rem;
   }
 
-  .resume-skills-section {
-    --resume-section-clamp-depth: 0.78rem;
-    --resume-section-clamp-inset-left: 1.1rem;
-    --resume-section-clamp-inset-right: 1.1rem;
+  .cv-skills-section {
+    --cv-section-clamp-depth: 0.78rem;
+    --cv-section-clamp-inset-left: 1.1rem;
+    --cv-section-clamp-inset-right: 1.1rem;
   }
 
-  .resume-section-frame::before,
-  .resume-section-frame::after {
+  .cv-section-frame::before,
+  .cv-section-frame::after {
     content: "";
     position: absolute;
     left: 0;
     right: 0;
-    height: var(--resume-dossier-frame-depth);
+    height: var(--cv-dossier-frame-depth);
     pointer-events: none;
-    -webkit-mask-image: var(--resume-dossier-frame-fade);
-    mask-image: var(--resume-dossier-frame-fade);
+    -webkit-mask-image: var(--cv-dossier-frame-fade);
+    mask-image: var(--cv-dossier-frame-fade);
   }
 
-  .resume-section-frame::before {
+  .cv-section-frame::before {
     top: 0;
-    border-top: 1px dashed var(--resume-divider-strong);
-    border-left: 1px dashed var(--resume-divider-strong);
-    border-right: 1px dashed var(--resume-divider-strong);
-    border-top-left-radius: var(--resume-panel-radius);
-    border-top-right-radius: var(--resume-panel-radius);
+    border-top: 1px dashed var(--cv-divider-strong);
+    border-left: 1px dashed var(--cv-divider-strong);
+    border-right: 1px dashed var(--cv-divider-strong);
+    border-top-left-radius: var(--cv-panel-radius);
+    border-top-right-radius: var(--cv-panel-radius);
   }
 
-  .resume-section-frame::after {
+  .cv-section-frame::after {
     bottom: 0;
-    border-bottom: 1px dashed var(--resume-divider-strong);
-    border-left: 1px dashed var(--resume-divider-strong);
-    border-right: 1px dashed var(--resume-divider-strong);
-    border-bottom-left-radius: var(--resume-panel-radius);
-    border-bottom-right-radius: var(--resume-panel-radius);
+    border-bottom: 1px dashed var(--cv-divider-strong);
+    border-left: 1px dashed var(--cv-divider-strong);
+    border-right: 1px dashed var(--cv-divider-strong);
+    border-bottom-left-radius: var(--cv-panel-radius);
+    border-bottom-right-radius: var(--cv-panel-radius);
   }
 
-  .resume-skills-section.resume-section-frame::before,
-  .resume-skills-section.resume-section-frame::after {
-    left: var(--resume-section-clamp-inset-left);
-    right: var(--resume-section-clamp-inset-right);
-    height: var(--resume-section-clamp-depth);
+  .cv-skills-section.cv-section-frame::before,
+  .cv-skills-section.cv-section-frame::after {
+    left: var(--cv-section-clamp-inset-left);
+    right: var(--cv-section-clamp-inset-right);
+    height: var(--cv-section-clamp-depth);
     -webkit-mask-image: none;
     mask-image: none;
   }
 
-  .resume-skills-section.resume-section-frame::before {
+  .cv-skills-section.cv-section-frame::before {
     border-top-left-radius: 12px;
     border-top-right-radius: 12px;
   }
 
-  .resume-skills-section.resume-section-frame::after {
+  .cv-skills-section.cv-section-frame::after {
     border-bottom-left-radius: 12px;
     border-bottom-right-radius: 12px;
   }
 
-  .resume-section-heading {
+  .cv-section-heading {
     margin-bottom: 1rem;
   }
 
-  .resume-panel h2,
-  .resume-section h2 {
+  .cv-panel h2,
+  .cv-section h2 {
     font-size: clamp(1.35rem, 2vw, 1.9rem);
   }
 
-  .resume-section-heading p {
+  .cv-section-heading p {
     margin: 0.45rem 0 0;
     line-height: 1.6;
     color: #bdeed8;
   }
 
-  .resume-subheading {
+  .cv-subheading {
     margin-top: 1.35rem !important;
   }
 
-  .resume-facts {
+  .cv-facts {
     gap: 0.9rem;
     margin-top: 1.05rem;
   }
 
-  .resume-facts > div,
-  .resume-stack-list > div,
-  .resume-project-meta > div {
+  .cv-facts > div,
+  .cv-stack-list > div,
+  .cv-project-meta > div {
     display: grid;
     gap: 0.2rem;
   }
 
-  .resume-facts > div + div,
-  .resume-stack-list > div + div {
+  .cv-facts > div + div,
+  .cv-stack-list > div + div {
     padding-top: 0.7rem;
-    border-top: 1px dashed var(--resume-divider);
+    border-top: 1px dashed var(--cv-divider);
   }
 
-  .resume-facts dt,
-  .resume-project-meta dt,
-  .resume-stack-list dt {
+  .cv-facts dt,
+  .cv-project-meta dt,
+  .cv-stack-list dt {
     font-size: 0.75rem;
     letter-spacing: 0.12em;
     color: #6ee7b7;
   }
 
-  .resume-facts dd,
-  .resume-project-meta dd,
-  .resume-stack-list dd {
+  .cv-facts dd,
+  .cv-project-meta dd,
+  .cv-stack-list dd {
     margin: 0;
     line-height: 1.6;
     color: #d7fbec;
   }
 
-  .resume-link-list,
-  .resume-chip-list,
-  .resume-skill-card ul,
-  .resume-project-highlights-list,
-  .resume-detail-card ul {
+  .cv-link-list,
+  .cv-chip-list,
+  .cv-skill-card ul,
+  .cv-project-highlights-list,
+  .cv-detail-card ul {
     margin: 0;
     padding: 0;
     list-style: none;
   }
 
-  .resume-link-list {
+  .cv-link-list {
     display: grid;
     gap: 0.7rem;
     margin-top: 1.05rem;
   }
 
-  .resume-link-card {
+  .cv-link-card {
     display: grid;
     gap: 0.22rem;
     padding: 0.72rem 0.85rem;
@@ -845,32 +838,32 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
       background-color 170ms ease;
   }
 
-  .resume-link-card:hover {
+  .cv-link-card:hover {
     transform: translateX(2px);
     border-color: rgba(110, 231, 183, 0.28);
     background: rgba(6, 31, 24, 0.56);
   }
 
-  .resume-link-list a span:first-child {
+  .cv-link-list a span:first-child {
     font-size: 0.75rem;
     letter-spacing: 0.12em;
     color: #6ee7b7;
   }
 
-  .resume-link-list a span:last-child {
+  .cv-link-list a span:last-child {
     color: #d7fbec;
     line-height: 1.6;
     word-break: break-word;
   }
 
-  .resume-chip-list {
+  .cv-chip-list {
     display: flex;
     flex-wrap: wrap;
     gap: 0.55rem;
     margin-top: 1rem;
   }
 
-  .resume-chip-list li {
+  .cv-chip-list li {
     padding: 0.5rem 0.8rem;
     border-radius: 999px;
     border: 1px solid rgba(110, 231, 183, 0.24);
@@ -879,14 +872,14 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
     line-height: 1.4;
   }
 
-  .resume-card-heading {
+  .cv-card-heading {
     display: flex;
     align-items: baseline;
     gap: 0.7rem;
     margin-bottom: 0.85rem;
   }
 
-  .resume-card-index {
+  .cv-card-index {
     margin: 0;
     font-size: 0.74rem;
     letter-spacing: 0.16em;
@@ -894,30 +887,30 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
     opacity: 0.92;
   }
 
-  .resume-skill-card {
+  .cv-skill-card {
     padding: 1rem 1rem 1.05rem;
     border: 0;
     background: transparent;
     box-shadow: none;
   }
 
-  .resume-skill-card h3 {
+  .cv-skill-card h3 {
     font-size: 1.08rem;
   }
 
-  .resume-skill-card ul {
+  .cv-skill-card ul {
     gap: 0.46rem;
   }
 
-  .resume-skill-group {
+  .cv-skill-group {
     padding-left: 0 !important;
   }
 
-  .resume-skill-group::before {
+  .cv-skill-group::before {
     display: none !important;
   }
 
-  .resume-skill-group-label {
+  .cv-skill-group-label {
     display: inline-flex;
     align-items: center;
     gap: 0.45rem;
@@ -925,7 +918,7 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
     color: #ddfced;
   }
 
-  .resume-skill-group-dot {
+  .cv-skill-group-dot {
     display: inline-block;
     width: 0.32rem;
     padding-top: 0.2rem;
@@ -935,7 +928,7 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
     flex: 0 0 auto;
   }
 
-  .resume-skill-sublist {
+  .cv-skill-sublist {
     display: flex;
     flex-wrap: wrap;
     row-gap: 0.2rem;
@@ -945,7 +938,7 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
     padding-left: 0;
   }
 
-  .resume-skill-sublist .resume-skill-sublist-item {
+  .cv-skill-sublist .cv-skill-sublist-item {
     position: static;
     padding-left: 0;
     font-size: 0.9em;
@@ -953,7 +946,7 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
     list-style: none;
   }
 
-  .resume-skill-sublist .resume-skill-sublist-item::before {
+  .cv-skill-sublist .cv-skill-sublist-item::before {
     content: "·";
     display: inline-block;
     width: auto;
@@ -962,14 +955,14 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
     color: rgba(110, 231, 183, 0.85);
   }
 
-  .resume-skill-chip-row {
+  .cv-skill-chip-row {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
     gap: 0.45rem;
   }
 
-  .resume-chip {
+  .cv-chip {
     display: inline-block;
     padding: 0.08rem 0.45rem;
     border: 1px solid rgba(110, 231, 183, 0.24);
@@ -983,24 +976,24 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
     text-transform: uppercase;
   }
 
-  .resume-skill-card li,
-  .resume-project-highlights li,
-  .resume-detail-card li,
-  .resume-project-copy p {
+  .cv-skill-card li,
+  .cv-project-highlights li,
+  .cv-detail-card li,
+  .cv-project-copy p {
     color: #c7f3df;
     line-height: 1.7;
   }
 
-  .resume-skill-card li,
-  .resume-project-highlights li,
-  .resume-detail-card li {
+  .cv-skill-card li,
+  .cv-project-highlights li,
+  .cv-detail-card li {
     position: relative;
     padding-left: 1rem;
   }
 
-  .resume-skill-card li::before,
-  .resume-project-highlights li::before,
-  .resume-detail-card li::before {
+  .cv-skill-card li::before,
+  .cv-project-highlights li::before,
+  .cv-detail-card li::before {
     content: "";
     position: absolute;
     left: 0;
@@ -1011,25 +1004,25 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
     background: #6ee7b7;
   }
 
-  .resume-projects {
+  .cv-projects {
     gap: 2rem;
   }
 
-  .resume-project-header {
+  .cv-project-header {
     gap: 1rem;
     padding: 1.18rem 1.18rem 1.04rem 1.3rem;
     border-bottom: 0;
   }
 
-  .resume-project-divider {
+  .cv-project-divider {
     position: relative;
     height: 0.8rem;
     margin: 0 1.18rem 0 1.3rem;
-    border-top: 1px dashed var(--resume-divider-strong);
+    border-top: 1px dashed var(--cv-divider-strong);
   }
 
-  .resume-project-divider::before,
-  .resume-project-divider::after {
+  .cv-project-divider::before,
+  .cv-project-divider::after {
     content: "";
     position: absolute;
     top: 0;
@@ -1038,96 +1031,96 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
     pointer-events: none;
   }
 
-  .resume-project-divider::before {
+  .cv-project-divider::before {
     left: 0;
-    border-top: 1px dashed var(--resume-divider-strong);
-    border-left: 1px dashed var(--resume-divider-strong);
+    border-top: 1px dashed var(--cv-divider-strong);
+    border-left: 1px dashed var(--cv-divider-strong);
     border-top-left-radius: 12px;
   }
 
-  .resume-project-divider::after {
+  .cv-project-divider::after {
     right: 0;
-    border-top: 1px dashed var(--resume-divider-strong);
-    border-right: 1px dashed var(--resume-divider-strong);
+    border-top: 1px dashed var(--cv-divider-strong);
+    border-right: 1px dashed var(--cv-divider-strong);
     border-top-right-radius: 12px;
   }
 
-  .resume-project-title-block {
+  .cv-project-title-block {
     gap: 0.45rem;
   }
 
-  .resume-project-eyebrow {
+  .cv-project-eyebrow {
     display: flex;
     flex-wrap: wrap;
     align-items: baseline;
     gap: 0.65rem;
   }
 
-  .resume-project-period,
-  .resume-project-sector {
+  .cv-project-period,
+  .cv-project-sector {
     margin: 0;
     color: #6ee7b7;
     font-weight: 700;
   }
 
-  .resume-project-period {
+  .cv-project-period {
     font-size: 0.84rem;
     letter-spacing: 0.1em;
   }
 
-  .resume-project-sector {
+  .cv-project-sector {
     font-size: 0.94rem;
   }
 
-  .resume-project-card h3 {
+  .cv-project-card h3 {
     margin-top: 0.15rem;
     font-size: clamp(1.35rem, 2vw, 1.8rem);
     line-height: 1.15;
   }
 
-  .resume-project-meta {
+  .cv-project-meta {
     gap: 0.75rem;
   }
 
-  .resume-project-meta > div {
+  .cv-project-meta > div {
     padding: 0.8rem 0.9rem;
   }
 
-  .resume-project-meta-roles {
+  .cv-project-meta-roles {
     grid-column: 1 / -1;
   }
 
-  .resume-project-body {
+  .cv-project-body {
     gap: 1rem;
     padding: 1.18rem 1.18rem 1.18rem 1.3rem;
   }
 
-  .resume-project-body > * + * {
+  .cv-project-body > * + * {
     padding-top: 1rem;
-    border-top: 1px dashed var(--resume-divider);
+    border-top: 1px dashed var(--cv-divider);
   }
 
-  .resume-project-copy {
+  .cv-project-copy {
     display: flex;
     flex-direction: column;
     gap: 0.8rem;
     align-self: stretch;
   }
 
-  .resume-project-summary {
+  .cv-project-summary {
     display: grid;
     gap: 0.8rem;
   }
 
-  .resume-project-spacer {
+  .cv-project-spacer {
     flex-grow: 1;
   }
 
-  .resume-project-copy p {
+  .cv-project-copy p {
     margin: 0;
   }
 
-  .resume-project-highlights {
+  .cv-project-highlights {
     display: grid;
     gap: 0.7rem;
     padding-top: 0.5rem;
@@ -1135,42 +1128,42 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
     align-content: start;
   }
 
-  .resume-project-highlights h4 {
+  .cv-project-highlights h4 {
     font-size: 1.28rem;
   }
 
-  .resume-project-highlights-list {
+  .cv-project-highlights-list {
     gap: 0.55rem;
   }
 
-  .resume-detail-card {
+  .cv-detail-card {
     padding: 1rem;
     padding-top: 1rem;
   }
 
-  .resume-brace-frame-vertical {
-    --resume-brace-depth: 2.15rem;
+  .cv-brace-frame-vertical {
+    --cv-brace-depth: 2.15rem;
     position: relative;
     padding-top: 1.3rem;
     border-color: transparent;
     overflow: visible;
   }
 
-  .resume-brace-frame-vertical::before,
-  .resume-brace-frame-vertical::after {
+  .cv-brace-frame-vertical::before,
+  .cv-brace-frame-vertical::after {
     content: "";
     position: absolute;
     top: 0;
     bottom: 0;
-    width: var(--resume-brace-depth);
+    width: var(--cv-brace-depth);
     pointer-events: none;
   }
 
-  .resume-brace-frame-vertical::before {
+  .cv-brace-frame-vertical::before {
     left: 0;
-    border-top: 1px dashed var(--resume-divider-strong);
-    border-bottom: 1px dashed var(--resume-divider-strong);
-    border-left: 1px dashed var(--resume-divider-strong);
+    border-top: 1px dashed var(--cv-divider-strong);
+    border-bottom: 1px dashed var(--cv-divider-strong);
+    border-left: 1px dashed var(--cv-divider-strong);
     border-top-left-radius: 16px;
     border-bottom-left-radius: 16px;
     -webkit-mask-image: linear-gradient(
@@ -1189,11 +1182,11 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
     );
   }
 
-  .resume-brace-frame-vertical::after {
+  .cv-brace-frame-vertical::after {
     right: 0;
-    border-top: 1px dashed var(--resume-divider-strong);
-    border-right: 1px dashed var(--resume-divider-strong);
-    border-bottom: 1px dashed var(--resume-divider-strong);
+    border-top: 1px dashed var(--cv-divider-strong);
+    border-right: 1px dashed var(--cv-divider-strong);
+    border-bottom: 1px dashed var(--cv-divider-strong);
     border-top-right-radius: 16px;
     border-bottom-right-radius: 16px;
     -webkit-mask-image: linear-gradient(
@@ -1212,111 +1205,111 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
     );
   }
 
-  .resume-detail-card h4 {
+  .cv-detail-card h4 {
     margin-bottom: 0.7rem;
     font-size: 1.28rem;
   }
 
-  .resume-detail-card ul,
-  .resume-stack-list {
+  .cv-detail-card ul,
+  .cv-stack-list {
     gap: 0.55rem;
   }
 
-  .resume-stack-list {
+  .cv-stack-list {
     gap: 0.75rem;
   }
 
   @media (min-width: 520px) {
-    .resume-page {
-      --resume-dock-overlap: 5.8rem;
+    .cv-page {
+      --cv-dock-overlap: 5.8rem;
     }
   }
 
   @media (min-width: 640px) {
-    .resume-page {
-      --resume-page-padding: clamp(1rem, 2.4vw, 2.1rem);
+    .cv-page {
+      --cv-page-padding: clamp(1rem, 2.4vw, 2.1rem);
     }
 
-    .resume-toolbar-note {
+    .cv-toolbar-note {
       font-size: 1rem;
     }
 
-    .resume-action {
+    .cv-action {
       flex-basis: 14rem;
     }
   }
 
   @media (min-width: 760px) {
-    .resume-toolbar-actions {
+    .cv-toolbar-actions {
       width: auto;
       justify-content: flex-end;
     }
 
-    .resume-action {
+    .cv-action {
       flex: 0 1 auto;
     }
 
-    .resume-hero {
+    .cv-hero {
       grid-template-columns: minmax(0, 1.14fr) minmax(19rem, 0.86fr);
       align-items: stretch;
     }
 
-    .resume-hero-media {
+    .cv-hero-media {
       min-height: 100%;
     }
 
-    .resume-top-grid {
+    .cv-top-grid {
       grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr);
     }
 
-    .resume-facts {
+    .cv-facts {
       grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 1rem 1.35rem;
     }
 
-    .resume-facts > div + div {
+    .cv-facts > div + div {
       padding-top: 0;
       border-top: 0;
     }
 
-    .resume-skills-grid {
+    .cv-skills-grid {
       grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 
-    .resume-project-header {
+    .cv-project-header {
       grid-template-columns: minmax(0, 1.45fr) minmax(260px, 0.95fr);
       align-items: start;
     }
 
-    .resume-project-meta {
+    .cv-project-meta {
       grid-template-columns: repeat(2, minmax(0, 1fr));
       align-self: start;
     }
   }
 
   @media (min-width: 980px) {
-    .resume-page {
-      --resume-sheet-padding: 1.7rem;
+    .cv-page {
+      --cv-sheet-padding: 1.7rem;
     }
 
-    .resume-sheet {
+    .cv-sheet {
       padding: 1.7rem;
     }
 
-    .resume-skills-grid {
+    .cv-skills-grid {
       grid-template-columns: repeat(3, minmax(0, 1fr));
     }
 
-    .resume-project-body {
+    .cv-project-body {
       grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr);
       align-items: start;
     }
 
-    .resume-project-body > * + * {
+    .cv-project-body > * + * {
       padding-top: 0.5rem;
       padding-left: 1rem;
       border-top: 0;
-      border-left: 1px dashed var(--resume-divider);
+      border-left: 1px dashed var(--cv-divider);
     }
   }
 
@@ -1325,85 +1318,85 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
     margin: 12mm;
   }
 
-  :root[data-resume-print-active] {
-    --resume-print-page-bg: #ffffff;
-    --resume-print-sheet-bg: #ffffff;
-    --resume-print-panel-bg: #ffffff;
-    --resume-print-panel-muted-bg: #ffffff;
-    --resume-print-chip-bg: #f4f7f6;
-    --resume-print-border: rgba(0, 0, 0, 0.16);
-    --resume-print-border-soft: rgba(0, 0, 0, 0.12);
-    --resume-print-heading: #0f172a;
-    --resume-print-text: #1f2937;
-    --resume-print-muted: #475569;
-    --resume-print-accent: #0f766e;
-    --resume-divider: rgba(0, 0, 0, 0.12);
-    --resume-divider-strong: rgba(0, 0, 0, 0.16);
+  :root[data-cv-print-active] {
+    --cv-print-page-bg: #ffffff;
+    --cv-print-sheet-bg: #ffffff;
+    --cv-print-panel-bg: #ffffff;
+    --cv-print-panel-muted-bg: #ffffff;
+    --cv-print-chip-bg: #f4f7f6;
+    --cv-print-border: rgba(0, 0, 0, 0.16);
+    --cv-print-border-soft: rgba(0, 0, 0, 0.12);
+    --cv-print-heading: #0f172a;
+    --cv-print-text: #1f2937;
+    --cv-print-muted: #475569;
+    --cv-print-accent: #0f766e;
+    --cv-divider: rgba(0, 0, 0, 0.12);
+    --cv-divider-strong: rgba(0, 0, 0, 0.16);
   }
 
-  :root[data-resume-print-active][data-resume-output="download"] {
-    --resume-print-page-bg: #071712;
-    --resume-print-sheet-bg:
+  :root[data-cv-print-active][cata-cv-output="download"] {
+    --cv-print-page-bg: #071712;
+    --cv-print-sheet-bg:
       linear-gradient(90deg, rgba(220, 252, 231, 0.02) 1px, transparent 1px) 0
         0 / 24px 100%,
       linear-gradient(0deg, rgba(220, 252, 231, 0.018) 1px, transparent 1px) 0
         0 / 100% 24px,
       linear-gradient(135deg, rgba(7, 30, 24, 0.98), rgba(5, 24, 19, 0.94));
-    --resume-print-panel-bg: rgba(6, 31, 24, 0.92);
-    --resume-print-panel-muted-bg: rgba(9, 39, 30, 0.96);
-    --resume-print-chip-bg: rgba(6, 33, 25, 0.95);
-    --resume-print-border: rgba(167, 243, 208, 0.26);
-    --resume-print-border-soft: rgba(167, 243, 208, 0.18);
-    --resume-print-heading: #ecfdf5;
-    --resume-print-text: #def7eb;
-    --resume-print-muted: #bfe8d5;
-    --resume-print-accent: #86efac;
-    --resume-divider: rgba(167, 243, 208, 0.18);
-    --resume-divider-strong: rgba(167, 243, 208, 0.26);
+    --cv-print-panel-bg: rgba(6, 31, 24, 0.92);
+    --cv-print-panel-muted-bg: rgba(9, 39, 30, 0.96);
+    --cv-print-chip-bg: rgba(6, 33, 25, 0.95);
+    --cv-print-border: rgba(167, 243, 208, 0.26);
+    --cv-print-border-soft: rgba(167, 243, 208, 0.18);
+    --cv-print-heading: #ecfdf5;
+    --cv-print-text: #def7eb;
+    --cv-print-muted: #bfe8d5;
+    --cv-print-accent: #86efac;
+    --cv-divider: rgba(167, 243, 208, 0.18);
+    --cv-divider-strong: rgba(167, 243, 208, 0.26);
   }
 
-  html[data-resume-print-active],
-  html[data-resume-print-active] body {
-    background: var(--resume-print-page-bg) !important;
+  html[data-cv-print-active],
+  html[data-cv-print-active] body {
+    background: var(--cv-print-page-bg) !important;
   }
 
-  html[data-resume-print-active] body {
+  html[data-cv-print-active] body {
     -webkit-print-color-adjust: exact;
     print-color-adjust: exact;
   }
 
-  html[data-resume-print-active] .print-hidden,
+  html[data-cv-print-active] .print-hidden,
   html[data-print-preview] .print\:hidden {
     display: none !important;
   }
 
-  html[data-resume-print-active] .resume-page {
+  html[data-cv-print-active] .cv-page {
     margin-top: 0;
     padding: 0;
-    background: var(--resume-print-page-bg);
-    color: var(--resume-print-text);
+    background: var(--cv-print-page-bg);
+    color: var(--cv-print-text);
   }
 
-  html[data-resume-print-active] .resume-sheet {
+  html[data-cv-print-active] .cv-sheet {
     width: 100%;
     max-width: none;
     margin: 0;
     padding: 10mm 10mm 9mm;
-    border: 1px solid var(--resume-print-border);
+    border: 1px solid var(--cv-print-border);
     border-radius: 20px;
     box-shadow: none;
     backdrop-filter: none;
-    background: var(--resume-print-sheet-bg);
+    background: var(--cv-print-sheet-bg);
   }
 
-  html[data-resume-print-active] .resume-hero {
+  html[data-cv-print-active] .cv-hero {
     margin: 0;
     padding: 0 0 1.6rem;
     background: none;
-    border-bottom-color: var(--resume-print-border-soft);
+    border-bottom-color: var(--cv-print-border-soft);
   }
 
-  html[data-resume-print-active] .resume-hero-media {
+  html[data-cv-print-active] .cv-hero-media {
     min-height: 54mm;
     background: transparent;
     box-shadow: none;
@@ -1411,14 +1404,14 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
     page-break-inside: avoid;
   }
 
-  html[data-resume-print-active] .resume-hero-media::after {
+  html[data-cv-print-active] .cv-hero-media::after {
     background: none;
   }
 
-  html[data-resume-print-active] .resume-surface,
-  html[data-resume-print-active] .resume-surface-soft,
-  html[data-resume-print-active] .resume-surface-inset {
-    background: var(--resume-print-panel-bg) !important;
+  html[data-cv-print-active] .cv-surface,
+  html[data-cv-print-active] .cv-surface-soft,
+  html[data-cv-print-active] .cv-surface-inset {
+    background: var(--cv-print-panel-bg) !important;
     border-color: transparent !important;
     box-shadow: none;
     backdrop-filter: none;
@@ -1426,87 +1419,87 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
     page-break-inside: avoid;
   }
 
-  html[data-resume-print-active] .resume-project-header {
-    background: var(--resume-print-panel-muted-bg) !important;
-    border-color: var(--resume-divider) !important;
+  html[data-cv-print-active] .cv-project-header {
+    background: var(--cv-print-panel-muted-bg) !important;
+    border-color: var(--cv-divider) !important;
   }
 
-  html[data-resume-print-active] .resume-surface-project {
-    --resume-timeline-strip-color: var(--resume-print-accent);
+  html[data-cv-print-active] .cv-surface-project {
+    --cv-timeline-strip-color: var(--cv-print-accent);
   }
 
-  html[data-resume-print-active] .resume-chip-list li,
-  html[data-resume-print-active] .resume-chip {
-    background: var(--resume-print-chip-bg) !important;
+  html[data-cv-print-active] .cv-chip-list li,
+  html[data-cv-print-active] .cv-chip {
+    background: var(--cv-print-chip-bg) !important;
     border-color: transparent !important;
-    color: var(--resume-print-text);
+    color: var(--cv-print-text);
   }
 
-  html[data-resume-print-active] .resume-badge,
-  html[data-resume-print-active] .resume-facts dt,
-  html[data-resume-print-active] .resume-project-meta dt,
-  html[data-resume-print-active] .resume-stack-list dt,
-  html[data-resume-print-active] .resume-project-period,
-  html[data-resume-print-active] .resume-project-sector {
-    color: var(--resume-print-accent);
+  html[data-cv-print-active] .cv-badge,
+  html[data-cv-print-active] .cv-facts dt,
+  html[data-cv-print-active] .cv-project-meta dt,
+  html[data-cv-print-active] .cv-stack-list dt,
+  html[data-cv-print-active] .cv-project-period,
+  html[data-cv-print-active] .cv-project-sector {
+    color: var(--cv-print-accent);
   }
 
-  html[data-resume-print-active] .resume-hero h1 {
+  html[data-cv-print-active] .cv-hero h1 {
     color: red;
   }
 
-  html[data-resume-print-active] .resume-section h2,
-  html[data-resume-print-active] .resume-panel h2,
-  html[data-resume-print-active] .resume-project-card h3,
-  html[data-resume-print-active] .resume-project-highlights h4,
-  html[data-resume-print-active] .resume-detail-card h4,
-  html[data-resume-print-active] .resume-skill-card h3,
-  html[data-resume-print-active] .resume-link-list a span:first-child {
-    color: var(--resume-print-heading);
+  html[data-cv-print-active] .cv-section h2,
+  html[data-cv-print-active] .cv-panel h2,
+  html[data-cv-print-active] .cv-project-card h3,
+  html[data-cv-print-active] .cv-project-highlights h4,
+  html[data-cv-print-active] .cv-detail-card h4,
+  html[data-cv-print-active] .cv-skill-card h3,
+  html[data-cv-print-active] .cv-link-list a span:first-child {
+    color: var(--cv-print-heading);
   }
 
-  html[data-resume-print-active] .resume-intro,
-  html[data-resume-print-active] .resume-facts dd,
-  html[data-resume-print-active] .resume-project-meta dd,
-  html[data-resume-print-active] .resume-stack-list dd,
-  html[data-resume-print-active] .resume-link-list a span:last-child,
-  html[data-resume-print-active] .resume-section-heading p,
-  html[data-resume-print-active] .resume-skill-card li,
-  html[data-resume-print-active] .resume-project-highlights li,
-  html[data-resume-print-active] .resume-detail-card li,
-  html[data-resume-print-active] .resume-project-copy p {
-    color: var(--resume-print-muted);
+  html[data-cv-print-active] .cv-intro,
+  html[data-cv-print-active] .cv-facts dd,
+  html[data-cv-print-active] .cv-project-meta dd,
+  html[data-cv-print-active] .cv-stack-list dd,
+  html[data-cv-print-active] .cv-link-list a span:last-child,
+  html[data-cv-print-active] .cv-section-heading p,
+  html[data-cv-print-active] .cv-skill-card li,
+  html[data-cv-print-active] .cv-project-highlights li,
+  html[data-cv-print-active] .cv-detail-card li,
+  html[data-cv-print-active] .cv-project-copy p {
+    color: var(--cv-print-muted);
   }
 
-  html[data-resume-print-active] .resume-skill-card li::before,
-  html[data-resume-print-active] .resume-project-highlights li::before,
-  html[data-resume-print-active] .resume-detail-card li::before {
-    background: var(--resume-print-accent);
+  html[data-cv-print-active] .cv-skill-card li::before,
+  html[data-cv-print-active] .cv-project-highlights li::before,
+  html[data-cv-print-active] .cv-detail-card li::before {
+    background: var(--cv-print-accent);
   }
 
-  html[data-resume-print-active] .resume-skill-group-dot {
-    background: var(--resume-print-accent);
+  html[data-cv-print-active] .cv-skill-group-dot {
+    background: var(--cv-print-accent);
   }
 
-  html[data-resume-print-active] .resume-section {
+  html[data-cv-print-active] .cv-section {
     margin-top: 0.8rem;
   }
 
-  html[data-resume-print-active] .resume-section-frame {
-    border-top: 1px dashed var(--resume-divider-strong);
-    border-bottom: 1px dashed var(--resume-divider-strong);
+  html[data-cv-print-active] .cv-section-frame {
+    border-top: 1px dashed var(--cv-divider-strong);
+    border-bottom: 1px dashed var(--cv-divider-strong);
   }
 
-  html[data-resume-print-active] .resume-section-frame::before,
-  html[data-resume-print-active] .resume-section-frame::after {
+  html[data-cv-print-active] .cv-section-frame::before,
+  html[data-cv-print-active] .cv-section-frame::after {
     display: none;
   }
 
-  html[data-resume-print-active] .resume-projects {
+  html[data-cv-print-active] .cv-projects {
     gap: 0.8rem;
   }
 
-  html[data-resume-print-active] a {
+  html[data-cv-print-active] a {
     color: inherit;
     text-decoration: none;
   }

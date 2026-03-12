@@ -1,41 +1,38 @@
-export type ResumeLocale = "de" | "en";
+export type CvLocale = "de" | "en";
 
-export interface ResumeFact {
+export interface CvFact {
   label: string;
   value: string;
 }
 
-export interface ResumeLink {
+export interface CvLink {
   label: string;
   href: string;
 }
 
-export interface ResumeSkillSublistItem {
+export interface CvSkillSublistItem {
   label: string;
   items: string[];
 }
 
-export interface ResumeSkillChipItem {
+export interface CvSkillChipItem {
   text: string;
   chip: string;
 }
 
-export type ResumeSkillItem =
-  | string
-  | ResumeSkillSublistItem
-  | ResumeSkillChipItem;
+export type CvSkillItem = string | CvSkillSublistItem | CvSkillChipItem;
 
-export interface ResumeSkillCategory {
+export interface CvSkillCategory {
   title: string;
-  items: ResumeSkillItem[];
+  items: CvSkillItem[];
 }
 
-export interface ResumeProjectStackItem {
+export interface CvProjectStackItem {
   label: string;
   value: string;
 }
 
-export interface ResumeProject {
+export interface CvProject {
   id: string;
   period: string;
   sector: string;
@@ -45,10 +42,10 @@ export interface ResumeProject {
   duration?: string;
   teamSize?: string;
   roles: string[];
-  stack: ResumeProjectStackItem[];
+  stack: CvProjectStackItem[];
 }
 
-export interface ResumeNavigationContent {
+export interface CvNavigationContent {
   backLabel: string;
   downloadLabel: string;
   printLabel: string;
@@ -57,12 +54,12 @@ export interface ResumeNavigationContent {
 
 // NOTE: The localized intro block is not stored in this data file.
 // It is rendered directly in the Astro template: src/components/CVIntro.astro
-export interface ResumeContent {
+export interface CvContent {
   pageTitle: string;
   pageDescription: string;
   badge: string;
   heading: string;
-  navigation: ResumeNavigationContent;
+  navigation: CvNavigationContent;
   contactTitle: string;
   factsTitle: string;
   industriesTitle: string;
@@ -75,14 +72,14 @@ export interface ResumeContent {
   durationLabel: string;
   teamSizeLabel: string;
   printHint: string;
-  facts: ResumeFact[];
-  contactLinks: ResumeLink[];
+  facts: CvFact[];
+  contactLinks: CvLink[];
   industries: string[];
-  skillCategories: ResumeSkillCategory[];
-  projects: ResumeProject[];
+  skillCategories: CvSkillCategory[];
+  projects: CvProject[];
 }
 
-const resumeDe: ResumeContent = {
+const cvDe: CvContent = {
   pageTitle: "Benjamin Jesuiter · Lebenslauf",
   pageDescription:
     "Vollständiger Lebenslauf von Benjamin Jesuiter mit Projektchronik, Kompetenzen und Branchenerfahrung.",
@@ -764,7 +761,7 @@ const resumeDe: ResumeContent = {
   ],
 };
 
-const resumeEn: ResumeContent = {
+const cvEn: CvContent = {
   pageTitle: "Benjamin Jesuiter · CV",
   pageDescription:
     "Full CV of Benjamin Jesuiter with project history, skills, and industry experience.",
@@ -1450,11 +1447,11 @@ const resumeEn: ResumeContent = {
   ],
 };
 
-export const localizedResumeContent: Record<ResumeLocale, ResumeContent> = {
-  de: resumeDe,
-  en: resumeEn,
+export const localizedCvContent: Record<CvLocale, CvContent> = {
+  de: cvDe,
+  en: cvEn,
 };
 
-export function getLocalizedResumeContent(locale: ResumeLocale = "de") {
-  return localizedResumeContent[locale];
+export function getLocalizedCvContent(locale: CvLocale = "de") {
+  return localizedCvContent[locale];
 }

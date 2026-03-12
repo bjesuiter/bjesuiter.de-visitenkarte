@@ -2,13 +2,13 @@
 import { Icon } from "astro-icon/components";
 
 export type DockNavLocale = "de" | "en";
-export type DockNavCurrent = "home" | "resume" | "support";
+export type DockNavCurrent = "home" | "cv" | "support";
 
 interface Props {
   locale?: DockNavLocale;
   current?: DockNavCurrent;
   homeHref?: string;
-  resumeHref?: string;
+  cvHref?: string;
   supportHref?: string;
   languageSwitchHref: string;
 }
@@ -17,7 +17,7 @@ const {
   locale = "de",
   current,
   homeHref = locale === "de" ? "/de/" : "/en/",
-  resumeHref = locale === "de" ? "/de/lebenslauf/" : "/en/cv/",
+  cvHref = locale === "de" ? "/de/lebenslauf/" : "/en/cv/",
   supportHref = locale === "de" ? "/de/support/" : "/en/support/",
   languageSwitchHref,
 } = Astro.props;
@@ -34,9 +34,9 @@ const navContent =
             icon: "ion:home",
           },
           {
-            id: "resume",
+            id: "cv",
             label: "Lebenslauf",
-            href: resumeHref,
+            href: cvHref,
             icon: "ion:document-text",
           },
           {
@@ -63,9 +63,9 @@ const navContent =
             icon: "ion:home",
           },
           {
-            id: "resume",
+            id: "cv",
             label: "CV",
-            href: resumeHref,
+            href: cvHref,
             icon: "ion:document-text",
           },
           {

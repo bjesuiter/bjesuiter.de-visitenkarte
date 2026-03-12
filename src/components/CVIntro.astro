@@ -1,14 +1,14 @@
 ---
-import type { ResumeLocale } from "../data/cv";
+import type { CvLocale } from "../data/cv";
 
 interface Props {
-  locale?: ResumeLocale;
+  locale?: CvLocale;
 }
 
 const { locale = "de" } = Astro.props;
 ---
 
-<div class="resume-intro">
+<div class="cv-intro">
   {
     locale === "de" ? (
       <div class="flex flex-col gap-4">

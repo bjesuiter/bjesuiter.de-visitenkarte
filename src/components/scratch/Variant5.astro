@@ -11,13 +11,13 @@ import {
 interface Props {
   locale?: SupportedLocale;
   supportHref?: string;
-  resumeHref?: string;
+  cvHref?: string;
 }
 
 const {
   locale = "de",
   supportHref = "/support",
-  resumeHref = "/de/lebenslauf",
+  cvHref = "/de/lebenslauf",
 } = Astro.props;
 const { identity, profileSections, supportCta } =
   getLocalizedProfileContent(locale);
@@ -40,7 +40,7 @@ const verificationContent =
 // Intentionally hidden while the verification service is offline.
 // Do not clean this up in future cleanup/refactor passes — it will likely be reactivated.
 const showVerificationSection = false;
-const resumeCta =
+const cvCta =
   locale === "de"
     ? {
         ariaLabel: "Lebenslauf",
@@ -146,18 +146,18 @@ const profileLinkClass =
       sectionClass,
       "bg-[radial-gradient(circle_at_12%_16%,rgba(110,231,183,0.16),transparent_30%),linear-gradient(120deg,rgba(4,27,21,0.96),rgba(6,34,25,0.82))]",
     ]}
-    aria-label={resumeCta.ariaLabel}
+    aria-label={cvCta.ariaLabel}
   >
-    <h2 class={sectionTitleClass}>{resumeCta.title}</h2>
-    <p class={sectionTextClass}>{resumeCta.description}</p>
+    <h2 class={sectionTitleClass}>{cvCta.title}</h2>
+    <p class={sectionTextClass}>{cvCta.description}</p>
     <a
-      href={resumeHref}
+      href={cvHref}
       class:list={[
         ctaLinkBaseClass,
         "border-white/24 bg-[linear-gradient(90deg,#a7f3d0,#6ee7b7)] text-[#032015] hover:brightness-[1.04] focus-visible:brightness-[1.04]",
       ]}
     >
-      {resumeCta.linkLabel}
+      {cvCta.linkLabel}
     </a>
   </section>
 
