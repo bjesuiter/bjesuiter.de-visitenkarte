@@ -1906,8 +1906,8 @@ const paginatedProjectPages = [
     --cv-print-text: oklch(0.24 0.0296 256.85);
     --cv-print-muted: oklch(0.36 0.0374 257.28);
     --cv-print-accent: oklch(0.42 0.0861 186.39);
-    --cv-print-display: oklch(0.7 0.0207 166.11);
-    --cv-print-emphasis: oklch(0.62 0.0528 165.89);
+    --cv-print-display: oklch(0.54 0.024 166.11);
+    --cv-print-emphasis: oklch(0.5 0.048 165.89);
     --cv-divider: oklch(0 0 0 / 0.12);
     --cv-divider-strong: oklch(0 0 0 / 0.16);
   }
@@ -2101,6 +2101,7 @@ const paginatedProjectPages = [
   html[data-cv-print-active] .cv-project-highlights h4,
   html[data-cv-print-active] .cv-detail-card h4,
   html[data-cv-print-active] .cv-skill-card h3,
+  html[data-cv-print-active] .cv-skill-group-label,
   html[data-cv-print-active] .cv-link-list a span:first-child {
     color: var(--cv-print-heading);
   }
