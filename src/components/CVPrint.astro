@@ -6,17 +6,14 @@ import CVIntro from "./CVIntro.astro";
 
 interface Props {
   locale?: CvLocale;
-  printPreview?: boolean;
 }
 
-const { locale = "de", printPreview = false } = Astro.props;
+const { locale = "de" } = Astro.props;
 const content = getLocalizedCvContent(locale);
-const toolbarAriaLabel = locale === "de" ? "Lebenslauf-Aktionen" : "CV actions";
 const profileImageAlt =
   locale === "de"
     ? "Porträt von Benjamin Jesuiter"
     : "Portrait of Benjamin Jesuiter";
-const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
 type CvPrintProjectMode = "full" | "summary" | "stack";
 const toIndexedPageItems = <T,>(items: T[], indices: number[]) =>
   indices.flatMap((index) => {
@@ -126,290 +123,9 @@ const paginatedProjectPages = [
 ---
 
 <main class="cv-page">
-  {
-    /*
-    TODO(bjesuiter): Re-enable this CV toolbar once there is a real print/download mode.
-    Keep the existing markup for the future print-mode implementation instead of deleting it.
-  <div class="cv-toolbar print-hidden" aria-label={toolbarAriaLabel}>
-    <div class="cv-toolbar-shell">
-      <div class="cv-toolbar-copy gap-4">
-        <p class="cv-toolbar-kicker">{content.badge}</p>
-        <p class="cv-toolbar-note">{content.printHint}</p>
-      </div>
-
-      <div class="cv-toolbar-actions">
-        <a
-          href={languageSwitchHref}
-          class="cv-action cv-action-secondary"
-        >
-          {content.navigation.languageSwitchLabel}
-        </a>
-        <button
-          type="button"
-          class="cv-action cv-action-print"
-          onclick="window.__cvPrintMode('print')"
-        >
-          {content.navigation.printLabel}
-        </button>
-        <button
-          type="button"
-          class="cv-action cv-action-download"
-          onclick="window.__cvPrintMode('download')"
-        >
-          {content.navigation.downloadLabel}
-        </button>
-      </div>
-    </div>
-  </div>
-  */
-  }
-
-  {
-    printPreview ? (
-      <div class="cv-print-stack">
-        <article class="cv-print-page cv-print-page-hero">
-          <div class="cv-sheet cv-sheet-page">
-            <header class="cv-hero gap-4">
-              <div class="cv-hero-copy gap-4">
-                <p class="cv-badge">{content.badge}</p>
-                <h1>{content.heading}</h1>
-                <CVIntro locale={locale} />
-              </div>
-
-              <div class="cv-hero-media">
-                <Image
-                  src={profilePic}
-                  alt={profileImageAlt}
-                  loading="eager"
-                  class="cv-hero-image"
-                />
-              </div>
-            </header>
-          </div>
-        </article>
-
-        <article class="cv-print-page cv-print-page-overview">
-          <div class="cv-sheet cv-sheet-page">
-            <section class="cv-grid cv-top-grid cv-section-shell gap-4">
-              <section class="cv-panel cv-surface cv-surface-strong">
-                <h2>{content.factsTitle}</h2>
-                <dl class="cv-facts gap-4">
-                  {content.facts.map((fact) => (
-                    <div>
-                      <dt>{fact.label}</dt>
-                      <dd class="text-balance">{fact.value}</dd>
-                    </div>
-                  ))}
-                </dl>
-              </section>
-
-              <section class="cv-panel cv-panel-mirrored cv-surface">
-                <h2>{content.contactTitle}</h2>
-                <ul class="cv-link-list">
-                  {content.contactLinks.map((link) => (
-                    <li>
-                      <a
-                        href={link.href}
-                        target="_blank"
-                        rel="noreferrer"
-                        class="cv-link-card cv-surface-inset"
-                      >
-                        <span>{link.label}</span>
-                        <span>{link.href.replace(/^https?:\/\//, "")}</span>
-                      </a>
-                    </li>
-                  ))}
-                </ul>
-
-                <h2 class="cv-subheading">{content.industriesTitle}</h2>
-                <ul class="cv-chip-list">
-                  {content.industries.map((industry) => (
-                    <li>{industry}</li>
-                  ))}
-                </ul>
-              </section>
-            </section>
-          </div>
-        </article>
-
-        {paginatedSkillPages.map((skillPage) => (
-          <article class="cv-print-page cv-print-page-skills">
-            <div class="cv-sheet cv-sheet-page">
-              <section class="cv-section-shell cv-section cv-skills-section">
-                <div class="cv-section-heading">
-                  <h2 class="pl-2">{content.skillsTitle}</h2>
-                </div>
-
-                <div class="cv-skills-grid gap-4">
-                  {skillPage.map(({ item: category }) => (
-                    <section class="cv-skill-card">
-                      <div class="cv-card-heading">
-                        <h3>{category.title}</h3>
-                      </div>
-                      <ul class="gap-4">
-                        {category.items.map((item) =>
-                          typeof item === "string" ? (
-                            <li>{item}</li>
-                          ) : "items" in item ? (
-                            <li class="cv-skill-group">
-                              <span class="cv-skill-group-label">
-                                <span
-                                  class="cv-skill-group-dot"
-                                  aria-hidden="true"
-                                />
-                                <span>{item.label}</span>
-                              </span>
-                              <ul class="cv-skill-sublist">
-                                {item.items.map((subItem) => (
-                                  <li class="cv-skill-sublist-item">
-                                    {subItem}
-                                  </li>
-                                ))}
-                              </ul>
-                            </li>
-                          ) : (
-                            <li class="cv-skill-chip-row">
-                              <span>{item.text}</span>
-                              <span class="cv-chip">{item.chip}</span>
-                            </li>
-                          ),
-                        )}
-                      </ul>
-                    </section>
-                  ))}
-                </div>
-              </section>
-            </div>
-          </article>
-        ))}
-
-        {paginatedProjectPages.map((projectPage) => (
-          <article class="cv-print-page cv-print-page-projects">
-            <div class="cv-sheet cv-sheet-page">
-              {projectPage.showHeading && (
-                <section class="cv-section-shell cv-section cv-project-history-section">
-                  <div class="cv-section-heading">
-                    <div>
-                      <h2 class="pl-1">{content.projectsTitle}</h2>
-                    </div>
-                  </div>
-                </section>
-              )}
-
-              <div class="cv-projects">
-                {projectPage.entries.map(({ project, index, mode }) => (
-                  <article
-                    class:list={[
-                      "cv-project-card cv-surface cv-surface-project",
-                      mode === "stack" && "cv-project-card-stack",
-                    ]}
-                  >
-                    <header class="cv-project-header gap-4">
-                      <div class="cv-project-title-block gap-4">
-                        <div class="cv-project-eyebrow">
-                          <span class="cv-card-index">
-                            {String(index + 1).padStart(2, "0")}
-                          </span>
-                          <p class="cv-project-period">{project.period}</p>
-                        </div>
-                        <p class="cv-project-sector">{project.sector}</p>
-                        <h3>{project.title}</h3>
-                        {mode === "stack" && (
-                          <p class="cv-project-page-kicker">
-                            {content.stackTitle}
-                          </p>
-                        )}
-                      </div>
-
-                      <dl class="cv-project-meta gap-4">
-                        {project.duration && (
-                          <div class="cv-surface-inset">
-                            <dt>{content.durationLabel}</dt>
-                            <dd>{project.duration}</dd>
-                          </div>
-                        )}
-                        {project.teamSize && (
-                          <div class="cv-surface-inset">
-                            <dt>{content.teamSizeLabel}</dt>
-                            <dd>{project.teamSize}</dd>
-                          </div>
-                        )}
-                        <div class="cv-surface-inset cv-project-meta-roles">
-                          <dt>{content.rolesLabel}</dt>
-                          <dd>{project.roles.join(" · ")}</dd>
-                        </div>
-                      </dl>
-                    </header>
-
-                    <div class="cv-project-divider" aria-hidden="true" />
-
-                    {mode === "stack" ? (
-                      <section class="cv-project-stack-page">
-                        <section class="cv-detail-card cv-surface-inset cv-brace-frame-vertical">
-                          <h4>{content.stackTitle}</h4>
-                          <dl class="cv-stack-list gap-4">
-                            {project.stack.map((item) => (
-                              <div>
-                                <dt>{item.label}</dt>
-                                <dd>{item.value}</dd>
-                              </div>
-                            ))}
-                          </dl>
-                        </section>
-                      </section>
-                    ) : (
-                      <div
-                        class:list={[
-                          "cv-project-body gap-4",
-                          mode === "summary" && "cv-project-body-summary",
-                        ]}
-                      >
-                        <div class="cv-project-copy gap-4">
-                          <section class="cv-project-summary">
-                            {project.summary.map((paragraph) => (
-                              <p>{paragraph}</p>
-                            ))}
-                          </section>
-
-                          <section
-                            class="cv-project-spacer"
-                            aria-hidden="true"
-                          />
-
-                          <section class="cv-project-highlights">
-                            <h4>{content.highlightsTitle}</h4>
-                            <ul class="cv-project-highlights-list gap-4">
-                              {project.highlights.map((highlight) => (
-                                <li>{highlight}</li>
-                              ))}
-                            </ul>
-                          </section>
-                        </div>
-
-                        {mode === "full" && (
-                          <section class="cv-detail-card cv-surface-inset cv-brace-frame-vertical">
-                            <h4>{content.stackTitle}</h4>
-                            <dl class="cv-stack-list gap-4">
-                              {project.stack.map((item) => (
-                                <div>
-                                  <dt>{item.label}</dt>
-                                  <dd>{item.value}</dd>
-                                </div>
-                              ))}
-                            </dl>
-                          </section>
-                        )}
-                      </div>
-                    )}
-                  </article>
-                ))}
-              </div>
-            </div>
-          </article>
-        ))}
-      </div>
-    ) : (
-      <article class="cv-sheet">
+  <div class="cv-print-stack">
+    <article class="cv-print-page cv-print-page-hero">
+      <div class="cv-sheet cv-sheet-page">
         <header class="cv-hero gap-4">
           <div class="cv-hero-copy gap-4">
             <p class="cv-badge">{content.badge}</p>
@@ -426,170 +142,230 @@ const paginatedProjectPages = [
             />
           </div>
         </header>
+      </div>
+    </article>
 
+    <article class="cv-print-page cv-print-page-overview">
+      <div class="cv-sheet cv-sheet-page">
         <section class="cv-grid cv-top-grid cv-section-shell gap-4">
           <section class="cv-panel cv-surface cv-surface-strong">
             <h2>{content.factsTitle}</h2>
             <dl class="cv-facts gap-4">
-              {content.facts.map((fact) => (
-                <div>
-                  <dt>{fact.label}</dt>
-                  <dd class="text-balance">{fact.value}</dd>
-                </div>
-              ))}
+              {
+                content.facts.map((fact) => (
+                  <div>
+                    <dt>{fact.label}</dt>
+                    <dd class="text-balance">{fact.value}</dd>
+                  </div>
+                ))
+              }
             </dl>
           </section>
 
           <section class="cv-panel cv-panel-mirrored cv-surface">
             <h2>{content.contactTitle}</h2>
             <ul class="cv-link-list">
-              {content.contactLinks.map((link) => (
-                <li>
-                  <a
-                    href={link.href}
-                    target="_blank"
-                    rel="noreferrer"
-                    class="cv-link-card cv-surface-inset"
-                  >
-                    <span>{link.label}</span>
-                    <span>{link.href.replace(/^https?:\/\//, "")}</span>
-                  </a>
-                </li>
-              ))}
+              {
+                content.contactLinks.map((link) => (
+                  <li>
+                    <a
+                      href={link.href}
+                      target="_blank"
+                      rel="noreferrer"
+                      class="cv-link-card cv-surface-inset"
+                    >
+                      <span>{link.label}</span>
+                      <span>{link.href.replace(/^https?:\/\//, "")}</span>
+                    </a>
+                  </li>
+                ))
+              }
             </ul>
 
             <h2 class="cv-subheading">{content.industriesTitle}</h2>
             <ul class="cv-chip-list">
-              {content.industries.map((industry) => (
-                <li>{industry}</li>
-              ))}
+              {content.industries.map((industry) => <li>{industry}</li>)}
             </ul>
           </section>
         </section>
+      </div>
+    </article>
 
-        <section class="cv-section-shell cv-section cv-skills-section">
-          <div class="cv-section-heading">
-            <h2 class="pl-2">{content.skillsTitle}</h2>
+    {
+      paginatedSkillPages.map((skillPage) => (
+        <article class="cv-print-page cv-print-page-skills">
+          <div class="cv-sheet cv-sheet-page">
+            <section class="cv-section-shell cv-section cv-skills-section">
+              <div class="cv-section-heading">
+                <h2 class="pl-2">{content.skillsTitle}</h2>
+              </div>
+
+              <div class="cv-skills-grid gap-4">
+                {skillPage.map(({ item: category }) => (
+                  <section class="cv-skill-card">
+                    <div class="cv-card-heading">
+                      <h3>{category.title}</h3>
+                    </div>
+                    <ul class="gap-4">
+                      {category.items.map((item) =>
+                        typeof item === "string" ? (
+                          <li>{item}</li>
+                        ) : "items" in item ? (
+                          <li class="cv-skill-group">
+                            <span class="cv-skill-group-label">
+                              <span
+                                class="cv-skill-group-dot"
+                                aria-hidden="true"
+                              />
+                              <span>{item.label}</span>
+                            </span>
+                            <ul class="cv-skill-sublist">
+                              {item.items.map((subItem) => (
+                                <li class="cv-skill-sublist-item">{subItem}</li>
+                              ))}
+                            </ul>
+                          </li>
+                        ) : (
+                          <li class="cv-skill-chip-row">
+                            <span>{item.text}</span>
+                            <span class="cv-chip">{item.chip}</span>
+                          </li>
+                        ),
+                      )}
+                    </ul>
+                  </section>
+                ))}
+              </div>
+            </section>
           </div>
+        </article>
+      ))
+    }
 
-          <div class="cv-skills-grid gap-4">
-            {content.skillCategories.map((category) => (
-              <section class="cv-skill-card">
-                <div class="cv-card-heading">
-                  <h3>{category.title}</h3>
+    {
+      paginatedProjectPages.map((projectPage) => (
+        <article class="cv-print-page cv-print-page-projects">
+          <div class="cv-sheet cv-sheet-page">
+            {projectPage.showHeading && (
+              <section class="cv-section-shell cv-section cv-project-history-section">
+                <div class="cv-section-heading">
+                  <div>
+                    <h2 class="pl-1">{content.projectsTitle}</h2>
+                  </div>
                 </div>
-                <ul class="gap-4">
-                  {category.items.map((item) =>
-                    typeof item === "string" ? (
-                      <li>{item}</li>
-                    ) : "items" in item ? (
-                      <li class="cv-skill-group">
-                        <span class="cv-skill-group-label">
-                          <span class="cv-skill-group-dot" aria-hidden="true" />
-                          <span>{item.label}</span>
-                        </span>
-                        <ul class="cv-skill-sublist">
-                          {item.items.map((subItem) => (
-                            <li class="cv-skill-sublist-item">{subItem}</li>
-                          ))}
-                        </ul>
-                      </li>
-                    ) : (
-                      <li class="cv-skill-chip-row">
-                        <span>{item.text}</span>
-                        <span class="cv-chip">{item.chip}</span>
-                      </li>
-                    ),
-                  )}
-                </ul>
               </section>
-            ))}
-          </div>
-        </section>
+            )}
 
-        <section class="cv-section-shell cv-section cv-project-history-section">
-          <div class="cv-section-heading">
-            <div>
-              <h2 class="pl-1">{content.projectsTitle}</h2>
+            <div class="cv-projects">
+              {projectPage.entries.map(({ project, index, mode }) => (
+                <article
+                  class:list={[
+                    "cv-project-card cv-surface cv-surface-project",
+                    mode === "stack" && "cv-project-card-stack",
+                  ]}
+                >
+                  <header class="cv-project-header gap-4">
+                    <div class="cv-project-title-block gap-4">
+                      <div class="cv-project-eyebrow">
+                        <span class="cv-card-index">
+                          {String(index + 1).padStart(2, "0")}
+                        </span>
+                        <p class="cv-project-period">{project.period}</p>
+                      </div>
+                      <p class="cv-project-sector">{project.sector}</p>
+                      <h3>{project.title}</h3>
+                      {mode === "stack" && (
+                        <p class="cv-project-page-kicker">
+                          {content.stackTitle}
+                        </p>
+                      )}
+                    </div>
+
+                    <dl class="cv-project-meta gap-4">
+                      {project.duration && (
+                        <div class="cv-surface-inset">
+                          <dt>{content.durationLabel}</dt>
+                          <dd>{project.duration}</dd>
+                        </div>
+                      )}
+                      {project.teamSize && (
+                        <div class="cv-surface-inset">
+                          <dt>{content.teamSizeLabel}</dt>
+                          <dd>{project.teamSize}</dd>
+                        </div>
+                      )}
+                      <div class="cv-surface-inset cv-project-meta-roles">
+                        <dt>{content.rolesLabel}</dt>
+                        <dd>{project.roles.join(" · ")}</dd>
+                      </div>
+                    </dl>
+                  </header>
+
+                  <div class="cv-project-divider" aria-hidden="true" />
+
+                  {mode === "stack" ? (
+                    <section class="cv-project-stack-page">
+                      <section class="cv-detail-card cv-surface-inset cv-brace-frame-vertical">
+                        <h4>{content.stackTitle}</h4>
+                        <dl class="cv-stack-list gap-4">
+                          {project.stack.map((item) => (
+                            <div>
+                              <dt>{item.label}</dt>
+                              <dd>{item.value}</dd>
+                            </div>
+                          ))}
+                        </dl>
+                      </section>
+                    </section>
+                  ) : (
+                    <div
+                      class:list={[
+                        "cv-project-body gap-4",
+                        mode === "summary" && "cv-project-body-summary",
+                      ]}
+                    >
+                      <div class="cv-project-copy gap-4">
+                        <section class="cv-project-summary">
+                          {project.summary.map((paragraph) => (
+                            <p>{paragraph}</p>
+                          ))}
+                        </section>
+
+                        <section class="cv-project-spacer" aria-hidden="true" />
+
+                        <section class="cv-project-highlights">
+                          <h4>{content.highlightsTitle}</h4>
+                          <ul class="cv-project-highlights-list gap-4">
+                            {project.highlights.map((highlight) => (
+                              <li>{highlight}</li>
+                            ))}
+                          </ul>
+                        </section>
+                      </div>
+
+                      {mode === "full" && (
+                        <section class="cv-detail-card cv-surface-inset cv-brace-frame-vertical">
+                          <h4>{content.stackTitle}</h4>
+                          <dl class="cv-stack-list gap-4">
+                            {project.stack.map((item) => (
+                              <div>
+                                <dt>{item.label}</dt>
+                                <dd>{item.value}</dd>
+                              </div>
+                            ))}
+                          </dl>
+                        </section>
+                      )}
+                    </div>
+                  )}
+                </article>
+              ))}
             </div>
           </div>
-
-          <div class="cv-projects">
-            {content.projects.map((project, index) => (
-              <article class="cv-project-card cv-surface cv-surface-project">
-                <header class="cv-project-header gap-4">
-                  <div class="cv-project-title-block gap-4">
-                    <div class="cv-project-eyebrow">
-                      <span class="cv-card-index">
-                        {String(index + 1).padStart(2, "0")}
-                      </span>
-                      <p class="cv-project-period">{project.period}</p>
-                    </div>
-                    <p class="cv-project-sector">{project.sector}</p>
-                    <h3>{project.title}</h3>
-                  </div>
-
-                  <dl class="cv-project-meta gap-4">
-                    {project.duration && (
-                      <div class="cv-surface-inset">
-                        <dt>{content.durationLabel}</dt>
-                        <dd>{project.duration}</dd>
-                      </div>
-                    )}
-                    {project.teamSize && (
-                      <div class="cv-surface-inset">
-                        <dt>{content.teamSizeLabel}</dt>
-                        <dd>{project.teamSize}</dd>
-                      </div>
-                    )}
-                    <div class="cv-surface-inset cv-project-meta-roles">
-                      <dt>{content.rolesLabel}</dt>
-                      <dd>{project.roles.join(" · ")}</dd>
-                    </div>
-                  </dl>
-                </header>
-
-                <div class="cv-project-divider" aria-hidden="true" />
-
-                <div class="cv-project-body gap-4">
-                  <div class="cv-project-copy gap-4">
-                    <section class="cv-project-summary">
-                      {project.summary.map((paragraph) => (
-                        <p>{paragraph}</p>
-                      ))}
-                    </section>
-
-                    <section class="cv-project-spacer" aria-hidden="true" />
-
-                    <section class="cv-project-highlights">
-                      <h4>{content.highlightsTitle}</h4>
-                      <ul class="cv-project-highlights-list gap-4">
-                        {project.highlights.map((highlight) => (
-                          <li>{highlight}</li>
-                        ))}
-                      </ul>
-                    </section>
-                  </div>
-
-                  <section class="cv-detail-card cv-surface-inset cv-brace-frame-vertical">
-                    <h4>{content.stackTitle}</h4>
-                    <dl class="cv-stack-list gap-4">
-                      {project.stack.map((item) => (
-                        <div>
-                          <dt>{item.label}</dt>
-                          <dd>{item.value}</dd>
-                        </div>
-                      ))}
-                    </dl>
-                  </section>
-                </div>
-              </article>
-            ))}
-          </div>
-        </section>
-      </article>
-    )
-  }
+        </article>
+      ))
+    }
+  </div>
 </main>
 
 <!-- Inline script that switches styling modes before printing or downloading the CV. -->
@@ -872,7 +648,6 @@ const paginatedProjectPages = [
     color: oklch(0.9793 0.0207 166.11);
   }
 
-  .cv-toolbar,
   .cv-sheet {
     width: min(var(--cv-content-width), 100%);
     margin-inline: auto;
@@ -891,27 +666,6 @@ const paginatedProjectPages = [
     min-height: 100%;
   }
 
-  .cv-toolbar {
-    margin-bottom: 1rem;
-  }
-
-  .cv-toolbar-shell {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: space-between;
-    gap: 0.9rem 1rem;
-    padding: 0.9rem;
-    border-radius: 20px;
-    border: 1px solid oklch(0.9049 0.0895 164.15 / 0.18);
-    background: oklch(0.1775 0.0281 173.8 / 0.8);
-    box-shadow:
-      0 16px 34px oklch(0.131 0.0212 174.91 / 0.18),
-      inset 0 1px 0 oklch(1 0 89.88 / 0.04);
-    backdrop-filter: blur(16px);
-  }
-
-  .cv-toolbar-copy,
   .cv-hero,
   .cv-hero-copy,
   .cv-grid,
@@ -930,12 +684,6 @@ const paginatedProjectPages = [
     display: grid;
   }
 
-  .cv-toolbar-copy {
-    gap: 0.22rem;
-    max-width: 54rem;
-  }
-
-  .cv-toolbar-kicker,
   .cv-badge,
   .cv-card-index,
   .cv-facts dt,
@@ -946,97 +694,6 @@ const paginatedProjectPages = [
     font-family: "Chakra Petch", sans-serif;
     font-weight: 700;
     text-transform: uppercase;
-  }
-
-  .cv-toolbar-kicker {
-    margin: 0;
-    font-size: 0.75rem;
-    letter-spacing: 0.14em;
-    color: oklch(0.8712 0.1363 154.45);
-  }
-
-  .cv-toolbar-note {
-    margin: 0;
-    font-size: 0.95rem;
-    line-height: 1.55;
-    color: oklch(0.9277 0.0528 165.89);
-  }
-
-  .cv-toolbar-actions {
-    display: flex;
-    flex-wrap: wrap;
-    width: 100%;
-    justify-content: stretch;
-    gap: 0.75rem;
-  }
-
-  .cv-action {
-    appearance: none;
-    display: inline-flex;
-    flex: 1 1 100%;
-    align-items: center;
-    justify-content: center;
-    min-height: 3rem;
-    padding: 0.7rem 1.1rem;
-    border: 1px solid transparent;
-    border-radius: 999px;
-    font-family: "Chakra Petch", sans-serif;
-    font-size: 0.88rem;
-    font-weight: 700;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    text-decoration: none;
-    cursor: pointer;
-    transition:
-      transform 170ms ease,
-      border-color 170ms ease,
-      filter 170ms ease,
-      background-color 170ms ease,
-      color 170ms ease,
-      box-shadow 170ms ease;
-  }
-
-  .cv-action:hover {
-    transform: translateY(-1px);
-  }
-
-  .cv-action-secondary {
-    color: oklch(0.9593 0.0407 169.35);
-    border-color: oklch(0.9049 0.0895 164.15 / 0.18);
-    background: oklch(0.2283 0.0366 170.47 / 0.56);
-    box-shadow: inset 0 1px 0 oklch(1 0 89.88 / 0.04);
-  }
-
-  .cv-action-secondary:hover {
-    border-color: oklch(0.8452 0.1299 164.98 / 0.5);
-    background: oklch(0.2464 0.0413 168.22 / 0.82);
-  }
-
-  .cv-action-download {
-    color: oklch(0.2177 0.0417 164.64);
-    border-color: oklch(1 0 89.88 / 0.24);
-    background: oklch(0.8912 0.0987 161.77);
-    box-shadow: 0 10px 24px oklch(0 0 0 / 0.2);
-  }
-
-  .cv-action-download:hover {
-    filter: brightness(1.04);
-    box-shadow: 0 14px 28px oklch(0 0 0 / 0.28);
-  }
-
-  .cv-action-print {
-    color: oklch(0.9593 0.0407 169.35);
-    border-color: oklch(0.9049 0.0895 164.15 / 0.28);
-    background: oklch(0.1888 0.0313 172.43 / 0.72);
-    box-shadow:
-      0 12px 26px oklch(0.131 0.0212 174.91 / 0.24),
-      inset 0 1px 0 oklch(1 0 89.88 / 0.05);
-    backdrop-filter: blur(18px);
-  }
-
-  .cv-action-print:hover {
-    border-color: oklch(0.8452 0.1299 164.98);
-    background: oklch(0.2123 0.0354 169.1 / 0.92);
   }
 
   .cv-sheet {
@@ -1160,17 +817,6 @@ const paginatedProjectPages = [
     box-shadow:
       inset 0 1px 0 oklch(1 0 89.88 / 0.04),
       0 14px 28px oklch(0.131 0.0212 174.91 / 0.16);
-    backdrop-filter: blur(8px);
-  }
-
-  .cv-surface-soft {
-    overflow: hidden;
-    border: 1px solid oklch(0.9049 0.0895 164.15 / 0.12);
-    border-radius: 18px;
-    background: oklch(0.1748 0.0249 176.05 / 0.5);
-    box-shadow:
-      inset 0 1px 0 oklch(1 0 89.88 / 0.04),
-      0 12px 24px oklch(0.131 0.0212 174.91 / 0.14);
     backdrop-filter: blur(8px);
   }
 
@@ -1805,26 +1451,9 @@ const paginatedProjectPages = [
     .cv-page {
       --cv-page-padding: clamp(1rem, 2.4vw, 2.1rem);
     }
-
-    .cv-toolbar-note {
-      font-size: 1rem;
-    }
-
-    .cv-action {
-      flex-basis: 14rem;
-    }
   }
 
   @media (min-width: 760px) {
-    .cv-toolbar-actions {
-      width: auto;
-      justify-content: flex-end;
-    }
-
-    .cv-action {
-      flex: 0 1 auto;
-    }
-
     .cv-hero {
       grid-template-columns: minmax(0, 1.14fr) minmax(19rem, 0.86fr);
       align-items: stretch;
@@ -2062,7 +1691,6 @@ const paginatedProjectPages = [
   }
 
   html[data-cv-print-active] .cv-surface,
-  html[data-cv-print-active] .cv-surface-soft,
   html[data-cv-print-active] .cv-surface-inset {
     background: var(--cv-print-panel-bg) !important;
     border-color: transparent !important;
