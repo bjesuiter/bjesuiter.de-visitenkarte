@@ -141,8 +141,8 @@ const cvDe: CvContent = {
     { label: "GitHub", href: "https://github.com/bjesuiter" },
   ],
   industries: [
-    "Finance",
-    "Travel",
+    "Finanzen",
+    "Reise",
     "Softwareentwicklung",
     "Industrie / Produktion",
     "E-Mobilität",
