@@ -95,10 +95,7 @@ const profileImageAlt =
                     <li>{item}</li>
                   ) : "items" in item ? (
                     <li class="cv-skill-group">
-                      <span class="cv-skill-group-label">
-                        <span class="cv-skill-group-dot" aria-hidden="true" />
-                        <span>{item.label}</span>
-                      </span>
+                      <p class="cv-skill-group-label">{item.label}</p>
                       <ul class="cv-skill-sublist">
                         {item.items.map((subItem) => (
                           <li class="cv-skill-sublist-item">{subItem}</li>
@@ -809,48 +806,30 @@ const profileImageAlt =
   }
 
   .cv-skill-group-label {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.45rem;
-    font-weight: 500;
+    margin: 0;
+    font-weight: 700;
     color: oklch(0.9647 0.0378 164.9);
-  }
-
-  .cv-skill-group-dot {
-    display: inline-block;
-    width: 0.32rem;
-    padding-top: 0.2rem;
-    height: 0.32rem;
-    border-radius: 999px;
-    background: oklch(0.8452 0.1299 164.98);
-    flex: 0 0 auto;
+    line-height: 1.4;
   }
 
   .cv-skill-sublist {
-    display: flex;
-    flex-wrap: wrap;
-    row-gap: 0.2rem;
-    column-gap: 0.35rem;
-    margin-top: 0.32rem;
-    margin-left: 0;
+    display: block;
+    margin: 0.32rem 0 0;
     padding-left: 0;
+    list-style: none;
   }
 
   .cv-skill-sublist .cv-skill-sublist-item {
     position: static;
-    padding-left: 0;
+    margin: 0 0 0 1.6rem;
+    padding-left: 0 !important;
     font-size: 0.9em;
-    line-height: 1.35;
-    list-style: none;
+    line-height: 1.45;
+    list-style: disc outside;
   }
 
   .cv-skill-sublist .cv-skill-sublist-item::before {
-    content: "·";
-    display: inline-block;
-    width: auto;
-    height: auto;
-    margin-right: 0.35rem;
-    color: oklch(0.8452 0.1299 164.98 / 0.85);
+    display: none;
   }
 
   .cv-skill-chip-row {
@@ -882,14 +861,14 @@ const profileImageAlt =
     line-height: 1.7;
   }
 
-  .cv-skill-card li,
+  .cv-skill-card > ul > li,
   .cv-project-highlights li,
   .cv-detail-card li {
     position: relative;
     padding-left: 1rem;
   }
 
-  .cv-skill-card li::before,
+  .cv-skill-card > ul > li::before,
   .cv-project-highlights li::before,
   .cv-detail-card li::before {
     content: "";
