@@ -595,6 +595,8 @@ const paginatedProjectPages = [
 <!-- Inline script that switches styling modes before printing or downloading the CV. -->
 <script is:inline>
   (() => {
+    const OVERFLOW_TOLERANCE_PX = 1;
+
     const syncPrintActiveState = () => {
       const root = document.documentElement;
       const isPreview = root.hasAttribute("data-print-preview");
@@ -607,6 +609,191 @@ const paginatedProjectPages = [
 
       delete root.dataset.cvPrintActive;
       document.body?.removeAttribute("data-cv-print-active");
+    };
+
+    const collectPrintOverflow = () => {
+      const pages = Array.from(document.querySelectorAll(".cv-print-page"));
+
+      return pages.map((page, index) => {
+        const sheet = page.querySelector(".cv-sheet-page");
+
+        if (!(sheet instanceof HTMLElement)) {
+          return {
+            pageNumber: index + 1,
+            overflow: false,
+            overflowPx: 0,
+            pageOverflowPx: 0,
+            clippedOverflowPx: 0,
+            clippedElementCount: 0,
+            clippedSamples: [],
+          };
+        }
+
+        const describeElement = (element) => {
+          const classes =
+            typeof element.className === "string"
+              ? element.className
+                  .split(/\s+/)
+                  .filter(Boolean)
+                  .slice(0, 2)
+                  .join(".")
+              : "";
+
+          return `${element.tagName.toLowerCase()}${classes ? `.${classes}` : ""}`;
+        };
+
+        const clippedDescendants = Array.from(
+          sheet.querySelectorAll("*"),
+        ).reduce(
+          (summary, element) => {
+            if (!(element instanceof HTMLElement)) {
+              return summary;
+            }
+
+            const style = window.getComputedStyle(element);
+            const clipsY = !["visible", "unset", "initial"].includes(
+              style.overflowY,
+            );
+            const clipsX = !["visible", "unset", "initial"].includes(
+              style.overflowX,
+            );
+            const clippedY = clipsY
+              ? Math.max(0, element.scrollHeight - element.clientHeight)
+              : 0;
+            const clippedX = clipsX
+              ? Math.max(0, element.scrollWidth - element.clientWidth)
+              : 0;
+            const clippedPx = Math.max(clippedY, clippedX);
+
+            if (clippedPx <= OVERFLOW_TOLERANCE_PX) {
+              return summary;
+            }
+
+            const nextSamples =
+              summary.samples.length < 3
+                ? [
+                    ...summary.samples,
+                    {
+                      element: describeElement(element),
+                      overflowPx: Number(clippedPx.toFixed(2)),
+                    },
+                  ]
+                : summary.samples;
+
+            return {
+              count: summary.count + 1,
+              maxOverflowPx: Math.max(summary.maxOverflowPx, clippedPx),
+              samples: nextSamples,
+            };
+          },
+          { count: 0, maxOverflowPx: 0, samples: [] },
+        );
+
+        const sheetRect = sheet.getBoundingClientRect();
+        const sheetStyle = window.getComputedStyle(sheet);
+        const paddingBottom = Number.parseFloat(sheetStyle.paddingBottom) || 0;
+        const visibleBottom = sheetRect.bottom - paddingBottom;
+        const scrollOverflow = Math.max(
+          0,
+          sheet.scrollHeight - sheet.clientHeight,
+        );
+        const contentOverflow = Array.from(sheet.children).reduce(
+          (maxOverflow, child) => {
+            if (!(child instanceof HTMLElement)) {
+              return maxOverflow;
+            }
+
+            return Math.max(
+              maxOverflow,
+              child.getBoundingClientRect().bottom - visibleBottom,
+            );
+          },
+          0,
+        );
+        const pageOverflowPx = Math.max(scrollOverflow, contentOverflow);
+        const overflowPx = Math.max(
+          pageOverflowPx,
+          clippedDescendants.maxOverflowPx,
+        );
+
+        return {
+          pageNumber: index + 1,
+          overflow: overflowPx > OVERFLOW_TOLERANCE_PX,
+          overflowPx: Number(overflowPx.toFixed(2)),
+          pageOverflowPx: Number(pageOverflowPx.toFixed(2)),
+          clippedOverflowPx: Number(
+            clippedDescendants.maxOverflowPx.toFixed(2),
+          ),
+          clippedElementCount: clippedDescendants.count,
+          clippedSamples: clippedDescendants.samples,
+        };
+      });
+    };
+
+    const syncPrintOverflowState = () => {
+      const root = document.documentElement;
+      const isPreview = root.hasAttribute("data-print-preview");
+      const pages = Array.from(document.querySelectorAll(".cv-print-page"));
+
+      if (!isPreview || pages.length === 0) {
+        delete root.dataset.cvOverflowActive;
+        window.__cvMeasurePrintOverflow = undefined;
+        window.__cvPrintOverflowState = [];
+        pages.forEach((page) => {
+          delete page.dataset.cvOverflow;
+          delete page.dataset.cvOverflowPx;
+          delete page.dataset.cvPageNumber;
+        });
+        return;
+      }
+
+      const overflowState = collectPrintOverflow();
+      const overflowPages = overflowState.filter((page) => page.overflow);
+
+      root.dataset.cvOverflowActive =
+        overflowPages.length > 0 ? "true" : "false";
+      window.__cvMeasurePrintOverflow = () => collectPrintOverflow();
+      window.__cvPrintOverflowState = overflowState;
+
+      pages.forEach((page, index) => {
+        const state = overflowState[index];
+
+        if (!state) {
+          return;
+        }
+
+        page.dataset.cvPageNumber = String(state.pageNumber);
+        page.dataset.cvOverflow = state.overflow ? "true" : "false";
+        page.dataset.cvOverflowPx = state.overflowPx.toFixed(1);
+      });
+
+      if (overflowPages.length > 0) {
+        console.warn(
+          "[cv-print-overflow] Overflow detected:",
+          overflowPages.map((page) => ({
+            page: page.pageNumber,
+            overflowPx: page.overflowPx,
+            pageOverflowPx: page.pageOverflowPx,
+            clippedOverflowPx: page.clippedOverflowPx,
+            clippedElementCount: page.clippedElementCount,
+            clippedSamples: page.clippedSamples,
+          })),
+        );
+      }
+    };
+
+    let overflowFrame = 0;
+    const schedulePrintOverflowSync = () => {
+      if (overflowFrame !== 0) {
+        cancelAnimationFrame(overflowFrame);
+      }
+
+      overflowFrame = window.requestAnimationFrame(() => {
+        overflowFrame = window.requestAnimationFrame(() => {
+          overflowFrame = 0;
+          syncPrintOverflowState();
+        });
+      });
     };
 
     const setMode = (mode) => {
@@ -633,6 +820,24 @@ const paginatedProjectPages = [
     });
     window.addEventListener("afterprint", clearMode);
     syncPrintActiveState();
+    schedulePrintOverflowSync();
+    window.addEventListener("load", schedulePrintOverflowSync);
+    window.addEventListener("resize", schedulePrintOverflowSync);
+
+    document.fonts?.ready.then(schedulePrintOverflowSync).catch(() => {});
+
+    document.querySelectorAll("img").forEach((image) => {
+      if (image.complete) {
+        return;
+      }
+
+      image.addEventListener("load", schedulePrintOverflowSync, {
+        once: true,
+      });
+      image.addEventListener("error", schedulePrintOverflowSync, {
+        once: true,
+      });
+    });
   })();
 </script>
 
@@ -1782,9 +1987,34 @@ const paginatedProjectPages = [
   }
 
   html[data-print-preview] .cv-print-page {
+    position: relative;
     width: var(--cv-preview-page-width);
     height: calc(var(--cv-preview-page-width) * 1.4142857);
     box-shadow: 0 18px 36px oklch(0.2077 0.0398 265.75 / 0.12);
+  }
+
+  html[data-print-preview] .cv-print-page[data-cv-overflow="true"] {
+    box-shadow:
+      0 18px 36px oklch(0.2077 0.0398 265.75 / 0.12),
+      0 0 0 3px oklch(0.6373 0.237 25.33 / 0.78);
+  }
+
+  html[data-print-preview] .cv-print-page[data-cv-overflow="true"]::after {
+    content: "Page " attr(data-cv-page-number) " overflow +"
+      attr(data-cv-overflow-px) "px";
+    position: absolute;
+    top: 0.55rem;
+    right: 0.55rem;
+    z-index: 2;
+    padding: 0.28rem 0.48rem;
+    border-radius: 999px;
+    font-family: "Chakra Petch", sans-serif;
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    color: oklch(0.982 0.0141 17.14);
+    background: oklch(0.6373 0.237 25.33 / 0.9);
+    box-shadow: 0 10px 18px oklch(0.3235 0.1293 24.29 / 0.22);
   }
 
   html[data-print-preview] .cv-sheet-page {
