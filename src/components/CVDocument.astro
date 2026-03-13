@@ -6,9 +6,10 @@ import CVIntro from "./CVIntro.astro";
 
 interface Props {
   locale?: CvLocale;
+  printPreview?: boolean;
 }
 
-const { locale = "de" } = Astro.props;
+const { locale = "de", printPreview = false } = Astro.props;
 const content = getLocalizedCvContent(locale);
 const toolbarAriaLabel = locale === "de" ? "Lebenslauf-Aktionen" : "CV actions";
 const profileImageAlt =
@@ -16,6 +17,112 @@ const profileImageAlt =
     ? "Porträt von Benjamin Jesuiter"
     : "Portrait of Benjamin Jesuiter";
 const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
+type CvPrintProjectMode = "full" | "summary" | "stack";
+const toIndexedPageItems = <T,>(items: T[], indices: number[]) =>
+  indices.flatMap((index) => {
+    const item = items[index];
+    return item ? [{ index, item }] : [];
+  });
+const paginatedSkillPages = [
+  toIndexedPageItems(content.skillCategories, [0, 1, 2, 3, 4]),
+  toIndexedPageItems(content.skillCategories, [5, 6, 7, 8]),
+].filter((page) => page.length > 0);
+const paginatedProjectPages = [
+  {
+    showHeading: true,
+    entries: [{ index: 0, mode: "full" }],
+  },
+  {
+    showHeading: false,
+    entries: [{ index: 1, mode: "full" }],
+  },
+  {
+    showHeading: false,
+    entries: [{ index: 2, mode: "summary" }],
+  },
+  {
+    showHeading: false,
+    entries: [{ index: 2, mode: "stack" }],
+  },
+  {
+    showHeading: false,
+    entries: [{ index: 3, mode: "summary" }],
+  },
+  {
+    showHeading: false,
+    entries: [{ index: 3, mode: "stack" }],
+  },
+  {
+    showHeading: false,
+    entries: [{ index: 4, mode: "full" }],
+  },
+  {
+    showHeading: false,
+    entries: [{ index: 5, mode: "full" }],
+  },
+  {
+    showHeading: false,
+    entries: [{ index: 6, mode: "full" }],
+  },
+  {
+    showHeading: false,
+    entries: [{ index: 7, mode: "summary" }],
+  },
+  {
+    showHeading: false,
+    entries: [{ index: 7, mode: "stack" }],
+  },
+  {
+    showHeading: false,
+    entries: [{ index: 8, mode: "summary" }],
+  },
+  {
+    showHeading: false,
+    entries: [{ index: 8, mode: "stack" }],
+  },
+  {
+    showHeading: false,
+    entries: [{ index: 9, mode: "summary" }],
+  },
+  {
+    showHeading: false,
+    entries: [{ index: 9, mode: "stack" }],
+  },
+  {
+    showHeading: false,
+    entries: [{ index: 10, mode: "summary" }],
+  },
+  {
+    showHeading: false,
+    entries: [{ index: 10, mode: "stack" }],
+  },
+  {
+    showHeading: false,
+    entries: [{ index: 11, mode: "full" }],
+  },
+  {
+    showHeading: false,
+    entries: [{ index: 12, mode: "full" }],
+  },
+  {
+    showHeading: false,
+    entries: [{ index: 13, mode: "full" }],
+  },
+  {
+    showHeading: false,
+    entries: [{ index: 14, mode: "full" }],
+  },
+]
+  .map((page) => ({
+    ...page,
+    entries: page.entries.flatMap(
+      ({ index, mode }: { index: number; mode: CvPrintProjectMode }) => {
+        const project = content.projects[index];
+        return project ? [{ index, mode, project }] : [];
+      },
+    ),
+  }))
+  .filter((page) => page.entries.length > 0);
 ---
 
 <main class="cv-page">
@@ -57,218 +164,439 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
   */
   }
 
-  <article class="cv-sheet">
-    <!-- Hero section with the main heading, intro copy, and profile image. -->
-    <header class="cv-hero gap-4">
-      <div class="cv-hero-copy gap-4">
-        <p class="cv-badge">{content.badge}</p>
-        <h1>{content.heading}</h1>
-        <CVIntro locale={locale} />
-      </div>
-
-      <div class="cv-hero-media">
-        <Image
-          src={profilePic}
-          alt={profileImageAlt}
-          loading="eager"
-          class="cv-hero-image"
-        />
-      </div>
-    </header>
-
-    <!-- Top overview grid with personal facts on the left and contact details on the right. -->
-    <section class="cv-grid cv-top-grid cv-section-shell gap-4">
-      <!-- Quick facts section for personal and professional summary data. -->
-      <!-- English heading: Profile -->
-      <section class="cv-panel cv-surface cv-surface-strong">
-        <h2>{content.factsTitle}</h2>
-        <dl class="cv-facts gap-4">
-          {
-            content.facts.map((fact) => (
-              <div>
-                <dt>{fact.label}</dt>
-                <dd class="text-balance">{fact.value}</dd>
+  {
+    printPreview ? (
+      <div class="cv-print-stack">
+        <article class="cv-print-page cv-print-page-hero">
+          <div class="cv-sheet cv-sheet-page">
+            <header class="cv-hero gap-4">
+              <div class="cv-hero-copy gap-4">
+                <p class="cv-badge">{content.badge}</p>
+                <h1>{content.heading}</h1>
+                <CVIntro locale={locale} />
               </div>
-            ))
-          }
-        </dl>
-      </section>
 
-      <!-- Contact links and industry focus section. -->
-      <!-- English heading: Links -->
-      <section class="cv-panel cv-panel-mirrored cv-surface">
-        <h2>{content.contactTitle}</h2>
-        <ul class="cv-link-list">
-          {
-            content.contactLinks.map((link) => (
-              <li>
-                <a
-                  href={link.href}
-                  target="_blank"
-                  rel="noreferrer"
-                  class="cv-link-card cv-surface-inset"
-                >
-                  <span>{link.label}</span>
-                  <span>{link.href.replace(/^https?:\/\//, "")}</span>
-                </a>
-              </li>
-            ))
-          }
-        </ul>
-
-        <!-- English heading: Industries -->
-        <h2 class="cv-subheading">{content.industriesTitle}</h2>
-        <ul class="cv-chip-list">
-          {content.industries.map((industry) => <li>{industry}</li>)}
-        </ul>
-      </section>
-    </section>
-
-    <!-- Skills dossier section grouped by category and specialization. -->
-    <!-- English heading: IT Skills -->
-    <section class="cv-section-shell cv-section cv-skills-section">
-      <div class="cv-section-heading">
-        <h2 class="pl-2">{content.skillsTitle}</h2>
-      </div>
-
-      <!-- Skill cards break capabilities into clear categories for quick scanning. -->
-      <div class="cv-skills-grid gap-4">
-        {
-          content.skillCategories.map((category) => (
-            <section class="cv-skill-card">
-              <div class="cv-card-heading">
-                <h3>{category.title}</h3>
+              <div class="cv-hero-media">
+                <Image
+                  src={profilePic}
+                  alt={profileImageAlt}
+                  loading="eager"
+                  class="cv-hero-image"
+                />
               </div>
-              <ul class="gap-4">
-                {category.items.map((item) =>
-                  typeof item === "string" ? (
-                    <li>{item}</li>
-                  ) : "items" in item ? (
-                    <li class="cv-skill-group">
-                      <span class="cv-skill-group-label">
-                        <span class="cv-skill-group-dot" aria-hidden="true" />
-                        <span>{item.label}</span>
+            </header>
+          </div>
+        </article>
+
+        <article class="cv-print-page cv-print-page-overview">
+          <div class="cv-sheet cv-sheet-page">
+            <section class="cv-grid cv-top-grid cv-section-shell gap-4">
+              <section class="cv-panel cv-surface cv-surface-strong">
+                <h2>{content.factsTitle}</h2>
+                <dl class="cv-facts gap-4">
+                  {content.facts.map((fact) => (
+                    <div>
+                      <dt>{fact.label}</dt>
+                      <dd class="text-balance">{fact.value}</dd>
+                    </div>
+                  ))}
+                </dl>
+              </section>
+
+              <section class="cv-panel cv-panel-mirrored cv-surface">
+                <h2>{content.contactTitle}</h2>
+                <ul class="cv-link-list">
+                  {content.contactLinks.map((link) => (
+                    <li>
+                      <a
+                        href={link.href}
+                        target="_blank"
+                        rel="noreferrer"
+                        class="cv-link-card cv-surface-inset"
+                      >
+                        <span>{link.label}</span>
+                        <span>{link.href.replace(/^https?:\/\//, "")}</span>
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+
+                <h2 class="cv-subheading">{content.industriesTitle}</h2>
+                <ul class="cv-chip-list">
+                  {content.industries.map((industry) => (
+                    <li>{industry}</li>
+                  ))}
+                </ul>
+              </section>
+            </section>
+          </div>
+        </article>
+
+        {paginatedSkillPages.map((skillPage) => (
+          <article class="cv-print-page cv-print-page-skills">
+            <div class="cv-sheet cv-sheet-page">
+              <section class="cv-section-shell cv-section cv-skills-section">
+                <div class="cv-section-heading">
+                  <h2 class="pl-2">{content.skillsTitle}</h2>
+                </div>
+
+                <div class="cv-skills-grid gap-4">
+                  {skillPage.map(({ item: category }) => (
+                    <section class="cv-skill-card">
+                      <div class="cv-card-heading">
+                        <h3>{category.title}</h3>
+                      </div>
+                      <ul class="gap-4">
+                        {category.items.map((item) =>
+                          typeof item === "string" ? (
+                            <li>{item}</li>
+                          ) : "items" in item ? (
+                            <li class="cv-skill-group">
+                              <span class="cv-skill-group-label">
+                                <span
+                                  class="cv-skill-group-dot"
+                                  aria-hidden="true"
+                                />
+                                <span>{item.label}</span>
+                              </span>
+                              <ul class="cv-skill-sublist">
+                                {item.items.map((subItem) => (
+                                  <li class="cv-skill-sublist-item">
+                                    {subItem}
+                                  </li>
+                                ))}
+                              </ul>
+                            </li>
+                          ) : (
+                            <li class="cv-skill-chip-row">
+                              <span>{item.text}</span>
+                              <span class="cv-chip">{item.chip}</span>
+                            </li>
+                          ),
+                        )}
+                      </ul>
+                    </section>
+                  ))}
+                </div>
+              </section>
+            </div>
+          </article>
+        ))}
+
+        {paginatedProjectPages.map((projectPage) => (
+          <article class="cv-print-page cv-print-page-projects">
+            <div class="cv-sheet cv-sheet-page">
+              {projectPage.showHeading && (
+                <section class="cv-section-shell cv-section cv-project-history-section">
+                  <div class="cv-section-heading">
+                    <div>
+                      <h2 class="pl-1">{content.projectsTitle}</h2>
+                    </div>
+                  </div>
+                </section>
+              )}
+
+              <div class="cv-projects">
+                {projectPage.entries.map(({ project, index, mode }) => (
+                  <article
+                    class:list={[
+                      "cv-project-card cv-surface cv-surface-project",
+                      mode === "stack" && "cv-project-card-stack",
+                    ]}
+                  >
+                    <header class="cv-project-header gap-4">
+                      <div class="cv-project-title-block gap-4">
+                        <div class="cv-project-eyebrow">
+                          <span class="cv-card-index">
+                            {String(index + 1).padStart(2, "0")}
+                          </span>
+                          <p class="cv-project-period">{project.period}</p>
+                        </div>
+                        <p class="cv-project-sector">{project.sector}</p>
+                        <h3>{project.title}</h3>
+                        {mode === "stack" && (
+                          <p class="cv-project-page-kicker">
+                            {content.stackTitle}
+                          </p>
+                        )}
+                      </div>
+
+                      <dl class="cv-project-meta gap-4">
+                        {project.duration && (
+                          <div class="cv-surface-inset">
+                            <dt>{content.durationLabel}</dt>
+                            <dd>{project.duration}</dd>
+                          </div>
+                        )}
+                        {project.teamSize && (
+                          <div class="cv-surface-inset">
+                            <dt>{content.teamSizeLabel}</dt>
+                            <dd>{project.teamSize}</dd>
+                          </div>
+                        )}
+                        <div class="cv-surface-inset cv-project-meta-roles">
+                          <dt>{content.rolesLabel}</dt>
+                          <dd>{project.roles.join(" · ")}</dd>
+                        </div>
+                      </dl>
+                    </header>
+
+                    <div class="cv-project-divider" aria-hidden="true" />
+
+                    {mode === "stack" ? (
+                      <section class="cv-project-stack-page">
+                        <section class="cv-detail-card cv-surface-inset cv-brace-frame-vertical">
+                          <h4>{content.stackTitle}</h4>
+                          <dl class="cv-stack-list gap-4">
+                            {project.stack.map((item) => (
+                              <div>
+                                <dt>{item.label}</dt>
+                                <dd>{item.value}</dd>
+                              </div>
+                            ))}
+                          </dl>
+                        </section>
+                      </section>
+                    ) : (
+                      <div
+                        class:list={[
+                          "cv-project-body gap-4",
+                          mode === "summary" && "cv-project-body-summary",
+                        ]}
+                      >
+                        <div class="cv-project-copy gap-4">
+                          <section class="cv-project-summary">
+                            {project.summary.map((paragraph) => (
+                              <p>{paragraph}</p>
+                            ))}
+                          </section>
+
+                          <section
+                            class="cv-project-spacer"
+                            aria-hidden="true"
+                          />
+
+                          <section class="cv-project-highlights">
+                            <h4>{content.highlightsTitle}</h4>
+                            <ul class="cv-project-highlights-list gap-4">
+                              {project.highlights.map((highlight) => (
+                                <li>{highlight}</li>
+                              ))}
+                            </ul>
+                          </section>
+                        </div>
+
+                        {mode === "full" && (
+                          <section class="cv-detail-card cv-surface-inset cv-brace-frame-vertical">
+                            <h4>{content.stackTitle}</h4>
+                            <dl class="cv-stack-list gap-4">
+                              {project.stack.map((item) => (
+                                <div>
+                                  <dt>{item.label}</dt>
+                                  <dd>{item.value}</dd>
+                                </div>
+                              ))}
+                            </dl>
+                          </section>
+                        )}
+                      </div>
+                    )}
+                  </article>
+                ))}
+              </div>
+            </div>
+          </article>
+        ))}
+      </div>
+    ) : (
+      <article class="cv-sheet">
+        <header class="cv-hero gap-4">
+          <div class="cv-hero-copy gap-4">
+            <p class="cv-badge">{content.badge}</p>
+            <h1>{content.heading}</h1>
+            <CVIntro locale={locale} />
+          </div>
+
+          <div class="cv-hero-media">
+            <Image
+              src={profilePic}
+              alt={profileImageAlt}
+              loading="eager"
+              class="cv-hero-image"
+            />
+          </div>
+        </header>
+
+        <section class="cv-grid cv-top-grid cv-section-shell gap-4">
+          <section class="cv-panel cv-surface cv-surface-strong">
+            <h2>{content.factsTitle}</h2>
+            <dl class="cv-facts gap-4">
+              {content.facts.map((fact) => (
+                <div>
+                  <dt>{fact.label}</dt>
+                  <dd class="text-balance">{fact.value}</dd>
+                </div>
+              ))}
+            </dl>
+          </section>
+
+          <section class="cv-panel cv-panel-mirrored cv-surface">
+            <h2>{content.contactTitle}</h2>
+            <ul class="cv-link-list">
+              {content.contactLinks.map((link) => (
+                <li>
+                  <a
+                    href={link.href}
+                    target="_blank"
+                    rel="noreferrer"
+                    class="cv-link-card cv-surface-inset"
+                  >
+                    <span>{link.label}</span>
+                    <span>{link.href.replace(/^https?:\/\//, "")}</span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+
+            <h2 class="cv-subheading">{content.industriesTitle}</h2>
+            <ul class="cv-chip-list">
+              {content.industries.map((industry) => (
+                <li>{industry}</li>
+              ))}
+            </ul>
+          </section>
+        </section>
+
+        <section class="cv-section-shell cv-section cv-skills-section">
+          <div class="cv-section-heading">
+            <h2 class="pl-2">{content.skillsTitle}</h2>
+          </div>
+
+          <div class="cv-skills-grid gap-4">
+            {content.skillCategories.map((category) => (
+              <section class="cv-skill-card">
+                <div class="cv-card-heading">
+                  <h3>{category.title}</h3>
+                </div>
+                <ul class="gap-4">
+                  {category.items.map((item) =>
+                    typeof item === "string" ? (
+                      <li>{item}</li>
+                    ) : "items" in item ? (
+                      <li class="cv-skill-group">
+                        <span class="cv-skill-group-label">
+                          <span class="cv-skill-group-dot" aria-hidden="true" />
+                          <span>{item.label}</span>
+                        </span>
+                        <ul class="cv-skill-sublist">
+                          {item.items.map((subItem) => (
+                            <li class="cv-skill-sublist-item">{subItem}</li>
+                          ))}
+                        </ul>
+                      </li>
+                    ) : (
+                      <li class="cv-skill-chip-row">
+                        <span>{item.text}</span>
+                        <span class="cv-chip">{item.chip}</span>
+                      </li>
+                    ),
+                  )}
+                </ul>
+              </section>
+            ))}
+          </div>
+        </section>
+
+        <section class="cv-section-shell cv-section cv-project-history-section">
+          <div class="cv-section-heading">
+            <div>
+              <h2 class="pl-1">{content.projectsTitle}</h2>
+            </div>
+          </div>
+
+          <div class="cv-projects">
+            {content.projects.map((project, index) => (
+              <article class="cv-project-card cv-surface cv-surface-project">
+                <header class="cv-project-header gap-4">
+                  <div class="cv-project-title-block gap-4">
+                    <div class="cv-project-eyebrow">
+                      <span class="cv-card-index">
+                        {String(index + 1).padStart(2, "0")}
                       </span>
-                      <ul class="cv-skill-sublist">
-                        {item.items.map((subItem) => (
-                          <li class="cv-skill-sublist-item">{subItem}</li>
+                      <p class="cv-project-period">{project.period}</p>
+                    </div>
+                    <p class="cv-project-sector">{project.sector}</p>
+                    <h3>{project.title}</h3>
+                  </div>
+
+                  <dl class="cv-project-meta gap-4">
+                    {project.duration && (
+                      <div class="cv-surface-inset">
+                        <dt>{content.durationLabel}</dt>
+                        <dd>{project.duration}</dd>
+                      </div>
+                    )}
+                    {project.teamSize && (
+                      <div class="cv-surface-inset">
+                        <dt>{content.teamSizeLabel}</dt>
+                        <dd>{project.teamSize}</dd>
+                      </div>
+                    )}
+                    <div class="cv-surface-inset cv-project-meta-roles">
+                      <dt>{content.rolesLabel}</dt>
+                      <dd>{project.roles.join(" · ")}</dd>
+                    </div>
+                  </dl>
+                </header>
+
+                <div class="cv-project-divider" aria-hidden="true" />
+
+                <div class="cv-project-body gap-4">
+                  <div class="cv-project-copy gap-4">
+                    <section class="cv-project-summary">
+                      {project.summary.map((paragraph) => (
+                        <p>{paragraph}</p>
+                      ))}
+                    </section>
+
+                    <section class="cv-project-spacer" aria-hidden="true" />
+
+                    <section class="cv-project-highlights">
+                      <h4>{content.highlightsTitle}</h4>
+                      <ul class="cv-project-highlights-list gap-4">
+                        {project.highlights.map((highlight) => (
+                          <li>{highlight}</li>
                         ))}
                       </ul>
-                    </li>
-                  ) : (
-                    <li class="cv-skill-chip-row">
-                      <span>{item.text}</span>
-                      <span class="cv-chip">{item.chip}</span>
-                    </li>
-                  ),
-                )}
-              </ul>
-            </section>
-          ))
-        }
-      </div>
-    </section>
-
-    <!-- Project portfolio section with detailed case studies and technology stacks. -->
-    <!-- English heading: Project History -->
-    <section class="cv-section-shell cv-section cv-project-history-section">
-      <div class="cv-section-heading">
-        <div>
-          <h2 class="pl-1">{content.projectsTitle}</h2>
-          <p class="pl-1">{content.projectsIntro}</p>
-        </div>
-      </div>
-
-      <!-- Project cards highlight selected work with context, outcomes, and stack details. -->
-      <div class="cv-projects">
-        {
-          content.projects.map((project, index) => (
-            <article class="cv-project-card cv-surface cv-surface-project">
-              <header class="cv-project-header gap-4">
-                <div class="cv-project-title-block gap-4">
-                  <div class="cv-project-eyebrow">
-                    <span class="cv-card-index">
-                      {String(index + 1).padStart(2, "0")}
-                    </span>
-                    <p class="cv-project-period">{project.period}</p>
+                    </section>
                   </div>
-                  <p class="cv-project-sector">{project.sector}</p>
-                  <h3>{project.title}</h3>
-                </div>
 
-                <dl class="cv-project-meta gap-4">
-                  {project.duration && (
-                    <div class="cv-surface-inset">
-                      {/* English label: Project Duration */}
-                      <dt>{content.durationLabel}</dt>
-                      <dd>{project.duration}</dd>
-                    </div>
-                  )}
-                  {project.teamSize && (
-                    <div class="cv-surface-inset">
-                      {/* English label: Team Size */}
-                      <dt>{content.teamSizeLabel}</dt>
-                      <dd>{project.teamSize}</dd>
-                    </div>
-                  )}
-                  <div class="cv-surface-inset cv-project-meta-roles">
-                    {/* English label: Roles */}
-                    <dt>{content.rolesLabel}</dt>
-                    <dd>{project.roles.join(" · ")}</dd>
-                  </div>
-                </dl>
-              </header>
-
-              <div class="cv-project-divider" aria-hidden="true" />
-
-              <div class="cv-project-body gap-4">
-                {/* Narrative summary describing the challenge, work, and impact of the project. */}
-                <div class="cv-project-copy gap-4">
-                  <section class="cv-project-summary">
-                    {project.summary.map((paragraph) => (
-                      <p>{paragraph}</p>
-                    ))}
-                  </section>
-
-                  <section class="cv-project-spacer" aria-hidden="true" />
-
-                  {/* Key highlights sit directly below the project description without card styling. */}
-                  {/* English heading: Responsibilities & Outcomes */}
-                  <section class="cv-project-highlights">
-                    <h4>{content.highlightsTitle}</h4>
-                    <ul class="cv-project-highlights-list gap-4">
-                      {project.highlights.map((highlight) => (
-                        <li>{highlight}</li>
+                  <section class="cv-detail-card cv-surface-inset cv-brace-frame-vertical">
+                    <h4>{content.stackTitle}</h4>
+                    <dl class="cv-stack-list gap-4">
+                      {project.stack.map((item) => (
+                        <div>
+                          <dt>{item.label}</dt>
+                          <dd>{item.value}</dd>
+                        </div>
                       ))}
-                    </ul>
+                    </dl>
                   </section>
                 </div>
-
-                {/* Technical Context - Technology stack section listing the tools and platforms used. */}
-                {/* English heading: Technical Context */}
-                <section class="cv-detail-card cv-surface-inset cv-brace-frame-vertical">
-                  <h4>{content.stackTitle}</h4>
-                  <dl class="cv-stack-list gap-4">
-                    {project.stack.map((item) => (
-                      <div>
-                        <dt>{item.label}</dt>
-                        <dd>{item.value}</dd>
-                      </div>
-                    ))}
-                  </dl>
-                </section>
-              </div>
-            </article>
-          ))
-        }
-      </div>
-    </section>
-  </article>
+              </article>
+            ))}
+          </div>
+        </section>
+      </article>
+    )
+  }
 </main>
 
 <!-- Inline script that switches styling modes before printing or downloading the CV. -->
 <script is:inline>
   (() => {
+    const OVERFLOW_TOLERANCE_PX = 1;
+
     const syncPrintActiveState = () => {
       const root = document.documentElement;
       const isPreview = root.hasAttribute("data-print-preview");
@@ -281,6 +609,191 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
 
       delete root.dataset.cvPrintActive;
       document.body?.removeAttribute("data-cv-print-active");
+    };
+
+    const collectPrintOverflow = () => {
+      const pages = Array.from(document.querySelectorAll(".cv-print-page"));
+
+      return pages.map((page, index) => {
+        const sheet = page.querySelector(".cv-sheet-page");
+
+        if (!(sheet instanceof HTMLElement)) {
+          return {
+            pageNumber: index + 1,
+            overflow: false,
+            overflowPx: 0,
+            pageOverflowPx: 0,
+            clippedOverflowPx: 0,
+            clippedElementCount: 0,
+            clippedSamples: [],
+          };
+        }
+
+        const describeElement = (element) => {
+          const classes =
+            typeof element.className === "string"
+              ? element.className
+                  .split(/\s+/)
+                  .filter(Boolean)
+                  .slice(0, 2)
+                  .join(".")
+              : "";
+
+          return `${element.tagName.toLowerCase()}${classes ? `.${classes}` : ""}`;
+        };
+
+        const clippedDescendants = Array.from(
+          sheet.querySelectorAll("*"),
+        ).reduce(
+          (summary, element) => {
+            if (!(element instanceof HTMLElement)) {
+              return summary;
+            }
+
+            const style = window.getComputedStyle(element);
+            const clipsY = !["visible", "unset", "initial"].includes(
+              style.overflowY,
+            );
+            const clipsX = !["visible", "unset", "initial"].includes(
+              style.overflowX,
+            );
+            const clippedY = clipsY
+              ? Math.max(0, element.scrollHeight - element.clientHeight)
+              : 0;
+            const clippedX = clipsX
+              ? Math.max(0, element.scrollWidth - element.clientWidth)
+              : 0;
+            const clippedPx = Math.max(clippedY, clippedX);
+
+            if (clippedPx <= OVERFLOW_TOLERANCE_PX) {
+              return summary;
+            }
+
+            const nextSamples =
+              summary.samples.length < 3
+                ? [
+                    ...summary.samples,
+                    {
+                      element: describeElement(element),
+                      overflowPx: Number(clippedPx.toFixed(2)),
+                    },
+                  ]
+                : summary.samples;
+
+            return {
+              count: summary.count + 1,
+              maxOverflowPx: Math.max(summary.maxOverflowPx, clippedPx),
+              samples: nextSamples,
+            };
+          },
+          { count: 0, maxOverflowPx: 0, samples: [] },
+        );
+
+        const sheetRect = sheet.getBoundingClientRect();
+        const sheetStyle = window.getComputedStyle(sheet);
+        const paddingBottom = Number.parseFloat(sheetStyle.paddingBottom) || 0;
+        const visibleBottom = sheetRect.bottom - paddingBottom;
+        const scrollOverflow = Math.max(
+          0,
+          sheet.scrollHeight - sheet.clientHeight,
+        );
+        const contentOverflow = Array.from(sheet.children).reduce(
+          (maxOverflow, child) => {
+            if (!(child instanceof HTMLElement)) {
+              return maxOverflow;
+            }
+
+            return Math.max(
+              maxOverflow,
+              child.getBoundingClientRect().bottom - visibleBottom,
+            );
+          },
+          0,
+        );
+        const pageOverflowPx = Math.max(scrollOverflow, contentOverflow);
+        const overflowPx = Math.max(
+          pageOverflowPx,
+          clippedDescendants.maxOverflowPx,
+        );
+
+        return {
+          pageNumber: index + 1,
+          overflow: overflowPx > OVERFLOW_TOLERANCE_PX,
+          overflowPx: Number(overflowPx.toFixed(2)),
+          pageOverflowPx: Number(pageOverflowPx.toFixed(2)),
+          clippedOverflowPx: Number(
+            clippedDescendants.maxOverflowPx.toFixed(2),
+          ),
+          clippedElementCount: clippedDescendants.count,
+          clippedSamples: clippedDescendants.samples,
+        };
+      });
+    };
+
+    const syncPrintOverflowState = () => {
+      const root = document.documentElement;
+      const isPreview = root.hasAttribute("data-print-preview");
+      const pages = Array.from(document.querySelectorAll(".cv-print-page"));
+
+      if (!isPreview || pages.length === 0) {
+        delete root.dataset.cvOverflowActive;
+        window.__cvMeasurePrintOverflow = undefined;
+        window.__cvPrintOverflowState = [];
+        pages.forEach((page) => {
+          delete page.dataset.cvOverflow;
+          delete page.dataset.cvOverflowPx;
+          delete page.dataset.cvPageNumber;
+        });
+        return;
+      }
+
+      const overflowState = collectPrintOverflow();
+      const overflowPages = overflowState.filter((page) => page.overflow);
+
+      root.dataset.cvOverflowActive =
+        overflowPages.length > 0 ? "true" : "false";
+      window.__cvMeasurePrintOverflow = () => collectPrintOverflow();
+      window.__cvPrintOverflowState = overflowState;
+
+      pages.forEach((page, index) => {
+        const state = overflowState[index];
+
+        if (!state) {
+          return;
+        }
+
+        page.dataset.cvPageNumber = String(state.pageNumber);
+        page.dataset.cvOverflow = state.overflow ? "true" : "false";
+        page.dataset.cvOverflowPx = state.overflowPx.toFixed(1);
+      });
+
+      if (overflowPages.length > 0) {
+        console.warn(
+          "[cv-print-overflow] Overflow detected:",
+          overflowPages.map((page) => ({
+            page: page.pageNumber,
+            overflowPx: page.overflowPx,
+            pageOverflowPx: page.pageOverflowPx,
+            clippedOverflowPx: page.clippedOverflowPx,
+            clippedElementCount: page.clippedElementCount,
+            clippedSamples: page.clippedSamples,
+          })),
+        );
+      }
+    };
+
+    let overflowFrame = 0;
+    const schedulePrintOverflowSync = () => {
+      if (overflowFrame !== 0) {
+        cancelAnimationFrame(overflowFrame);
+      }
+
+      overflowFrame = window.requestAnimationFrame(() => {
+        overflowFrame = window.requestAnimationFrame(() => {
+          overflowFrame = 0;
+          syncPrintOverflowState();
+        });
+      });
     };
 
     const setMode = (mode) => {
@@ -307,6 +820,24 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
     });
     window.addEventListener("afterprint", clearMode);
     syncPrintActiveState();
+    schedulePrintOverflowSync();
+    window.addEventListener("load", schedulePrintOverflowSync);
+    window.addEventListener("resize", schedulePrintOverflowSync);
+
+    document.fonts?.ready.then(schedulePrintOverflowSync).catch(() => {});
+
+    document.querySelectorAll("img").forEach((image) => {
+      if (image.complete) {
+        return;
+      }
+
+      image.addEventListener("load", schedulePrintOverflowSync, {
+        once: true,
+      });
+      image.addEventListener("error", schedulePrintOverflowSync, {
+        once: true,
+      });
+    });
   })();
 </script>
 
@@ -316,35 +847,48 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
     --cv-content-width: 1140px;
     --cv-page-padding: 0.8rem;
     --cv-dock-overlap: 8.25rem;
-    --cv-divider: rgba(167, 243, 208, 0.12);
-    --cv-divider-strong: rgba(167, 243, 208, 0.2);
+    --cv-divider: oklch(0.9049 0.0895 164.15 / 0.12);
+    --cv-divider-strong: oklch(0.9049 0.0895 164.15 / 0.2);
     --cv-panel-radius: 14px;
     --cv-sheet-padding: 1.1rem;
-    --cv-panel-border: rgba(167, 243, 208, 0.14);
+    --cv-panel-border: oklch(0.9049 0.0895 164.15 / 0.14);
     --cv-dossier-frame-depth: calc(var(--cv-panel-radius) + 12px);
     --cv-dossier-frame-fade: linear-gradient(
       90deg,
       transparent 0%,
-      rgba(0, 0, 0, 0.2) 8%,
-      #000 16%,
-      #000 84%,
-      rgba(0, 0, 0, 0.2) 92%,
+      oklch(0 0 0 / 0.2) 8%,
+      oklch(0 0 0) 16%,
+      oklch(0 0 0) 84%,
+      oklch(0 0 0 / 0.2) 92%,
       transparent 100%
     );
-    --cv-panel-surface: rgba(4, 23, 18, 0.84);
-    --cv-panel-surface-strong: rgba(6, 28, 21, 0.9);
+    --cv-panel-surface: oklch(0.1861 0.0283 174.33 / 0.84);
+    --cv-panel-surface-strong: oklch(0.2058 0.0319 169.79 / 0.9);
     min-height: 100vh;
     margin-top: calc(var(--cv-dock-overlap) * -1);
     padding: calc(var(--cv-page-padding) + var(--cv-dock-overlap))
       var(--cv-page-padding) var(--cv-page-padding);
-    background: #02110d;
-    color: #ecfdf5;
+    background: oklch(0.161 0.0255 175.92);
+    color: oklch(0.9793 0.0207 166.11);
   }
 
   .cv-toolbar,
   .cv-sheet {
     width: min(var(--cv-content-width), 100%);
     margin-inline: auto;
+  }
+
+  .cv-print-stack {
+    display: grid;
+  }
+
+  .cv-print-page {
+    width: 100%;
+    margin-inline: auto;
+  }
+
+  .cv-sheet-page {
+    min-height: 100%;
   }
 
   .cv-toolbar {
@@ -359,11 +903,11 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
     gap: 0.9rem 1rem;
     padding: 0.9rem;
     border-radius: 20px;
-    border: 1px solid rgba(167, 243, 208, 0.18);
-    background: rgba(3, 21, 16, 0.8);
+    border: 1px solid oklch(0.9049 0.0895 164.15 / 0.18);
+    background: oklch(0.1775 0.0281 173.8 / 0.8);
     box-shadow:
-      0 16px 34px rgba(1, 10, 7, 0.18),
-      inset 0 1px 0 rgba(255, 255, 255, 0.04);
+      0 16px 34px oklch(0.131 0.0212 174.91 / 0.18),
+      inset 0 1px 0 oklch(1 0 89.88 / 0.04);
     backdrop-filter: blur(16px);
   }
 
@@ -408,14 +952,14 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
     margin: 0;
     font-size: 0.75rem;
     letter-spacing: 0.14em;
-    color: #86efac;
+    color: oklch(0.8712 0.1363 154.45);
   }
 
   .cv-toolbar-note {
     margin: 0;
     font-size: 0.95rem;
     line-height: 1.55;
-    color: #c7f3df;
+    color: oklch(0.9277 0.0528 165.89);
   }
 
   .cv-toolbar-actions {
@@ -457,51 +1001,51 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
   }
 
   .cv-action-secondary {
-    color: #d8fbed;
-    border-color: rgba(167, 243, 208, 0.18);
-    background: rgba(7, 34, 26, 0.56);
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+    color: oklch(0.9593 0.0407 169.35);
+    border-color: oklch(0.9049 0.0895 164.15 / 0.18);
+    background: oklch(0.2283 0.0366 170.47 / 0.56);
+    box-shadow: inset 0 1px 0 oklch(1 0 89.88 / 0.04);
   }
 
   .cv-action-secondary:hover {
-    border-color: rgba(110, 231, 183, 0.5);
-    background: rgba(8, 39, 29, 0.82);
+    border-color: oklch(0.8452 0.1299 164.98 / 0.5);
+    background: oklch(0.2464 0.0413 168.22 / 0.82);
   }
 
   .cv-action-download {
-    color: #032015;
-    border-color: rgba(255, 255, 255, 0.24);
-    background: #9ef0c7;
-    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.2);
+    color: oklch(0.2177 0.0417 164.64);
+    border-color: oklch(1 0 89.88 / 0.24);
+    background: oklch(0.8912 0.0987 161.77);
+    box-shadow: 0 10px 24px oklch(0 0 0 / 0.2);
   }
 
   .cv-action-download:hover {
     filter: brightness(1.04);
-    box-shadow: 0 14px 28px rgba(0, 0, 0, 0.28);
+    box-shadow: 0 14px 28px oklch(0 0 0 / 0.28);
   }
 
   .cv-action-print {
-    color: #d8fbed;
-    border-color: rgba(167, 243, 208, 0.28);
-    background: rgba(3, 24, 18, 0.72);
+    color: oklch(0.9593 0.0407 169.35);
+    border-color: oklch(0.9049 0.0895 164.15 / 0.28);
+    background: oklch(0.1888 0.0313 172.43 / 0.72);
     box-shadow:
-      0 12px 26px rgba(1, 10, 7, 0.24),
-      inset 0 1px 0 rgba(255, 255, 255, 0.05);
+      0 12px 26px oklch(0.131 0.0212 174.91 / 0.24),
+      inset 0 1px 0 oklch(1 0 89.88 / 0.05);
     backdrop-filter: blur(18px);
   }
 
   .cv-action-print:hover {
-    border-color: #6ee7b7;
-    background: rgba(5, 30, 22, 0.92);
+    border-color: oklch(0.8452 0.1299 164.98);
+    background: oklch(0.2123 0.0354 169.1 / 0.92);
   }
 
   .cv-sheet {
     padding: 1.1rem;
     border-radius: 22px;
     overflow: hidden;
-    border: 1px solid rgba(167, 243, 208, 0.18);
-    background: rgba(4, 21, 17, 0.92);
-    box-shadow: 0 24px 52px rgba(1, 10, 7, 0.42);
+    border: 1px solid oklch(0.9049 0.0895 164.15 / 0.18);
+    background: oklch(0.1787 0.0258 176.8 / 0.92);
+    box-shadow: 0 24px 52px oklch(0.131 0.0212 174.91 / 0.42);
   }
 
   .cv-hero {
@@ -510,9 +1054,13 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
       calc(var(--cv-sheet-padding) * -1) 0;
     padding: var(--cv-sheet-padding) var(--cv-sheet-padding) 1.6rem;
     background:
-      linear-gradient(90deg, rgba(220, 252, 231, 0.015) 1px, transparent 1px) 0
-        0 / 34px 100%,
-      rgba(4, 21, 17, 0.92);
+      linear-gradient(
+          90deg,
+          oklch(0.9624 0.0434 156.74 / 0.015) 1px,
+          transparent 1px
+        )
+        0 0 / 34px 100%,
+      oklch(0.1787 0.0258 176.8 / 0.92);
   }
 
   .cv-hero-copy {
@@ -524,7 +1072,7 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
     margin: 0;
     font-size: 0.84rem;
     letter-spacing: 0.14em;
-    color: #6ee7b7;
+    color: oklch(0.8452 0.1299 164.98);
   }
 
   .cv-hero h1,
@@ -537,7 +1085,7 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
     margin: 0;
     font-family: "Fraunces", serif;
     text-wrap: balance;
-    color: #ecfdf5;
+    color: oklch(0.9793 0.0207 166.11);
   }
 
   .cv-hero h1 {
@@ -551,7 +1099,7 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
     margin: 0;
     font-size: clamp(1rem, 1.5vw, 1.08rem);
     line-height: 1.75;
-    color: #c7f3df;
+    color: oklch(0.9277 0.0528 165.89);
   }
 
   .cv-intro p {
@@ -563,7 +1111,7 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
   }
 
   .cv-intro strong {
-    color: #ecfdf5;
+    color: oklch(0.9793 0.0207 166.11);
   }
 
   .cv-hero-media {
@@ -571,9 +1119,9 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
     min-height: 18rem;
     overflow: hidden;
     border-radius: 28px;
-    border: 1px solid rgba(167, 243, 208, 0.18);
-    background: rgba(5, 23, 19, 0.82);
-    box-shadow: 0 24px 48px rgba(1, 10, 7, 0.28);
+    border: 1px solid oklch(0.9049 0.0895 164.15 / 0.18);
+    background: oklch(0.1873 0.0263 177.38 / 0.82);
+    box-shadow: 0 24px 48px oklch(0.131 0.0212 174.91 / 0.28);
   }
 
   .cv-hero-media::after {
@@ -583,9 +1131,9 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
     pointer-events: none;
     background: linear-gradient(
       180deg,
-      rgba(3, 16, 12, 0.02) 0%,
-      rgba(4, 28, 19, 0.18) 70%,
-      rgba(3, 16, 12, 0.5) 100%
+      oklch(0.158 0.0229 173.73 / 0.02) 0%,
+      oklch(0.2038 0.036 165.86 / 0.18) 70%,
+      oklch(0.158 0.0229 173.73 / 0.5) 100%
     );
   }
 
@@ -610,36 +1158,36 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
     border-radius: var(--cv-panel-radius);
     background: var(--cv-panel-surface);
     box-shadow:
-      inset 0 1px 0 rgba(255, 255, 255, 0.04),
-      0 14px 28px rgba(1, 10, 7, 0.16);
+      inset 0 1px 0 oklch(1 0 89.88 / 0.04),
+      0 14px 28px oklch(0.131 0.0212 174.91 / 0.16);
     backdrop-filter: blur(8px);
   }
 
   .cv-surface-soft {
     overflow: hidden;
-    border: 1px solid rgba(167, 243, 208, 0.12);
+    border: 1px solid oklch(0.9049 0.0895 164.15 / 0.12);
     border-radius: 18px;
-    background: rgba(4, 20, 16, 0.5);
+    background: oklch(0.1748 0.0249 176.05 / 0.5);
     box-shadow:
-      inset 0 1px 0 rgba(255, 255, 255, 0.04),
-      0 12px 24px rgba(1, 10, 7, 0.14);
+      inset 0 1px 0 oklch(1 0 89.88 / 0.04),
+      0 12px 24px oklch(0.131 0.0212 174.91 / 0.14);
     backdrop-filter: blur(8px);
   }
 
   .cv-surface-inset {
-    border: 1px solid rgba(167, 243, 208, 0.12);
+    border: 1px solid oklch(0.9049 0.0895 164.15 / 0.12);
     border-radius: 16px;
-    background: rgba(4, 20, 16, 0.46);
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03);
+    background: oklch(0.1748 0.0249 176.05 / 0.46);
+    box-shadow: inset 0 1px 0 oklch(1 0 89.88 / 0.03);
   }
 
   .cv-surface-project {
-    --cv-timeline-strip-color: rgba(110, 231, 183, 0.42);
+    --cv-timeline-strip-color: oklch(0.8452 0.1299 164.98 / 0.42);
     --cv-timeline-strip-width: 2px;
     --cv-timeline-strip-wrap: 1.5rem;
     position: relative;
     border: 0;
-    background: rgba(4, 21, 17, 0.78);
+    background: oklch(0.1787 0.0258 176.8 / 0.78);
   }
 
   .cv-surface-project::before {
@@ -658,18 +1206,18 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
     pointer-events: none;
     -webkit-mask-image: linear-gradient(
       90deg,
-      #000 0,
-      #000 calc(100% - 0.92rem),
-      rgba(0, 0, 0, 0.72) calc(100% - 0.56rem),
-      rgba(0, 0, 0, 0.28) calc(100% - 0.18rem),
+      oklch(0 0 0) 0,
+      oklch(0 0 0) calc(100% - 0.92rem),
+      oklch(0 0 0 / 0.72) calc(100% - 0.56rem),
+      oklch(0 0 0 / 0.28) calc(100% - 0.18rem),
       transparent 100%
     );
     mask-image: linear-gradient(
       90deg,
-      #000 0,
-      #000 calc(100% - 0.92rem),
-      rgba(0, 0, 0, 0.72) calc(100% - 0.56rem),
-      rgba(0, 0, 0, 0.28) calc(100% - 0.18rem),
+      oklch(0 0 0) 0,
+      oklch(0 0 0) calc(100% - 0.92rem),
+      oklch(0 0 0 / 0.72) calc(100% - 0.56rem),
+      oklch(0 0 0 / 0.28) calc(100% - 0.18rem),
       transparent 100%
     );
   }
@@ -769,7 +1317,7 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
   .cv-section-heading p {
     margin: 0.45rem 0 0;
     line-height: 1.6;
-    color: #bdeed8;
+    color: oklch(0.9089 0.0586 165.94);
   }
 
   .cv-subheading {
@@ -799,7 +1347,7 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
   .cv-stack-list dt {
     font-size: 0.75rem;
     letter-spacing: 0.12em;
-    color: #6ee7b7;
+    color: oklch(0.8452 0.1299 164.98);
   }
 
   .cv-facts dd,
@@ -807,7 +1355,7 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
   .cv-stack-list dd {
     margin: 0;
     line-height: 1.6;
-    color: #d7fbec;
+    color: oklch(0.9583 0.0422 168.36);
   }
 
   .cv-link-list,
@@ -840,18 +1388,18 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
 
   .cv-link-card:hover {
     transform: translateX(2px);
-    border-color: rgba(110, 231, 183, 0.28);
-    background: rgba(6, 31, 24, 0.56);
+    border-color: oklch(0.8452 0.1299 164.98 / 0.28);
+    background: oklch(0.217 0.0343 171.87 / 0.56);
   }
 
   .cv-link-list a span:first-child {
     font-size: 0.75rem;
     letter-spacing: 0.12em;
-    color: #6ee7b7;
+    color: oklch(0.8452 0.1299 164.98);
   }
 
   .cv-link-list a span:last-child {
-    color: #d7fbec;
+    color: oklch(0.9583 0.0422 168.36);
     line-height: 1.6;
     word-break: break-word;
   }
@@ -866,9 +1414,9 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
   .cv-chip-list li {
     padding: 0.5rem 0.8rem;
     border-radius: 999px;
-    border: 1px solid rgba(110, 231, 183, 0.24);
-    background: rgba(4, 20, 16, 0.52);
-    color: #ecfdf5;
+    border: 1px solid oklch(0.8452 0.1299 164.98 / 0.24);
+    background: oklch(0.1748 0.0249 176.05 / 0.52);
+    color: oklch(0.9793 0.0207 166.11);
     line-height: 1.4;
   }
 
@@ -883,7 +1431,7 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
     margin: 0;
     font-size: 0.74rem;
     letter-spacing: 0.16em;
-    color: #86efac;
+    color: oklch(0.8712 0.1363 154.45);
     opacity: 0.92;
   }
 
@@ -915,7 +1463,7 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
     align-items: center;
     gap: 0.45rem;
     font-weight: 500;
-    color: #ddfced;
+    color: oklch(0.9647 0.0378 164.9);
   }
 
   .cv-skill-group-dot {
@@ -924,7 +1472,7 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
     padding-top: 0.2rem;
     height: 0.32rem;
     border-radius: 999px;
-    background: #6ee7b7;
+    background: oklch(0.8452 0.1299 164.98);
     flex: 0 0 auto;
   }
 
@@ -952,7 +1500,7 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
     width: auto;
     height: auto;
     margin-right: 0.35rem;
-    color: rgba(110, 231, 183, 0.85);
+    color: oklch(0.8452 0.1299 164.98 / 0.85);
   }
 
   .cv-skill-chip-row {
@@ -965,10 +1513,10 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
   .cv-chip {
     display: inline-block;
     padding: 0.08rem 0.45rem;
-    border: 1px solid rgba(110, 231, 183, 0.24);
+    border: 1px solid oklch(0.8452 0.1299 164.98 / 0.24);
     border-radius: 999px;
-    background: rgba(16, 185, 129, 0.08);
-    color: rgba(187, 247, 208, 0.8);
+    background: oklch(0.6959 0.1491 162.48 / 0.08);
+    color: oklch(0.925 0.0806 155.99 / 0.8);
     font-size: 0.7rem;
     font-weight: 600;
     line-height: 1.3;
@@ -980,7 +1528,7 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
   .cv-project-highlights li,
   .cv-detail-card li,
   .cv-project-copy p {
-    color: #c7f3df;
+    color: oklch(0.9277 0.0528 165.89);
     line-height: 1.7;
   }
 
@@ -1001,7 +1549,7 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
     width: 0.38rem;
     height: 0.38rem;
     border-radius: 999px;
-    background: #6ee7b7;
+    background: oklch(0.8452 0.1299 164.98);
   }
 
   .cv-projects {
@@ -1059,7 +1607,7 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
   .cv-project-period,
   .cv-project-sector {
     margin: 0;
-    color: #6ee7b7;
+    color: oklch(0.8452 0.1299 164.98);
     font-weight: 700;
   }
 
@@ -1093,6 +1641,10 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
   .cv-project-body {
     gap: 1rem;
     padding: 1.18rem 1.18rem 1.18rem 1.3rem;
+  }
+
+  .cv-project-body-summary {
+    grid-template-columns: minmax(0, 1fr);
   }
 
   .cv-project-body > * + * {
@@ -1136,9 +1688,33 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
     gap: 0.55rem;
   }
 
+  .cv-project-page-kicker {
+    margin: 0;
+    font-family: "Chakra Petch", sans-serif;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: oklch(0.8452 0.1299 164.98);
+  }
+
   .cv-detail-card {
     padding: 1rem;
     padding-top: 1rem;
+  }
+
+  .cv-project-stack-page {
+    padding: 1rem 1.18rem 1.18rem 1.3rem;
+  }
+
+  .cv-project-card-stack .cv-stack-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: 0.8rem;
+  }
+
+  .cv-project-card-stack .cv-stack-list > div + div {
+    padding-top: 0;
+    border-top: 0;
   }
 
   .cv-brace-frame-vertical {
@@ -1168,16 +1744,16 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
     border-bottom-left-radius: 16px;
     -webkit-mask-image: linear-gradient(
       90deg,
-      #000 0,
-      #000 calc(100% - 0.7rem),
-      rgba(0, 0, 0, 0.32) calc(100% - 0.24rem),
+      oklch(0 0 0) 0,
+      oklch(0 0 0) calc(100% - 0.7rem),
+      oklch(0 0 0 / 0.32) calc(100% - 0.24rem),
       transparent 100%
     );
     mask-image: linear-gradient(
       90deg,
-      #000 0,
-      #000 calc(100% - 0.7rem),
-      rgba(0, 0, 0, 0.32) calc(100% - 0.24rem),
+      oklch(0 0 0) 0,
+      oklch(0 0 0) calc(100% - 0.7rem),
+      oklch(0 0 0 / 0.32) calc(100% - 0.24rem),
       transparent 100%
     );
   }
@@ -1191,16 +1767,16 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
     border-bottom-right-radius: 16px;
     -webkit-mask-image: linear-gradient(
       270deg,
-      #000 0,
-      #000 calc(100% - 0.7rem),
-      rgba(0, 0, 0, 0.32) calc(100% - 0.24rem),
+      oklch(0 0 0) 0,
+      oklch(0 0 0) calc(100% - 0.7rem),
+      oklch(0 0 0 / 0.32) calc(100% - 0.24rem),
       transparent 100%
     );
     mask-image: linear-gradient(
       270deg,
-      #000 0,
-      #000 calc(100% - 0.7rem),
-      rgba(0, 0, 0, 0.32) calc(100% - 0.24rem),
+      oklch(0 0 0) 0,
+      oklch(0 0 0) calc(100% - 0.7rem),
+      oklch(0 0 0 / 0.32) calc(100% - 0.24rem),
       transparent 100%
     );
   }
@@ -1319,40 +1895,56 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
   }
 
   :root[data-cv-print-active] {
-    --cv-print-page-bg: #ffffff;
-    --cv-print-sheet-bg: #ffffff;
-    --cv-print-panel-bg: #ffffff;
-    --cv-print-panel-muted-bg: #ffffff;
-    --cv-print-chip-bg: #f4f7f6;
-    --cv-print-border: rgba(0, 0, 0, 0.16);
-    --cv-print-border-soft: rgba(0, 0, 0, 0.12);
-    --cv-print-heading: #0f172a;
-    --cv-print-text: #1f2937;
-    --cv-print-muted: #475569;
-    --cv-print-accent: #0f766e;
-    --cv-divider: rgba(0, 0, 0, 0.12);
-    --cv-divider-strong: rgba(0, 0, 0, 0.16);
+    --cv-print-page-bg: oklch(1 0 89.88);
+    --cv-print-sheet-bg: oklch(1 0 89.88);
+    --cv-print-panel-bg: oklch(1 0 89.88);
+    --cv-print-panel-muted-bg: oklch(1 0 89.88);
+    --cv-print-chip-bg: oklch(0.9736 0.0034 174.48);
+    --cv-print-border: oklch(0 0 0 / 0.16);
+    --cv-print-border-soft: oklch(0 0 0 / 0.12);
+    --cv-print-heading: oklch(0.2077 0.0398 265.75);
+    --cv-print-text: oklch(0.24 0.0296 256.85);
+    --cv-print-muted: oklch(0.36 0.0374 257.28);
+    --cv-print-accent: oklch(0.42 0.0861 186.39);
+    --cv-print-display: oklch(0.7 0.0207 166.11);
+    --cv-print-emphasis: oklch(0.62 0.0528 165.89);
+    --cv-divider: oklch(0 0 0 / 0.12);
+    --cv-divider-strong: oklch(0 0 0 / 0.16);
   }
 
   :root[data-cv-print-active][cata-cv-output="download"] {
-    --cv-print-page-bg: #071712;
+    --cv-print-page-bg: oklch(0.1883 0.0246 171.43);
     --cv-print-sheet-bg:
-      linear-gradient(90deg, rgba(220, 252, 231, 0.02) 1px, transparent 1px) 0
-        0 / 24px 100%,
-      linear-gradient(0deg, rgba(220, 252, 231, 0.018) 1px, transparent 1px) 0
-        0 / 100% 24px,
-      linear-gradient(135deg, rgba(7, 30, 24, 0.98), rgba(5, 24, 19, 0.94));
-    --cv-print-panel-bg: rgba(6, 31, 24, 0.92);
-    --cv-print-panel-muted-bg: rgba(9, 39, 30, 0.96);
-    --cv-print-chip-bg: rgba(6, 33, 25, 0.95);
-    --cv-print-border: rgba(167, 243, 208, 0.26);
-    --cv-print-border-soft: rgba(167, 243, 208, 0.18);
-    --cv-print-heading: #ecfdf5;
-    --cv-print-text: #def7eb;
-    --cv-print-muted: #bfe8d5;
-    --cv-print-accent: #86efac;
-    --cv-divider: rgba(167, 243, 208, 0.18);
-    --cv-divider-strong: rgba(167, 243, 208, 0.26);
+      linear-gradient(
+          90deg,
+          oklch(0.9624 0.0434 156.74 / 0.02) 1px,
+          transparent 1px
+        )
+        0 0 / 24px 100%,
+      linear-gradient(
+          0deg,
+          oklch(0.9624 0.0434 156.74 / 0.018) 1px,
+          transparent 1px
+        )
+        0 0 / 100% 24px,
+      linear-gradient(
+        135deg,
+        oklch(0.2143 0.0317 173.62 / 0.98),
+        oklch(0.1907 0.0279 174.22 / 0.94)
+      );
+    --cv-print-panel-bg: oklch(0.217 0.0343 171.87 / 0.92);
+    --cv-print-panel-muted-bg: oklch(0.2472 0.0397 170.04 / 0.96);
+    --cv-print-chip-bg: oklch(0.2241 0.0367 170.4 / 0.95);
+    --cv-print-border: oklch(0.9049 0.0895 164.15 / 0.26);
+    --cv-print-border-soft: oklch(0.9049 0.0895 164.15 / 0.18);
+    --cv-print-heading: oklch(0.9793 0.0207 166.11);
+    --cv-print-text: oklch(0.9546 0.0306 165.31);
+    --cv-print-muted: oklch(0.8966 0.0499 165.47);
+    --cv-print-accent: oklch(0.8712 0.1363 154.45);
+    --cv-print-display: oklch(0.9793 0.0207 166.11);
+    --cv-print-emphasis: oklch(0.9277 0.0528 165.89);
+    --cv-divider: oklch(0.9049 0.0895 164.15 / 0.18);
+    --cv-divider-strong: oklch(0.9049 0.0895 164.15 / 0.26);
   }
 
   html[data-cv-print-active],
@@ -1377,6 +1969,58 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
     color: var(--cv-print-text);
   }
 
+  html[data-print-preview] .cv-page {
+    --cv-preview-page-width: min(210mm, calc(100vw - 1.5rem));
+    padding: 1rem 0 2rem;
+    background:
+      linear-gradient(
+        180deg,
+        oklch(1 0 89.88 / 0.5),
+        oklch(0.9253 0.0083 157.08 / 0.9)
+      ),
+      oklch(0.8982 0.0076 164.92);
+  }
+
+  html[data-print-preview] .cv-print-stack {
+    gap: 1rem;
+    justify-items: center;
+  }
+
+  html[data-print-preview] .cv-print-page {
+    position: relative;
+    width: var(--cv-preview-page-width);
+    height: calc(var(--cv-preview-page-width) * 1.4142857);
+    box-shadow: 0 18px 36px oklch(0.2077 0.0398 265.75 / 0.12);
+  }
+
+  html[data-print-preview] .cv-print-page[data-cv-overflow="true"] {
+    box-shadow:
+      0 18px 36px oklch(0.2077 0.0398 265.75 / 0.12),
+      0 0 0 3px oklch(0.6373 0.237 25.33 / 0.78);
+  }
+
+  html[data-print-preview] .cv-print-page[data-cv-overflow="true"]::after {
+    content: "Page " attr(data-cv-page-number) " overflow +"
+      attr(data-cv-overflow-px) "px";
+    position: absolute;
+    top: 0.55rem;
+    right: 0.55rem;
+    z-index: 2;
+    padding: 0.28rem 0.48rem;
+    border-radius: 999px;
+    font-family: "Chakra Petch", sans-serif;
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    color: oklch(0.982 0.0141 17.14);
+    background: oklch(0.6373 0.237 25.33 / 0.9);
+    box-shadow: 0 10px 18px oklch(0.3235 0.1293 24.29 / 0.22);
+  }
+
+  html[data-print-preview] .cv-sheet-page {
+    height: 100%;
+  }
+
   html[data-cv-print-active] .cv-sheet {
     width: 100%;
     max-width: none;
@@ -1389,15 +2033,21 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
     background: var(--cv-print-sheet-bg);
   }
 
+  html[data-cv-print-active] .cv-sheet-page {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+  }
+
   html[data-cv-print-active] .cv-hero {
     margin: 0;
-    padding: 0 0 1.6rem;
+    padding: 0 0 1rem;
     background: none;
     border-bottom-color: var(--cv-print-border-soft);
   }
 
   html[data-cv-print-active] .cv-hero-media {
-    min-height: 54mm;
+    min-height: 48mm;
     background: transparent;
     box-shadow: none;
     break-inside: avoid;
@@ -1420,7 +2070,7 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
   }
 
   html[data-cv-print-active] .cv-project-header {
-    background: var(--cv-print-panel-muted-bg) !important;
+    background: transparent !important;
     border-color: var(--cv-divider) !important;
   }
 
@@ -1440,12 +2090,9 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
   html[data-cv-print-active] .cv-project-meta dt,
   html[data-cv-print-active] .cv-stack-list dt,
   html[data-cv-print-active] .cv-project-period,
-  html[data-cv-print-active] .cv-project-sector {
+  html[data-cv-print-active] .cv-project-sector,
+  html[data-cv-print-active] .cv-project-page-kicker {
     color: var(--cv-print-accent);
-  }
-
-  html[data-cv-print-active] .cv-hero h1 {
-    color: red;
   }
 
   html[data-cv-print-active] .cv-section h2,
@@ -1456,6 +2103,10 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
   html[data-cv-print-active] .cv-skill-card h3,
   html[data-cv-print-active] .cv-link-list a span:first-child {
     color: var(--cv-print-heading);
+  }
+
+  html[data-cv-print-active] .cv-hero h1 {
+    color: var(--cv-print-display);
   }
 
   html[data-cv-print-active] .cv-intro,
@@ -1471,6 +2122,10 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
     color: var(--cv-print-muted);
   }
 
+  html[data-cv-print-active] .cv-intro strong {
+    color: var(--cv-print-emphasis);
+  }
+
   html[data-cv-print-active] .cv-skill-card li::before,
   html[data-cv-print-active] .cv-project-highlights li::before,
   html[data-cv-print-active] .cv-detail-card li::before {
@@ -1482,7 +2137,7 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
   }
 
   html[data-cv-print-active] .cv-section {
-    margin-top: 0.8rem;
+    margin-top: 0.7rem;
   }
 
   html[data-cv-print-active] .cv-section-frame {
@@ -1499,8 +2154,272 @@ const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
     gap: 0.8rem;
   }
 
+  html[data-cv-print-active] .cv-page,
+  html[data-cv-print-active] .cv-sheet,
+  html[data-cv-print-active] .cv-panel,
+  html[data-cv-print-active] .cv-facts dd,
+  html[data-cv-print-active] .cv-project-meta dd,
+  html[data-cv-print-active] .cv-stack-list dd,
+  html[data-cv-print-active] .cv-project-copy p,
+  html[data-cv-print-active] .cv-skill-card li,
+  html[data-cv-print-active] .cv-project-highlights li,
+  html[data-cv-print-active] .cv-link-list a span:last-child {
+    font-size: 0.88rem;
+  }
+
+  html[data-cv-print-active] .cv-sheet {
+    padding: 8mm 8mm 7mm;
+    border-radius: 0;
+  }
+
+  html[data-cv-print-active] .cv-hero h1 {
+    font-size: 2.8rem;
+  }
+
+  html[data-cv-print-active] .cv-panel h2,
+  html[data-cv-print-active] .cv-section h2 {
+    font-size: 1.2rem;
+  }
+
+  html[data-cv-print-active] .cv-project-card h3,
+  html[data-cv-print-active] .cv-project-highlights h4,
+  html[data-cv-print-active] .cv-detail-card h4,
+  html[data-cv-print-active] .cv-skill-card h3 {
+    font-size: 1rem;
+  }
+
+  html[data-cv-print-active] .cv-top-grid,
+  html[data-cv-print-active] .cv-skills-grid,
+  html[data-cv-print-active] .cv-projects {
+    margin-top: 0.7rem;
+  }
+
+  html[data-cv-print-active] .cv-panel,
+  html[data-cv-print-active] .cv-panel-mirrored,
+  html[data-cv-print-active] .cv-detail-card,
+  html[data-cv-print-active] .cv-skill-card {
+    padding: 0.8rem;
+  }
+
+  html[data-cv-print-active] .cv-section-heading {
+    margin-bottom: 0.7rem;
+  }
+
+  html[data-cv-print-active] .cv-facts,
+  html[data-cv-print-active] .cv-project-meta,
+  html[data-cv-print-active] .cv-stack-list,
+  html[data-cv-print-active] .cv-project-summary,
+  html[data-cv-print-active] .cv-project-highlights-list {
+    gap: 0.55rem;
+  }
+
+  html[data-cv-print-active] .cv-link-list {
+    gap: 0.45rem;
+    margin-top: 0.8rem;
+  }
+
+  html[data-cv-print-active] .cv-link-card {
+    padding: 0.55rem 0.65rem;
+  }
+
+  html[data-cv-print-active] .cv-chip-list {
+    gap: 0.4rem;
+    margin-top: 0.7rem;
+  }
+
+  html[data-cv-print-active] .cv-chip-list li {
+    padding: 0.34rem 0.6rem;
+    font-size: 0.76rem;
+  }
+
+  html[data-cv-print-active] .cv-project-card {
+    border-left: 2px solid var(--cv-print-accent);
+    background: transparent !important;
+  }
+
+  html[data-cv-print-active] .cv-project-header {
+    grid-template-columns: minmax(0, 1fr);
+    align-items: start;
+    gap: 0.5rem;
+    padding: 0.44rem 0.12rem 0.68rem 0.86rem;
+    border-bottom: 1px solid var(--cv-divider-strong);
+  }
+
+  html[data-cv-print-active] .cv-project-title-block {
+    gap: 0.22rem;
+  }
+
+  html[data-cv-print-active] .cv-project-eyebrow {
+    gap: 0.44rem;
+  }
+
+  html[data-cv-print-active] .cv-card-index,
+  html[data-cv-print-active] .cv-project-period,
+  html[data-cv-print-active] .cv-project-sector {
+    color: var(--cv-print-muted);
+  }
+
+  html[data-cv-print-active] .cv-project-period,
+  html[data-cv-print-active] .cv-project-sector {
+    font-size: 0.74rem;
+    letter-spacing: 0.08em;
+  }
+
+  html[data-cv-print-active] .cv-project-card h3 {
+    font-size: 1.14rem;
+    line-height: 1.28;
+    margin-top: 0;
+  }
+
+  html[data-cv-print-active] .cv-project-meta {
+    grid-template-columns: repeat(3, minmax(0, max-content));
+    gap: 0.4rem 1.15rem;
+    align-self: start;
+    width: auto;
+  }
+
+  html[data-cv-print-active] .cv-project-meta > div {
+    padding: 0;
+    border: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+  }
+
+  html[data-cv-print-active] .cv-project-meta-roles {
+    grid-column: auto;
+  }
+
+  html[data-cv-print-active] .cv-project-meta dt {
+    font-size: 0.6rem;
+    letter-spacing: 0.12em;
+    color: var(--cv-print-muted);
+  }
+
+  html[data-cv-print-active] .cv-project-meta dd {
+    font-size: 0.78rem;
+    line-height: 1.45;
+    color: var(--cv-print-text);
+  }
+
+  html[data-cv-print-active] .cv-project-divider {
+    display: none;
+  }
+
+  html[data-cv-print-active] .cv-project-body {
+    grid-template-columns: minmax(0, 1.6fr) minmax(10.5rem, 0.9fr);
+    gap: 1rem;
+    padding: 0.82rem 0.12rem 0.14rem 0.86rem;
+  }
+
+  html[data-cv-print-active] .cv-project-body > * + * {
+    padding-top: 0;
+    padding-left: 0.9rem;
+    border-top: 0;
+    border-left: 1px solid var(--cv-divider);
+  }
+
+  html[data-cv-print-active] .cv-project-body-summary {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  html[data-cv-print-active] .cv-project-body-summary > * + * {
+    padding-left: 0;
+    border-left: 0;
+  }
+
+  html[data-cv-print-active] .cv-project-copy {
+    gap: 0.72rem;
+  }
+
+  html[data-cv-print-active] .cv-project-summary {
+    gap: 0.58rem;
+  }
+
+  html[data-cv-print-active] .cv-project-spacer {
+    display: none;
+  }
+
+  html[data-cv-print-active] .cv-project-highlights {
+    gap: 0.44rem;
+    padding-top: 0.28rem;
+    padding-bottom: 0;
+  }
+
+  html[data-cv-print-active] .cv-project-highlights h4,
+  html[data-cv-print-active] .cv-detail-card h4 {
+    font-size: 0.9rem;
+  }
+
+  html[data-cv-print-active] .cv-project-highlights-list {
+    gap: 0.42rem;
+  }
+
+  html[data-cv-print-active] .cv-project-highlights-list li,
+  html[data-cv-print-active] .cv-detail-card li {
+    padding-left: 0.78rem;
+  }
+
+  html[data-cv-print-active] .cv-project-highlights-list li::before,
+  html[data-cv-print-active] .cv-detail-card li::before {
+    width: 0.26rem;
+    height: 0.26rem;
+    top: 0.62rem;
+  }
+
+  html[data-cv-print-active] .cv-project-stack-page {
+    padding: 0.82rem 0.12rem 0.14rem 0.86rem;
+  }
+
+  html[data-cv-print-active] .cv-detail-card {
+    padding: 0;
+    border: 0 !important;
+    background: transparent !important;
+  }
+
+  html[data-cv-print-active] .cv-project-card-stack .cv-stack-list {
+    gap: 0.55rem 0.7rem;
+  }
+
+  html[data-cv-print-active] .cv-brace-frame-vertical {
+    --cv-brace-depth: 1.65rem;
+    padding-top: 0.9rem;
+  }
+
+  html[data-cv-print-active] .cv-skill-card ul {
+    gap: 0.3rem;
+  }
+
+  html[data-cv-print-active] .cv-skill-sublist {
+    margin-top: 0.18rem;
+    row-gap: 0.12rem;
+  }
+
   html[data-cv-print-active] a {
     color: inherit;
     text-decoration: none;
+  }
+
+  @media print {
+    html[data-print-preview] .cv-page {
+      padding: 0;
+      background: none;
+    }
+
+    html[data-print-preview] .cv-print-stack {
+      gap: 0;
+    }
+
+    html[data-print-preview] .cv-print-page {
+      width: auto;
+      min-height: auto;
+      box-shadow: none;
+      break-after: page;
+      page-break-after: always;
+    }
+
+    html[data-print-preview] .cv-print-page:last-child {
+      break-after: auto;
+      page-break-after: auto;
+    }
   }
 </style>
