@@ -142,26 +142,8 @@ const paginatedProjectPages = [
             />
           </div>
         </header>
-      </div>
-    </article>
 
-    <article class="cv-print-page cv-print-page-overview">
-      <div class="cv-sheet cv-sheet-page">
-        <section class="cv-grid cv-top-grid cv-section-shell gap-4">
-          <section class="cv-panel cv-surface cv-surface-strong">
-            <h2>{content.factsTitle}</h2>
-            <dl class="cv-facts gap-4">
-              {
-                content.facts.map((fact) => (
-                  <div>
-                    <dt>{fact.label}</dt>
-                    <dd class="text-balance">{fact.value}</dd>
-                  </div>
-                ))
-              }
-            </dl>
-          </section>
-
+        <section class="cv-section-shell cv-print-hero-links">
           <section class="cv-panel cv-panel-mirrored cv-surface">
             <h2>{content.contactTitle}</h2>
             <ul class="cv-link-list">
@@ -186,6 +168,26 @@ const paginatedProjectPages = [
             <ul class="cv-chip-list">
               {content.industries.map((industry) => <li>{industry}</li>)}
             </ul>
+          </section>
+        </section>
+      </div>
+    </article>
+
+    <article class="cv-print-page cv-print-page-overview">
+      <div class="cv-sheet cv-sheet-page">
+        <section class="cv-section-shell">
+          <section class="cv-panel cv-surface cv-surface-strong">
+            <h2>{content.factsTitle}</h2>
+            <dl class="cv-facts cv-print-overview-facts gap-4">
+              {
+                content.facts.map((fact) => (
+                  <div>
+                    <dt>{fact.label}</dt>
+                    <dd class="text-balance">{fact.value}</dd>
+                  </div>
+                ))
+              }
+            </dl>
           </section>
         </section>
       </div>
@@ -1862,6 +1864,48 @@ const paginatedProjectPages = [
   html[data-cv-print-active] .cv-chip-list li {
     padding: 0.34rem 0.6rem;
     font-size: 0.76rem;
+  }
+
+  html[data-cv-print-active] .cv-print-hero-links {
+    margin-top: 0.5rem;
+  }
+
+  html[data-cv-print-active] .cv-print-hero-links .cv-panel {
+    padding: 0.62rem 0.68rem;
+  }
+
+  html[data-cv-print-active] .cv-print-hero-links .cv-link-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.35rem 0.45rem;
+    margin-top: 0.55rem;
+  }
+
+  html[data-cv-print-active] .cv-print-hero-links .cv-link-card {
+    padding: 0.42rem 0.5rem;
+  }
+
+  html[data-cv-print-active] .cv-print-hero-links .cv-subheading {
+    margin-top: 0.8rem !important;
+  }
+
+  html[data-cv-print-active] .cv-print-hero-links .cv-chip-list {
+    gap: 0.32rem;
+    margin-top: 0.5rem;
+  }
+
+  html[data-cv-print-active] .cv-print-hero-links .cv-chip-list li {
+    padding: 0.24rem 0.46rem;
+    font-size: 0.68rem;
+  }
+
+  html[data-cv-print-active] .cv-print-overview-facts {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0.68rem;
+  }
+
+  html[data-cv-print-active] .cv-print-overview-facts > div + div {
+    padding-top: 0.52rem;
+    border-top: 1px dashed var(--cv-divider);
   }
 
   html[data-cv-print-active] .cv-project-card {
