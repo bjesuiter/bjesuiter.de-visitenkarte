@@ -1,0 +1,23 @@
+src/components/CVDocument.astro
+  409db5de6b26659c 598-599,614-796,823-840,1990,1996-2017
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.1.11",
+  "base_commit_sha": "b627e0098d577003f74ea99b908a43a220c9b0b9",
+  "prompts": {
+    "409db5de6b26659c": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "019ce195-ede9-71a3-ab6b-69642f9d3804",
+        "model": "gpt-5.4"
+      },
+      "human_author": "Benjamin Jesuiter <bjesuiter@gmail.com>",
+      "messages": [],
+      "total_additions": 230,
+      "total_deletions": 0,
+      "accepted_lines": 230,
+      "overriden_lines": 0
+    }
+  }
+}
