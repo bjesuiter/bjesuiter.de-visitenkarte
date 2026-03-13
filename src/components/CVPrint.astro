@@ -14,6 +14,15 @@ const profileImageAlt =
   locale === "de"
     ? "Porträt von Benjamin Jesuiter"
     : "Portrait of Benjamin Jesuiter";
+const lastUpdatedLabel = locale === "de" ? "Stand" : "Updated";
+const parsedLastUpdated = new Date(`${content.lastUpdated}T00:00:00`);
+const formattedLastUpdated = Number.isNaN(parsedLastUpdated.getTime())
+  ? content.lastUpdated
+  : new Intl.DateTimeFormat(locale === "de" ? "de-DE" : "en-GB", {
+      day: "2-digit",
+      month: "short",
+      year: "numeric",
+    }).format(parsedLastUpdated);
 type CvPrintProjectMode = "full" | "summary" | "stack";
 const toIndexedPageItems = <T,>(items: T[], indices: number[]) =>
   indices.flatMap((index) => {
@@ -127,10 +136,15 @@ const paginatedProjectPages = [
     <article class="cv-print-page cv-print-page-hero">
       <div class="cv-sheet cv-sheet-page">
         <header class="cv-hero gap-4">
-          <div class="cv-hero-copy gap-4">
-            <p class="cv-badge">{content.badge}</p>
+          <div class="cv-hero-head gap-4">
+            <div class="cv-hero-meta">
+              <p class="cv-badge">{content.badge}</p>
+              <p class="cv-last-updated">
+                <span>{lastUpdatedLabel}</span>
+                <time datetime={content.lastUpdated}>{formattedLastUpdated}</time>
+              </p>
+            </div>
             <h1>{content.heading}</h1>
-            <CVIntro locale={locale} />
           </div>
 
           <div class="cv-hero-media">
@@ -140,6 +154,10 @@ const paginatedProjectPages = [
               loading="eager"
               class="cv-hero-image"
             />
+          </div>
+
+          <div class="cv-hero-intro">
+            <CVIntro locale={locale} />
           </div>
         </header>
 
@@ -400,10 +418,9 @@ const paginatedProjectPages = [
             pageNumber: index + 1,
             overflow: false,
             overflowPx: 0,
-            pageOverflowPx: 0,
-            clippedOverflowPx: 0,
-            clippedElementCount: 0,
-            clippedSamples: [],
+            bottomOverflowPx: 0,
+            rightOverflowPx: 0,
+            overflowSamples: [],
           };
         }
 
@@ -420,30 +437,32 @@ const paginatedProjectPages = [
           return `${element.tagName.toLowerCase()}${classes ? `.${classes}` : ""}`;
         };
 
-        const clippedDescendants = Array.from(
-          sheet.querySelectorAll("*"),
-        ).reduce(
+        const sheetRect = sheet.getBoundingClientRect();
+        const sheetStyle = window.getComputedStyle(sheet);
+        const paddingBottom = Number.parseFloat(sheetStyle.paddingBottom) || 0;
+        const paddingRight = Number.parseFloat(sheetStyle.paddingRight) || 0;
+        const visibleBottom = sheetRect.bottom - paddingBottom;
+        const visibleRight = sheetRect.right - paddingRight;
+        const scrollBottomOverflow = Math.max(
+          0,
+          sheet.scrollHeight - sheet.clientHeight,
+        );
+        const scrollRightOverflow = Math.max(
+          0,
+          sheet.scrollWidth - sheet.clientWidth,
+        );
+        const descendantOverflow = Array.from(sheet.querySelectorAll("*")).reduce(
           (summary, element) => {
             if (!(element instanceof HTMLElement)) {
               return summary;
             }
 
-            const style = window.getComputedStyle(element);
-            const clipsY = !["visible", "unset", "initial"].includes(
-              style.overflowY,
-            );
-            const clipsX = !["visible", "unset", "initial"].includes(
-              style.overflowX,
-            );
-            const clippedY = clipsY
-              ? Math.max(0, element.scrollHeight - element.clientHeight)
-              : 0;
-            const clippedX = clipsX
-              ? Math.max(0, element.scrollWidth - element.clientWidth)
-              : 0;
-            const clippedPx = Math.max(clippedY, clippedX);
+            const rect = element.getBoundingClientRect();
+            const bottomOverflow = Math.max(0, rect.bottom - visibleBottom);
+            const rightOverflow = Math.max(0, rect.right - visibleRight);
+            const elementOverflow = Math.max(bottomOverflow, rightOverflow);
 
-            if (clippedPx <= OVERFLOW_TOLERANCE_PX) {
+            if (elementOverflow <= OVERFLOW_TOLERANCE_PX) {
               return summary;
             }
 
@@ -453,57 +472,37 @@ const paginatedProjectPages = [
                     ...summary.samples,
                     {
                       element: describeElement(element),
-                      overflowPx: Number(clippedPx.toFixed(2)),
+                      bottomOverflowPx: Number(bottomOverflow.toFixed(2)),
+                      rightOverflowPx: Number(rightOverflow.toFixed(2)),
                     },
                   ]
                 : summary.samples;
 
             return {
-              count: summary.count + 1,
-              maxOverflowPx: Math.max(summary.maxOverflowPx, clippedPx),
+              bottomOverflowPx: Math.max(summary.bottomOverflowPx, bottomOverflow),
+              rightOverflowPx: Math.max(summary.rightOverflowPx, rightOverflow),
               samples: nextSamples,
             };
           },
-          { count: 0, maxOverflowPx: 0, samples: [] },
+          { bottomOverflowPx: 0, rightOverflowPx: 0, samples: [] },
         );
-
-        const sheetRect = sheet.getBoundingClientRect();
-        const sheetStyle = window.getComputedStyle(sheet);
-        const paddingBottom = Number.parseFloat(sheetStyle.paddingBottom) || 0;
-        const visibleBottom = sheetRect.bottom - paddingBottom;
-        const scrollOverflow = Math.max(
-          0,
-          sheet.scrollHeight - sheet.clientHeight,
+        const bottomOverflowPx = Math.max(
+          scrollBottomOverflow,
+          descendantOverflow.bottomOverflowPx,
         );
-        const contentOverflow = Array.from(sheet.children).reduce(
-          (maxOverflow, child) => {
-            if (!(child instanceof HTMLElement)) {
-              return maxOverflow;
-            }
-
-            return Math.max(
-              maxOverflow,
-              child.getBoundingClientRect().bottom - visibleBottom,
-            );
-          },
-          0,
+        const rightOverflowPx = Math.max(
+          scrollRightOverflow,
+          descendantOverflow.rightOverflowPx,
         );
-        const pageOverflowPx = Math.max(scrollOverflow, contentOverflow);
-        const overflowPx = Math.max(
-          pageOverflowPx,
-          clippedDescendants.maxOverflowPx,
-        );
+        const overflowPx = Math.max(bottomOverflowPx, rightOverflowPx);
 
         return {
           pageNumber: index + 1,
           overflow: overflowPx > OVERFLOW_TOLERANCE_PX,
           overflowPx: Number(overflowPx.toFixed(2)),
-          pageOverflowPx: Number(pageOverflowPx.toFixed(2)),
-          clippedOverflowPx: Number(
-            clippedDescendants.maxOverflowPx.toFixed(2),
-          ),
-          clippedElementCount: clippedDescendants.count,
-          clippedSamples: clippedDescendants.samples,
+          bottomOverflowPx: Number(bottomOverflowPx.toFixed(2)),
+          rightOverflowPx: Number(rightOverflowPx.toFixed(2)),
+          overflowSamples: descendantOverflow.samples,
         };
       });
     };
@@ -551,10 +550,9 @@ const paginatedProjectPages = [
           overflowPages.map((page) => ({
             page: page.pageNumber,
             overflowPx: page.overflowPx,
-            pageOverflowPx: page.pageOverflowPx,
-            clippedOverflowPx: page.clippedOverflowPx,
-            clippedElementCount: page.clippedElementCount,
-            clippedSamples: page.clippedSamples,
+            bottomOverflowPx: page.bottomOverflowPx,
+            rightOverflowPx: page.rightOverflowPx,
+            overflowSamples: page.overflowSamples,
           })),
         );
       }
@@ -669,7 +667,8 @@ const paginatedProjectPages = [
   }
 
   .cv-hero,
-  .cv-hero-copy,
+  .cv-hero-head,
+  .cv-hero-intro,
   .cv-grid,
   .cv-facts,
   .cv-skills-grid,
@@ -687,6 +686,7 @@ const paginatedProjectPages = [
   }
 
   .cv-badge,
+  .cv-last-updated span,
   .cv-card-index,
   .cv-facts dt,
   .cv-project-meta dt,
@@ -722,9 +722,21 @@ const paginatedProjectPages = [
       oklch(0.1787 0.0258 176.8 / 0.92);
   }
 
-  .cv-hero-copy {
+  .cv-hero-head {
     gap: 0.95rem;
     align-content: start;
+  }
+
+  .cv-hero-intro {
+    align-content: start;
+  }
+
+  .cv-hero-meta {
+    display: flex;
+    align-items: start;
+    justify-content: space-between;
+    gap: 0.9rem;
+    flex-wrap: wrap;
   }
 
   .cv-badge {
@@ -732,6 +744,27 @@ const paginatedProjectPages = [
     font-size: 0.84rem;
     letter-spacing: 0.14em;
     color: oklch(0.8452 0.1299 164.98);
+  }
+
+  .cv-last-updated {
+    margin: 0;
+    display: grid;
+    justify-items: end;
+    gap: 0.12rem;
+    text-align: right;
+  }
+
+  .cv-last-updated span {
+    font-size: 0.68rem;
+    letter-spacing: 0.14em;
+    color: oklch(0.8452 0.1299 164.98);
+  }
+
+  .cv-last-updated time {
+    color: oklch(0.9583 0.0422 168.36);
+    font-size: 0.9rem;
+    font-weight: 600;
+    line-height: 1.2;
   }
 
   .cv-hero h1,
@@ -773,7 +806,16 @@ const paginatedProjectPages = [
     color: oklch(0.9793 0.0207 166.11);
   }
 
+  .cv-hero-head {
+    grid-area: head;
+  }
+
+  .cv-hero-intro {
+    grid-area: intro;
+  }
+
   .cv-hero-media {
+    grid-area: media;
     position: relative;
     min-height: 18rem;
     overflow: hidden;
@@ -1469,7 +1511,10 @@ const paginatedProjectPages = [
   @media (min-width: 760px) {
     .cv-hero {
       grid-template-columns: minmax(0, 1.14fr) minmax(19rem, 0.86fr);
-      align-items: stretch;
+      grid-template-areas:
+        "head head"
+        "intro media";
+      align-items: start;
     }
 
     .cv-hero-media {
@@ -1682,6 +1727,12 @@ const paginatedProjectPages = [
   }
 
   html[data-cv-print-active] .cv-hero {
+    display: grid;
+    grid-template-columns: minmax(0, 1.55fr) minmax(10rem, 0.85fr);
+    grid-template-areas:
+      "head head"
+      "intro media";
+    gap: 0.75rem 1rem;
     align-items: start;
     margin: 0;
     padding: 0 0 1rem;
@@ -1730,6 +1781,7 @@ const paginatedProjectPages = [
   }
 
   html[data-cv-print-active] .cv-badge,
+  html[data-cv-print-active] .cv-last-updated span,
   html[data-cv-print-active] .cv-facts dt,
   html[data-cv-print-active] .cv-project-meta dt,
   html[data-cv-print-active] .cv-stack-list dt,
@@ -1755,6 +1807,7 @@ const paginatedProjectPages = [
   }
 
   html[data-cv-print-active] .cv-intro,
+  html[data-cv-print-active] .cv-last-updated time,
   html[data-cv-print-active] .cv-facts dd,
   html[data-cv-print-active] .cv-project-meta dd,
   html[data-cv-print-active] .cv-stack-list dd,
@@ -1819,6 +1872,14 @@ const paginatedProjectPages = [
 
   html[data-cv-print-active] .cv-hero h1 {
     font-size: 2.8rem;
+  }
+
+  html[data-cv-print-active] .cv-last-updated span {
+    font-size: 0.58rem;
+  }
+
+  html[data-cv-print-active] .cv-last-updated time {
+    font-size: 0.78rem;
   }
 
   html[data-cv-print-active] .cv-panel h2,

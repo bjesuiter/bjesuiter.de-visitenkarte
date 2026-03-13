@@ -59,6 +59,7 @@ export interface CvContent {
   pageDescription: string;
   badge: string;
   heading: string;
+  lastUpdated: string;
   navigation: CvNavigationContent;
   contactTitle: string;
   factsTitle: string;
@@ -78,12 +79,15 @@ export interface CvContent {
   projects: CvProject[];
 }
 
+const sharedLastUpdated = "2026-03-13";
+
 const cvDe: CvContent = {
   pageTitle: "Benjamin Jesuiter · Lebenslauf",
   pageDescription:
     "Vollständiger Lebenslauf von Benjamin Jesuiter mit Projektchronik, Kompetenzen und Branchenerfahrung.",
   badge: "Lebenslauf · Projektchronik",
   heading: "Benjamin Jesuiter",
+  lastUpdated: sharedLastUpdated,
   navigation: {
     backLabel: "Zurück zur Startseite",
     downloadLabel: "Download als PDF",
@@ -764,6 +768,7 @@ const cvEn: CvContent = {
     "Full CV of Benjamin Jesuiter with project history, skills, and industry experience.",
   badge: "CV · Project History",
   heading: "Benjamin Jesuiter",
+  lastUpdated: sharedLastUpdated,
   navigation: {
     backLabel: "Back to Homepage",
     downloadLabel: "Download PDF",
