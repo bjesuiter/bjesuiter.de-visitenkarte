@@ -131,6 +131,24 @@ const cvDe: CvContent = {
       label: "Zertifikat",
       value: "AWS Architect Associate (09/2018 – 09/2020)",
     },
+    {
+      label: "Fokus",
+      value:
+        "Agentic Engineering, Softwarearchitektur, Full-Stack Web-Engineering",
+    },
+    {
+      label: "Kernstack",
+      value: "TypeScript, Angular, SolidJS, Node.js, Bun, Deno, Rust, AWS",
+    },
+    {
+      label: "Rollenprofil",
+      value:
+        "Softwarearchitekt, Technical Lead, Senior Entwickler, Consultant",
+    },
+    {
+      label: "Projekte & Branchen",
+      value: "15 dokumentierte Projekte in 10 Branchen",
+    },
     { label: "IT-Erfahrung seit", value: "2008" },
     { label: "IT-Projekterfahrung seit", value: "2014" },
   ],
@@ -811,6 +829,22 @@ const cvEn: CvContent = {
     {
       label: "Certificate",
       value: "AWS Architect Associate (09/2018 – 09/2020)",
+    },
+    {
+      label: "Core Focus",
+      value: "Agentic Engineering, Software Architecture, Full-Stack Web Engineering",
+    },
+    {
+      label: "Primary Stack",
+      value: "TypeScript, Angular, SolidJS, Node.js, Bun, Deno, Rust, AWS",
+    },
+    {
+      label: "Roles",
+      value: "Software Architect, Technical Lead, Senior Engineer, Consultant",
+    },
+    {
+      label: "Projects & Industries",
+      value: "15 documented projects across 10 industries",
     },
     { label: "IT Experience Since", value: "2008" },
     { label: "Project Experience Since", value: "2014" },
