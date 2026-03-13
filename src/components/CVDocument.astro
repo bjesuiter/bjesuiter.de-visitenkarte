@@ -2040,6 +2040,7 @@ const paginatedProjectPages = [
   }
 
   html[data-cv-print-active] .cv-hero {
+    align-items: start;
     margin: 0;
     padding: 0 0 1rem;
     background: none;
@@ -2047,7 +2048,9 @@ const paginatedProjectPages = [
   }
 
   html[data-cv-print-active] .cv-hero-media {
-    min-height: 48mm;
+    min-height: 0;
+    aspect-ratio: 4 / 5;
+    align-self: start;
     background: transparent;
     box-shadow: none;
     break-inside: avoid;
