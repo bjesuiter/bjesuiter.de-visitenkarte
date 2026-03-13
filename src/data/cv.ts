@@ -183,15 +183,6 @@ const cvDe: CvContent = {
       ],
     },
     {
-      title: "Entwicklungsumgebung",
-      items: [
-        "macOS",
-        "Desktop Linux: Ubuntu, Debian",
-        "Windows + cmder",
-        "VSCode / Cursor",
-      ],
-    },
-    {
       title: "Coding Agents & LLMs",
       items: [
         {
@@ -209,6 +200,15 @@ const cvDe: CvContent = {
             "GPT 5.2 Codex, 5.3 Codex and 5.4",
           ],
         },
+      ],
+    },
+    {
+      title: "Entwicklungsumgebung",
+      items: [
+        "macOS",
+        "Desktop Linux: Ubuntu, Debian",
+        "Windows + cmder",
+        "VSCode / Cursor",
       ],
     },
     {
@@ -881,15 +881,6 @@ const cvEn: CvContent = {
       ],
     },
     {
-      title: "Development Environment",
-      items: [
-        "macOS",
-        "Desktop Linux: Ubuntu, Debian",
-        "Windows + cmder",
-        "VSCode / Cursor",
-      ],
-    },
-    {
       title: "Coding Agents & LLMs",
       items: [
         {
@@ -907,6 +898,15 @@ const cvEn: CvContent = {
             "GPT 5.2 Codex, 5.3 Codex and 5.4",
           ],
         },
+      ],
+    },
+    {
+      title: "Development Environment",
+      items: [
+        "macOS",
+        "Desktop Linux: Ubuntu, Debian",
+        "Windows + cmder",
+        "VSCode / Cursor",
       ],
     },
     {
