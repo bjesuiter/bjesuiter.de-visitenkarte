@@ -138,7 +138,8 @@ const cvDe: CvContent = {
     },
     {
       label: "Kernstack",
-      value: "TypeScript, Angular, SolidJS, Node.js, Bun, Deno, Rust, AWS",
+      value:
+        "TypeScript, Angular, SolidJS, Node.js, Bun, Deno, Rust, Cloudflare, self-hosted VPS",
     },
     {
       label: "Rollenprofil",
@@ -836,7 +837,8 @@ const cvEn: CvContent = {
     },
     {
       label: "Primary Stack",
-      value: "TypeScript, Angular, SolidJS, Node.js, Bun, Deno, Rust, AWS",
+      value:
+        "TypeScript, Angular, SolidJS, Node.js, Bun, Deno, Rust, Cloudflare, self-hosted VPS",
     },
     {
       label: "Roles",
