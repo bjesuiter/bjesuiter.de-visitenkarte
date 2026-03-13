@@ -8,16 +8,19 @@ export interface CvFact {
 export interface CvLink {
   label: string;
   href: string;
-}
-
-export interface CvSkillSublistItem {
-  label: string;
-  items: string[];
+  icon: string;
 }
 
 export interface CvSkillChipItem {
   text: string;
   chip: string;
+}
+
+export type CvSkillSubItem = string | CvSkillChipItem;
+
+export interface CvSkillSublistItem {
+  label: string;
+  items: CvSkillSubItem[];
 }
 
 export type CvSkillItem = string | CvSkillSublistItem | CvSkillChipItem;
@@ -154,10 +157,18 @@ const cvDe: CvContent = {
     { label: "IT-Projekterfahrung seit", value: "2014" },
   ],
   contactLinks: [
-    { label: "Website", href: "https://bjesuiter.de" },
-    { label: "Consulting", href: "https://consulting.jesuiter.com" },
-    { label: "LinkedIn", href: "https://www.linkedin.com/in/bjesuiter" },
-    { label: "GitHub", href: "https://github.com/bjesuiter" },
+    { label: "Website", href: "https://bjesuiter.de", icon: "ion:home" },
+    {
+      label: "Consulting",
+      href: "https://consulting.jesuiter.com",
+      icon: "ph:globe-fill",
+    },
+    {
+      label: "LinkedIn",
+      href: "https://www.linkedin.com/in/bjesuiter",
+      icon: "ph:linkedin-logo-fill",
+    },
+    { label: "GitHub", href: "https://github.com/bjesuiter", icon: "bxl:github" },
   ],
   industries: [
     "Finanzen",
@@ -194,10 +205,13 @@ const cvDe: CvContent = {
           ],
         },
         {
-          label: "Models tried & used",
+          label: "Daily driver models",
           items: [
             "Claude Sonnet 4.1, 4.5, Opus 4.5, 4.6",
-            "GPT 5.2 Codex, 5.3 Codex and 5.4",
+            {
+              text: "GPT 5.2 Codex, 5.3 Codex and 5.4",
+              chip: "current",
+            },
           ],
         },
       ],
@@ -852,10 +866,18 @@ const cvEn: CvContent = {
     { label: "Project Experience Since", value: "2014" },
   ],
   contactLinks: [
-    { label: "Website", href: "https://bjesuiter.de" },
-    { label: "Consulting", href: "https://consulting.jesuiter.com" },
-    { label: "LinkedIn", href: "https://www.linkedin.com/in/bjesuiter" },
-    { label: "GitHub", href: "https://github.com/bjesuiter" },
+    { label: "Website", href: "https://bjesuiter.de", icon: "ion:home" },
+    {
+      label: "Consulting",
+      href: "https://consulting.jesuiter.com",
+      icon: "ph:globe-fill",
+    },
+    {
+      label: "LinkedIn",
+      href: "https://www.linkedin.com/in/bjesuiter",
+      icon: "ph:linkedin-logo-fill",
+    },
+    { label: "GitHub", href: "https://github.com/bjesuiter", icon: "bxl:github" },
   ],
   industries: [
     "Finance",
@@ -892,10 +914,13 @@ const cvEn: CvContent = {
           ],
         },
         {
-          label: "Models tried & used",
+          label: "Daily driver models",
           items: [
             "Claude Sonnet 4.1, 4.5, Opus 4.5, 4.6",
-            "GPT 5.2 Codex, 5.3 Codex and 5.4",
+            {
+              text: "GPT 5.2 Codex, 5.3 Codex and 5.4",
+              chip: "current",
+            },
           ],
         },
       ],

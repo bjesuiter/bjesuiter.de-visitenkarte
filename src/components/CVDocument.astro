@@ -1,5 +1,6 @@
 ---
 import { Image } from "astro:assets";
+import { Icon } from "astro-icon/components";
 import profilePic from "../assets/2023-03-17_square_near_profilepic.jpeg";
 import { getLocalizedCvContent, type CvLocale } from "../data/cv";
 import CVIntro from "./CVIntro.astro";
@@ -62,8 +63,11 @@ const profileImageAlt =
                   rel="noreferrer"
                   class="cv-link-card cv-surface-inset"
                 >
-                  <span>{link.label}</span>
-                  <span>{link.href.replace(/^https?:\/\//, "")}</span>
+                  <span class="cv-link-label">
+                    <Icon name={link.icon} class="cv-link-icon" />
+                    <span>{link.label}</span>
+                  </span>
+                  <span class="cv-link-url">{link.href.replace(/^https?:\/\//, "")}</span>
                 </a>
               </li>
             ))
@@ -97,9 +101,18 @@ const profileImageAlt =
                     <li class="cv-skill-group">
                       <p class="cv-skill-group-label">{item.label}</p>
                       <ul class="cv-skill-sublist">
-                        {item.items.map((subItem) => (
-                          <li class="cv-skill-sublist-item">{subItem}</li>
-                        ))}
+                        {item.items.map((subItem) =>
+                          typeof subItem === "string" ? (
+                            <li class="cv-skill-sublist-item">{subItem}</li>
+                          ) : (
+                            <li class="cv-skill-sublist-item">
+                              <span>{subItem.text}</span>
+                              <span class="cv-chip cv-skill-sublist-chip">
+                                {subItem.chip}
+                              </span>
+                            </li>
+                          ),
+                        )}
                       </ul>
                     </li>
                   ) : (
@@ -289,7 +302,7 @@ const profileImageAlt =
   .cv-project-meta dt,
   .cv-stack-list dt,
   .cv-project-period,
-  .cv-link-list a span:first-child {
+  .cv-link-label {
     font-family: "Chakra Petch", sans-serif;
     font-weight: 700;
     text-transform: uppercase;
@@ -739,13 +752,22 @@ const profileImageAlt =
     background: oklch(0.217 0.0343 171.87 / 0.56);
   }
 
-  .cv-link-list a span:first-child {
+  .cv-link-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
     font-size: 0.75rem;
     letter-spacing: 0.12em;
     color: oklch(0.8452 0.1299 164.98);
   }
 
-  .cv-link-list a span:last-child {
+  .cv-link-icon {
+    flex: 0 0 auto;
+    width: 1rem;
+    height: 1rem;
+  }
+
+  .cv-link-url {
     color: oklch(0.9583 0.0422 168.36);
     line-height: 1.6;
     word-break: break-word;
@@ -807,7 +829,7 @@ const profileImageAlt =
 
   .cv-skill-group-label {
     margin: 0;
-    font-weight: 700;
+    font-weight: 400;
     color: oklch(0.9647 0.0378 164.9);
     line-height: 1.4;
   }
@@ -851,6 +873,11 @@ const profileImageAlt =
     line-height: 1.3;
     letter-spacing: 0.04em;
     text-transform: uppercase;
+  }
+
+  .cv-skill-sublist-chip {
+    margin-left: 0.45rem;
+    vertical-align: baseline;
   }
 
   .cv-skill-card li,
