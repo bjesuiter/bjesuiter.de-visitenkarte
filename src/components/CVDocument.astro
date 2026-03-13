@@ -6,842 +6,205 @@ import CVIntro from "./CVIntro.astro";
 
 interface Props {
   locale?: CvLocale;
-  printPreview?: boolean;
 }
 
-const { locale = "de", printPreview = false } = Astro.props;
+const { locale = "de" } = Astro.props;
 const content = getLocalizedCvContent(locale);
-const toolbarAriaLabel = locale === "de" ? "Lebenslauf-Aktionen" : "CV actions";
 const profileImageAlt =
   locale === "de"
     ? "Porträt von Benjamin Jesuiter"
     : "Portrait of Benjamin Jesuiter";
-const languageSwitchHref = locale === "de" ? "/en/cv/" : "/de/lebenslauf/";
-type CvPrintProjectMode = "full" | "summary" | "stack";
-const toIndexedPageItems = <T,>(items: T[], indices: number[]) =>
-  indices.flatMap((index) => {
-    const item = items[index];
-    return item ? [{ index, item }] : [];
-  });
-const paginatedSkillPages = [
-  toIndexedPageItems(content.skillCategories, [0, 1, 2, 3, 4]),
-  toIndexedPageItems(content.skillCategories, [5, 6, 7, 8]),
-].filter((page) => page.length > 0);
-const paginatedProjectPages = [
-  {
-    showHeading: true,
-    entries: [{ index: 0, mode: "full" }],
-  },
-  {
-    showHeading: false,
-    entries: [{ index: 1, mode: "full" }],
-  },
-  {
-    showHeading: false,
-    entries: [{ index: 2, mode: "summary" }],
-  },
-  {
-    showHeading: false,
-    entries: [{ index: 2, mode: "stack" }],
-  },
-  {
-    showHeading: false,
-    entries: [{ index: 3, mode: "summary" }],
-  },
-  {
-    showHeading: false,
-    entries: [{ index: 3, mode: "stack" }],
-  },
-  {
-    showHeading: false,
-    entries: [{ index: 4, mode: "full" }],
-  },
-  {
-    showHeading: false,
-    entries: [{ index: 5, mode: "full" }],
-  },
-  {
-    showHeading: false,
-    entries: [{ index: 6, mode: "full" }],
-  },
-  {
-    showHeading: false,
-    entries: [{ index: 7, mode: "summary" }],
-  },
-  {
-    showHeading: false,
-    entries: [{ index: 7, mode: "stack" }],
-  },
-  {
-    showHeading: false,
-    entries: [{ index: 8, mode: "summary" }],
-  },
-  {
-    showHeading: false,
-    entries: [{ index: 8, mode: "stack" }],
-  },
-  {
-    showHeading: false,
-    entries: [{ index: 9, mode: "summary" }],
-  },
-  {
-    showHeading: false,
-    entries: [{ index: 9, mode: "stack" }],
-  },
-  {
-    showHeading: false,
-    entries: [{ index: 10, mode: "summary" }],
-  },
-  {
-    showHeading: false,
-    entries: [{ index: 10, mode: "stack" }],
-  },
-  {
-    showHeading: false,
-    entries: [{ index: 11, mode: "full" }],
-  },
-  {
-    showHeading: false,
-    entries: [{ index: 12, mode: "full" }],
-  },
-  {
-    showHeading: false,
-    entries: [{ index: 13, mode: "full" }],
-  },
-  {
-    showHeading: false,
-    entries: [{ index: 14, mode: "full" }],
-  },
-]
-  .map((page) => ({
-    ...page,
-    entries: page.entries.flatMap(
-      ({ index, mode }: { index: number; mode: CvPrintProjectMode }) => {
-        const project = content.projects[index];
-        return project ? [{ index, mode, project }] : [];
-      },
-    ),
-  }))
-  .filter((page) => page.entries.length > 0);
 ---
 
 <main class="cv-page">
-  {
-    /*
-    TODO(bjesuiter): Re-enable this CV toolbar once there is a real print/download mode.
-    Keep the existing markup for the future print-mode implementation instead of deleting it.
-  <div class="cv-toolbar print-hidden" aria-label={toolbarAriaLabel}>
-    <div class="cv-toolbar-shell">
-      <div class="cv-toolbar-copy gap-4">
-        <p class="cv-toolbar-kicker">{content.badge}</p>
-        <p class="cv-toolbar-note">{content.printHint}</p>
+  <article class="cv-sheet">
+    <header class="cv-hero gap-4">
+      <div class="cv-hero-copy gap-4">
+        <p class="cv-badge">{content.badge}</p>
+        <h1>{content.heading}</h1>
+        <CVIntro locale={locale} />
       </div>
 
-      <div class="cv-toolbar-actions">
-        <a
-          href={languageSwitchHref}
-          class="cv-action cv-action-secondary"
-        >
-          {content.navigation.languageSwitchLabel}
-        </a>
-        <button
-          type="button"
-          class="cv-action cv-action-print"
-          onclick="window.__cvPrintMode('print')"
-        >
-          {content.navigation.printLabel}
-        </button>
-        <button
-          type="button"
-          class="cv-action cv-action-download"
-          onclick="window.__cvPrintMode('download')"
-        >
-          {content.navigation.downloadLabel}
-        </button>
+      <div class="cv-hero-media">
+        <Image
+          src={profilePic}
+          alt={profileImageAlt}
+          loading="eager"
+          class="cv-hero-image"
+        />
       </div>
-    </div>
-  </div>
-  */
-  }
+    </header>
 
-  {
-    printPreview ? (
-      <div class="cv-print-stack">
-        <article class="cv-print-page cv-print-page-hero">
-          <div class="cv-sheet cv-sheet-page">
-            <header class="cv-hero gap-4">
-              <div class="cv-hero-copy gap-4">
-                <p class="cv-badge">{content.badge}</p>
-                <h1>{content.heading}</h1>
-                <CVIntro locale={locale} />
+    <section class="cv-grid cv-top-grid cv-section-shell gap-4">
+      <section class="cv-panel cv-surface cv-surface-strong">
+        <h2>{content.factsTitle}</h2>
+        <dl class="cv-facts gap-4">
+          {
+            content.facts.map((fact) => (
+              <div>
+                <dt>{fact.label}</dt>
+                <dd class="text-balance">{fact.value}</dd>
               </div>
+            ))
+          }
+        </dl>
+      </section>
 
-              <div class="cv-hero-media">
-                <Image
-                  src={profilePic}
-                  alt={profileImageAlt}
-                  loading="eager"
-                  class="cv-hero-image"
-                />
-              </div>
-            </header>
-          </div>
-        </article>
+      <section class="cv-panel cv-panel-mirrored cv-surface">
+        <h2>{content.contactTitle}</h2>
+        <ul class="cv-link-list">
+          {
+            content.contactLinks.map((link) => (
+              <li>
+                <a
+                  href={link.href}
+                  target="_blank"
+                  rel="noreferrer"
+                  class="cv-link-card cv-surface-inset"
+                >
+                  <span>{link.label}</span>
+                  <span>{link.href.replace(/^https?:\/\//, "")}</span>
+                </a>
+              </li>
+            ))
+          }
+        </ul>
 
-        <article class="cv-print-page cv-print-page-overview">
-          <div class="cv-sheet cv-sheet-page">
-            <section class="cv-grid cv-top-grid cv-section-shell gap-4">
-              <section class="cv-panel cv-surface cv-surface-strong">
-                <h2>{content.factsTitle}</h2>
-                <dl class="cv-facts gap-4">
-                  {content.facts.map((fact) => (
-                    <div>
-                      <dt>{fact.label}</dt>
-                      <dd class="text-balance">{fact.value}</dd>
-                    </div>
-                  ))}
-                </dl>
-              </section>
+        <h2 class="cv-subheading">{content.industriesTitle}</h2>
+        <ul class="cv-chip-list">
+          {content.industries.map((industry) => <li>{industry}</li>)}
+        </ul>
+      </section>
+    </section>
 
-              <section class="cv-panel cv-panel-mirrored cv-surface">
-                <h2>{content.contactTitle}</h2>
-                <ul class="cv-link-list">
-                  {content.contactLinks.map((link) => (
-                    <li>
-                      <a
-                        href={link.href}
-                        target="_blank"
-                        rel="noreferrer"
-                        class="cv-link-card cv-surface-inset"
-                      >
-                        <span>{link.label}</span>
-                        <span>{link.href.replace(/^https?:\/\//, "")}</span>
-                      </a>
-                    </li>
-                  ))}
-                </ul>
-
-                <h2 class="cv-subheading">{content.industriesTitle}</h2>
-                <ul class="cv-chip-list">
-                  {content.industries.map((industry) => (
-                    <li>{industry}</li>
-                  ))}
-                </ul>
-              </section>
-            </section>
-          </div>
-        </article>
-
-        {paginatedSkillPages.map((skillPage) => (
-          <article class="cv-print-page cv-print-page-skills">
-            <div class="cv-sheet cv-sheet-page">
-              <section class="cv-section-shell cv-section cv-skills-section">
-                <div class="cv-section-heading">
-                  <h2 class="pl-2">{content.skillsTitle}</h2>
-                </div>
-
-                <div class="cv-skills-grid gap-4">
-                  {skillPage.map(({ item: category }) => (
-                    <section class="cv-skill-card">
-                      <div class="cv-card-heading">
-                        <h3>{category.title}</h3>
-                      </div>
-                      <ul class="gap-4">
-                        {category.items.map((item) =>
-                          typeof item === "string" ? (
-                            <li>{item}</li>
-                          ) : "items" in item ? (
-                            <li class="cv-skill-group">
-                              <span class="cv-skill-group-label">
-                                <span
-                                  class="cv-skill-group-dot"
-                                  aria-hidden="true"
-                                />
-                                <span>{item.label}</span>
-                              </span>
-                              <ul class="cv-skill-sublist">
-                                {item.items.map((subItem) => (
-                                  <li class="cv-skill-sublist-item">
-                                    {subItem}
-                                  </li>
-                                ))}
-                              </ul>
-                            </li>
-                          ) : (
-                            <li class="cv-skill-chip-row">
-                              <span>{item.text}</span>
-                              <span class="cv-chip">{item.chip}</span>
-                            </li>
-                          ),
-                        )}
-                      </ul>
-                    </section>
-                  ))}
-                </div>
-              </section>
-            </div>
-          </article>
-        ))}
-
-        {paginatedProjectPages.map((projectPage) => (
-          <article class="cv-print-page cv-print-page-projects">
-            <div class="cv-sheet cv-sheet-page">
-              {projectPage.showHeading && (
-                <section class="cv-section-shell cv-section cv-project-history-section">
-                  <div class="cv-section-heading">
-                    <div>
-                      <h2 class="pl-1">{content.projectsTitle}</h2>
-                    </div>
-                  </div>
-                </section>
-              )}
-
-              <div class="cv-projects">
-                {projectPage.entries.map(({ project, index, mode }) => (
-                  <article
-                    class:list={[
-                      "cv-project-card cv-surface cv-surface-project",
-                      mode === "stack" && "cv-project-card-stack",
-                    ]}
-                  >
-                    <header class="cv-project-header gap-4">
-                      <div class="cv-project-title-block gap-4">
-                        <div class="cv-project-eyebrow">
-                          <span class="cv-card-index">
-                            {String(index + 1).padStart(2, "0")}
-                          </span>
-                          <p class="cv-project-period">{project.period}</p>
-                        </div>
-                        <p class="cv-project-sector">{project.sector}</p>
-                        <h3>{project.title}</h3>
-                        {mode === "stack" && (
-                          <p class="cv-project-page-kicker">
-                            {content.stackTitle}
-                          </p>
-                        )}
-                      </div>
-
-                      <dl class="cv-project-meta gap-4">
-                        {project.duration && (
-                          <div class="cv-surface-inset">
-                            <dt>{content.durationLabel}</dt>
-                            <dd>{project.duration}</dd>
-                          </div>
-                        )}
-                        {project.teamSize && (
-                          <div class="cv-surface-inset">
-                            <dt>{content.teamSizeLabel}</dt>
-                            <dd>{project.teamSize}</dd>
-                          </div>
-                        )}
-                        <div class="cv-surface-inset cv-project-meta-roles">
-                          <dt>{content.rolesLabel}</dt>
-                          <dd>{project.roles.join(" · ")}</dd>
-                        </div>
-                      </dl>
-                    </header>
-
-                    <div class="cv-project-divider" aria-hidden="true" />
-
-                    {mode === "stack" ? (
-                      <section class="cv-project-stack-page">
-                        <section class="cv-detail-card cv-surface-inset cv-brace-frame-vertical">
-                          <h4>{content.stackTitle}</h4>
-                          <dl class="cv-stack-list gap-4">
-                            {project.stack.map((item) => (
-                              <div>
-                                <dt>{item.label}</dt>
-                                <dd>{item.value}</dd>
-                              </div>
-                            ))}
-                          </dl>
-                        </section>
-                      </section>
-                    ) : (
-                      <div
-                        class:list={[
-                          "cv-project-body gap-4",
-                          mode === "summary" && "cv-project-body-summary",
-                        ]}
-                      >
-                        <div class="cv-project-copy gap-4">
-                          <section class="cv-project-summary">
-                            {project.summary.map((paragraph) => (
-                              <p>{paragraph}</p>
-                            ))}
-                          </section>
-
-                          <section
-                            class="cv-project-spacer"
-                            aria-hidden="true"
-                          />
-
-                          <section class="cv-project-highlights">
-                            <h4>{content.highlightsTitle}</h4>
-                            <ul class="cv-project-highlights-list gap-4">
-                              {project.highlights.map((highlight) => (
-                                <li>{highlight}</li>
-                              ))}
-                            </ul>
-                          </section>
-                        </div>
-
-                        {mode === "full" && (
-                          <section class="cv-detail-card cv-surface-inset cv-brace-frame-vertical">
-                            <h4>{content.stackTitle}</h4>
-                            <dl class="cv-stack-list gap-4">
-                              {project.stack.map((item) => (
-                                <div>
-                                  <dt>{item.label}</dt>
-                                  <dd>{item.value}</dd>
-                                </div>
-                              ))}
-                            </dl>
-                          </section>
-                        )}
-                      </div>
-                    )}
-                  </article>
-                ))}
-              </div>
-            </div>
-          </article>
-        ))}
+    <section class="cv-section-shell cv-section cv-skills-section">
+      <div class="cv-section-heading">
+        <h2 class="pl-2">{content.skillsTitle}</h2>
       </div>
-    ) : (
-      <article class="cv-sheet">
-        <header class="cv-hero gap-4">
-          <div class="cv-hero-copy gap-4">
-            <p class="cv-badge">{content.badge}</p>
-            <h1>{content.heading}</h1>
-            <CVIntro locale={locale} />
-          </div>
 
-          <div class="cv-hero-media">
-            <Image
-              src={profilePic}
-              alt={profileImageAlt}
-              loading="eager"
-              class="cv-hero-image"
-            />
-          </div>
-        </header>
-
-        <section class="cv-grid cv-top-grid cv-section-shell gap-4">
-          <section class="cv-panel cv-surface cv-surface-strong">
-            <h2>{content.factsTitle}</h2>
-            <dl class="cv-facts gap-4">
-              {content.facts.map((fact) => (
-                <div>
-                  <dt>{fact.label}</dt>
-                  <dd class="text-balance">{fact.value}</dd>
-                </div>
-              ))}
-            </dl>
-          </section>
-
-          <section class="cv-panel cv-panel-mirrored cv-surface">
-            <h2>{content.contactTitle}</h2>
-            <ul class="cv-link-list">
-              {content.contactLinks.map((link) => (
-                <li>
-                  <a
-                    href={link.href}
-                    target="_blank"
-                    rel="noreferrer"
-                    class="cv-link-card cv-surface-inset"
-                  >
-                    <span>{link.label}</span>
-                    <span>{link.href.replace(/^https?:\/\//, "")}</span>
-                  </a>
-                </li>
-              ))}
-            </ul>
-
-            <h2 class="cv-subheading">{content.industriesTitle}</h2>
-            <ul class="cv-chip-list">
-              {content.industries.map((industry) => (
-                <li>{industry}</li>
-              ))}
-            </ul>
-          </section>
-        </section>
-
-        <section class="cv-section-shell cv-section cv-skills-section">
-          <div class="cv-section-heading">
-            <h2 class="pl-2">{content.skillsTitle}</h2>
-          </div>
-
-          <div class="cv-skills-grid gap-4">
-            {content.skillCategories.map((category) => (
-              <section class="cv-skill-card">
-                <div class="cv-card-heading">
-                  <h3>{category.title}</h3>
-                </div>
-                <ul class="gap-4">
-                  {category.items.map((item) =>
-                    typeof item === "string" ? (
-                      <li>{item}</li>
-                    ) : "items" in item ? (
-                      <li class="cv-skill-group">
-                        <span class="cv-skill-group-label">
-                          <span class="cv-skill-group-dot" aria-hidden="true" />
-                          <span>{item.label}</span>
-                        </span>
-                        <ul class="cv-skill-sublist">
-                          {item.items.map((subItem) => (
-                            <li class="cv-skill-sublist-item">{subItem}</li>
-                          ))}
-                        </ul>
-                      </li>
-                    ) : (
-                      <li class="cv-skill-chip-row">
-                        <span>{item.text}</span>
-                        <span class="cv-chip">{item.chip}</span>
-                      </li>
-                    ),
-                  )}
-                </ul>
-              </section>
-            ))}
-          </div>
-        </section>
-
-        <section class="cv-section-shell cv-section cv-project-history-section">
-          <div class="cv-section-heading">
-            <div>
-              <h2 class="pl-1">{content.projectsTitle}</h2>
-            </div>
-          </div>
-
-          <div class="cv-projects">
-            {content.projects.map((project, index) => (
-              <article class="cv-project-card cv-surface cv-surface-project">
-                <header class="cv-project-header gap-4">
-                  <div class="cv-project-title-block gap-4">
-                    <div class="cv-project-eyebrow">
-                      <span class="cv-card-index">
-                        {String(index + 1).padStart(2, "0")}
+      <div class="cv-skills-grid gap-4">
+        {
+          content.skillCategories.map((category) => (
+            <section class="cv-skill-card">
+              <div class="cv-card-heading">
+                <h3>{category.title}</h3>
+              </div>
+              <ul class="gap-4">
+                {category.items.map((item) =>
+                  typeof item === "string" ? (
+                    <li>{item}</li>
+                  ) : "items" in item ? (
+                    <li class="cv-skill-group">
+                      <span class="cv-skill-group-label">
+                        <span class="cv-skill-group-dot" aria-hidden="true" />
+                        <span>{item.label}</span>
                       </span>
-                      <p class="cv-project-period">{project.period}</p>
-                    </div>
-                    <p class="cv-project-sector">{project.sector}</p>
-                    <h3>{project.title}</h3>
-                  </div>
-
-                  <dl class="cv-project-meta gap-4">
-                    {project.duration && (
-                      <div class="cv-surface-inset">
-                        <dt>{content.durationLabel}</dt>
-                        <dd>{project.duration}</dd>
-                      </div>
-                    )}
-                    {project.teamSize && (
-                      <div class="cv-surface-inset">
-                        <dt>{content.teamSizeLabel}</dt>
-                        <dd>{project.teamSize}</dd>
-                      </div>
-                    )}
-                    <div class="cv-surface-inset cv-project-meta-roles">
-                      <dt>{content.rolesLabel}</dt>
-                      <dd>{project.roles.join(" · ")}</dd>
-                    </div>
-                  </dl>
-                </header>
-
-                <div class="cv-project-divider" aria-hidden="true" />
-
-                <div class="cv-project-body gap-4">
-                  <div class="cv-project-copy gap-4">
-                    <section class="cv-project-summary">
-                      {project.summary.map((paragraph) => (
-                        <p>{paragraph}</p>
-                      ))}
-                    </section>
-
-                    <section class="cv-project-spacer" aria-hidden="true" />
-
-                    <section class="cv-project-highlights">
-                      <h4>{content.highlightsTitle}</h4>
-                      <ul class="cv-project-highlights-list gap-4">
-                        {project.highlights.map((highlight) => (
-                          <li>{highlight}</li>
+                      <ul class="cv-skill-sublist">
+                        {item.items.map((subItem) => (
+                          <li class="cv-skill-sublist-item">{subItem}</li>
                         ))}
                       </ul>
-                    </section>
-                  </div>
+                    </li>
+                  ) : (
+                    <li class="cv-skill-chip-row">
+                      <span>{item.text}</span>
+                      <span class="cv-chip">{item.chip}</span>
+                    </li>
+                  ),
+                )}
+              </ul>
+            </section>
+          ))
+        }
+      </div>
+    </section>
 
-                  <section class="cv-detail-card cv-surface-inset cv-brace-frame-vertical">
-                    <h4>{content.stackTitle}</h4>
-                    <dl class="cv-stack-list gap-4">
-                      {project.stack.map((item) => (
-                        <div>
-                          <dt>{item.label}</dt>
-                          <dd>{item.value}</dd>
-                        </div>
+    <section class="cv-section-shell cv-section cv-project-history-section">
+      <div class="cv-section-heading">
+        <div>
+          <h2 class="pl-1">{content.projectsTitle}</h2>
+        </div>
+      </div>
+
+      <div class="cv-projects">
+        {
+          content.projects.map((project, index) => (
+            <article class="cv-project-card cv-surface cv-surface-project">
+              <header class="cv-project-header gap-4">
+                <div class="cv-project-title-block gap-4">
+                  <div class="cv-project-eyebrow">
+                    <span class="cv-card-index">
+                      {String(index + 1).padStart(2, "0")}
+                    </span>
+                    <p class="cv-project-period">{project.period}</p>
+                  </div>
+                  <p class="cv-project-sector">{project.sector}</p>
+                  <h3>{project.title}</h3>
+                </div>
+
+                <dl class="cv-project-meta gap-4">
+                  {project.duration && (
+                    <div class="cv-surface-inset">
+                      <dt>{content.durationLabel}</dt>
+                      <dd>{project.duration}</dd>
+                    </div>
+                  )}
+                  {project.teamSize && (
+                    <div class="cv-surface-inset">
+                      <dt>{content.teamSizeLabel}</dt>
+                      <dd>{project.teamSize}</dd>
+                    </div>
+                  )}
+                  <div class="cv-surface-inset cv-project-meta-roles">
+                    <dt>{content.rolesLabel}</dt>
+                    <dd>{project.roles.join(" · ")}</dd>
+                  </div>
+                </dl>
+              </header>
+
+              <div class="cv-project-divider" aria-hidden="true" />
+
+              <div class="cv-project-body gap-4">
+                <div class="cv-project-copy gap-4">
+                  <section class="cv-project-summary">
+                    {project.summary.map((paragraph) => (
+                      <p>{paragraph}</p>
+                    ))}
+                  </section>
+
+                  <section class="cv-project-spacer" aria-hidden="true" />
+
+                  <section class="cv-project-highlights">
+                    <h4>{content.highlightsTitle}</h4>
+                    <ul class="cv-project-highlights-list gap-4">
+                      {project.highlights.map((highlight) => (
+                        <li>{highlight}</li>
                       ))}
-                    </dl>
+                    </ul>
                   </section>
                 </div>
-              </article>
-            ))}
-          </div>
-        </section>
-      </article>
-    )
-  }
+
+                <section class="cv-detail-card cv-surface-inset cv-brace-frame-vertical">
+                  <h4>{content.stackTitle}</h4>
+                  <dl class="cv-stack-list gap-4">
+                    {project.stack.map((item) => (
+                      <div>
+                        <dt>{item.label}</dt>
+                        <dd>{item.value}</dd>
+                      </div>
+                    ))}
+                  </dl>
+                </section>
+              </div>
+            </article>
+          ))
+        }
+      </div>
+    </section>
+  </article>
 </main>
 
-<!-- Inline script that switches styling modes before printing or downloading the CV. -->
-<script is:inline>
-  (() => {
-    const OVERFLOW_TOLERANCE_PX = 1;
-
-    const syncPrintActiveState = () => {
-      const root = document.documentElement;
-      const isPreview = root.hasAttribute("data-print-preview");
-
-      if (isPreview) {
-        root.dataset.cvPrintActive = "true";
-        document.body?.setAttribute("data-cv-print-active", "true");
-        return;
-      }
-
-      delete root.dataset.cvPrintActive;
-      document.body?.removeAttribute("data-cv-print-active");
-    };
-
-    const collectPrintOverflow = () => {
-      const pages = Array.from(document.querySelectorAll(".cv-print-page"));
-
-      return pages.map((page, index) => {
-        const sheet = page.querySelector(".cv-sheet-page");
-
-        if (!(sheet instanceof HTMLElement)) {
-          return {
-            pageNumber: index + 1,
-            overflow: false,
-            overflowPx: 0,
-            pageOverflowPx: 0,
-            clippedOverflowPx: 0,
-            clippedElementCount: 0,
-            clippedSamples: [],
-          };
-        }
-
-        const describeElement = (element) => {
-          const classes =
-            typeof element.className === "string"
-              ? element.className
-                  .split(/\s+/)
-                  .filter(Boolean)
-                  .slice(0, 2)
-                  .join(".")
-              : "";
-
-          return `${element.tagName.toLowerCase()}${classes ? `.${classes}` : ""}`;
-        };
-
-        const clippedDescendants = Array.from(
-          sheet.querySelectorAll("*"),
-        ).reduce(
-          (summary, element) => {
-            if (!(element instanceof HTMLElement)) {
-              return summary;
-            }
-
-            const style = window.getComputedStyle(element);
-            const clipsY = !["visible", "unset", "initial"].includes(
-              style.overflowY,
-            );
-            const clipsX = !["visible", "unset", "initial"].includes(
-              style.overflowX,
-            );
-            const clippedY = clipsY
-              ? Math.max(0, element.scrollHeight - element.clientHeight)
-              : 0;
-            const clippedX = clipsX
-              ? Math.max(0, element.scrollWidth - element.clientWidth)
-              : 0;
-            const clippedPx = Math.max(clippedY, clippedX);
-
-            if (clippedPx <= OVERFLOW_TOLERANCE_PX) {
-              return summary;
-            }
-
-            const nextSamples =
-              summary.samples.length < 3
-                ? [
-                    ...summary.samples,
-                    {
-                      element: describeElement(element),
-                      overflowPx: Number(clippedPx.toFixed(2)),
-                    },
-                  ]
-                : summary.samples;
-
-            return {
-              count: summary.count + 1,
-              maxOverflowPx: Math.max(summary.maxOverflowPx, clippedPx),
-              samples: nextSamples,
-            };
-          },
-          { count: 0, maxOverflowPx: 0, samples: [] },
-        );
-
-        const sheetRect = sheet.getBoundingClientRect();
-        const sheetStyle = window.getComputedStyle(sheet);
-        const paddingBottom = Number.parseFloat(sheetStyle.paddingBottom) || 0;
-        const visibleBottom = sheetRect.bottom - paddingBottom;
-        const scrollOverflow = Math.max(
-          0,
-          sheet.scrollHeight - sheet.clientHeight,
-        );
-        const contentOverflow = Array.from(sheet.children).reduce(
-          (maxOverflow, child) => {
-            if (!(child instanceof HTMLElement)) {
-              return maxOverflow;
-            }
-
-            return Math.max(
-              maxOverflow,
-              child.getBoundingClientRect().bottom - visibleBottom,
-            );
-          },
-          0,
-        );
-        const pageOverflowPx = Math.max(scrollOverflow, contentOverflow);
-        const overflowPx = Math.max(
-          pageOverflowPx,
-          clippedDescendants.maxOverflowPx,
-        );
-
-        return {
-          pageNumber: index + 1,
-          overflow: overflowPx > OVERFLOW_TOLERANCE_PX,
-          overflowPx: Number(overflowPx.toFixed(2)),
-          pageOverflowPx: Number(pageOverflowPx.toFixed(2)),
-          clippedOverflowPx: Number(
-            clippedDescendants.maxOverflowPx.toFixed(2),
-          ),
-          clippedElementCount: clippedDescendants.count,
-          clippedSamples: clippedDescendants.samples,
-        };
-      });
-    };
-
-    const syncPrintOverflowState = () => {
-      const root = document.documentElement;
-      const isPreview = root.hasAttribute("data-print-preview");
-      const pages = Array.from(document.querySelectorAll(".cv-print-page"));
-
-      if (!isPreview || pages.length === 0) {
-        delete root.dataset.cvOverflowActive;
-        window.__cvMeasurePrintOverflow = undefined;
-        window.__cvPrintOverflowState = [];
-        pages.forEach((page) => {
-          delete page.dataset.cvOverflow;
-          delete page.dataset.cvOverflowPx;
-          delete page.dataset.cvPageNumber;
-        });
-        return;
-      }
-
-      const overflowState = collectPrintOverflow();
-      const overflowPages = overflowState.filter((page) => page.overflow);
-
-      root.dataset.cvOverflowActive =
-        overflowPages.length > 0 ? "true" : "false";
-      window.__cvMeasurePrintOverflow = () => collectPrintOverflow();
-      window.__cvPrintOverflowState = overflowState;
-
-      pages.forEach((page, index) => {
-        const state = overflowState[index];
-
-        if (!state) {
-          return;
-        }
-
-        page.dataset.cvPageNumber = String(state.pageNumber);
-        page.dataset.cvOverflow = state.overflow ? "true" : "false";
-        page.dataset.cvOverflowPx = state.overflowPx.toFixed(1);
-      });
-
-      if (overflowPages.length > 0) {
-        console.warn(
-          "[cv-print-overflow] Overflow detected:",
-          overflowPages.map((page) => ({
-            page: page.pageNumber,
-            overflowPx: page.overflowPx,
-            pageOverflowPx: page.pageOverflowPx,
-            clippedOverflowPx: page.clippedOverflowPx,
-            clippedElementCount: page.clippedElementCount,
-            clippedSamples: page.clippedSamples,
-          })),
-        );
-      }
-    };
-
-    let overflowFrame = 0;
-    const schedulePrintOverflowSync = () => {
-      if (overflowFrame !== 0) {
-        cancelAnimationFrame(overflowFrame);
-      }
-
-      overflowFrame = window.requestAnimationFrame(() => {
-        overflowFrame = window.requestAnimationFrame(() => {
-          overflowFrame = 0;
-          syncPrintOverflowState();
-        });
-      });
-    };
-
-    const setMode = (mode) => {
-      document.documentElement.setAttribute("cata-cv-output", mode);
-      document.body?.setAttribute("cata-cv-output", mode);
-      document.documentElement.dataset.cvPrintActive = "true";
-      document.body?.setAttribute("data-cv-print-active", "true");
-    };
-
-    const clearMode = () => {
-      document.documentElement.removeAttribute("cata-cv-output");
-      document.body?.removeAttribute("cata-cv-output");
-      syncPrintActiveState();
-    };
-
-    window.__cvPrintMode = (mode) => {
-      setMode(mode);
-      window.print();
-    };
-
-    window.addEventListener("beforeprint", () => {
-      document.documentElement.dataset.cvPrintActive = "true";
-      document.body?.setAttribute("data-cv-print-active", "true");
-    });
-    window.addEventListener("afterprint", clearMode);
-    syncPrintActiveState();
-    schedulePrintOverflowSync();
-    window.addEventListener("load", schedulePrintOverflowSync);
-    window.addEventListener("resize", schedulePrintOverflowSync);
-
-    document.fonts?.ready.then(schedulePrintOverflowSync).catch(() => {});
-
-    document.querySelectorAll("img").forEach((image) => {
-      if (image.complete) {
-        return;
-      }
-
-      image.addEventListener("load", schedulePrintOverflowSync, {
-        once: true,
-      });
-      image.addEventListener("error", schedulePrintOverflowSync, {
-        once: true,
-      });
-    });
-  })();
-</script>
-
-<!-- Global styles for the on-screen cv layout and print/download output. -->
+<!-- Global styles for the on-screen CV layout. -->
 <style is:global>
   .cv-page {
     --cv-content-width: 1140px;
@@ -876,19 +239,6 @@ const paginatedProjectPages = [
   .cv-sheet {
     width: min(var(--cv-content-width), 100%);
     margin-inline: auto;
-  }
-
-  .cv-print-stack {
-    display: grid;
-  }
-
-  .cv-print-page {
-    width: 100%;
-    margin-inline: auto;
-  }
-
-  .cv-sheet-page {
-    min-height: 100%;
   }
 
   .cv-toolbar {
@@ -1892,538 +1242,5 @@ const paginatedProjectPages = [
   @page {
     size: A4;
     margin: 12mm;
-  }
-
-  :root[data-cv-print-active] {
-    --cv-print-page-bg: oklch(1 0 89.88);
-    --cv-print-sheet-bg: oklch(1 0 89.88);
-    --cv-print-panel-bg: oklch(1 0 89.88);
-    --cv-print-panel-muted-bg: oklch(1 0 89.88);
-    --cv-print-chip-bg: oklch(0.9736 0.0034 174.48);
-    --cv-print-border: oklch(0 0 0 / 0.16);
-    --cv-print-border-soft: oklch(0 0 0 / 0.12);
-    --cv-print-heading: oklch(0.2077 0.0398 265.75);
-    --cv-print-text: oklch(0.24 0.0296 256.85);
-    --cv-print-muted: oklch(0.36 0.0374 257.28);
-    --cv-print-accent: oklch(0.42 0.0861 186.39);
-    --cv-print-display: oklch(0.54 0.024 166.11);
-    --cv-print-emphasis: oklch(0.5 0.048 165.89);
-    --cv-divider: oklch(0 0 0 / 0.12);
-    --cv-divider-strong: oklch(0 0 0 / 0.16);
-  }
-
-  :root[data-cv-print-active][cata-cv-output="download"] {
-    --cv-print-page-bg: oklch(0.1883 0.0246 171.43);
-    --cv-print-sheet-bg:
-      linear-gradient(
-          90deg,
-          oklch(0.9624 0.0434 156.74 / 0.02) 1px,
-          transparent 1px
-        )
-        0 0 / 24px 100%,
-      linear-gradient(
-          0deg,
-          oklch(0.9624 0.0434 156.74 / 0.018) 1px,
-          transparent 1px
-        )
-        0 0 / 100% 24px,
-      linear-gradient(
-        135deg,
-        oklch(0.2143 0.0317 173.62 / 0.98),
-        oklch(0.1907 0.0279 174.22 / 0.94)
-      );
-    --cv-print-panel-bg: oklch(0.217 0.0343 171.87 / 0.92);
-    --cv-print-panel-muted-bg: oklch(0.2472 0.0397 170.04 / 0.96);
-    --cv-print-chip-bg: oklch(0.2241 0.0367 170.4 / 0.95);
-    --cv-print-border: oklch(0.9049 0.0895 164.15 / 0.26);
-    --cv-print-border-soft: oklch(0.9049 0.0895 164.15 / 0.18);
-    --cv-print-heading: oklch(0.9793 0.0207 166.11);
-    --cv-print-text: oklch(0.9546 0.0306 165.31);
-    --cv-print-muted: oklch(0.8966 0.0499 165.47);
-    --cv-print-accent: oklch(0.8712 0.1363 154.45);
-    --cv-print-display: oklch(0.9793 0.0207 166.11);
-    --cv-print-emphasis: oklch(0.9277 0.0528 165.89);
-    --cv-divider: oklch(0.9049 0.0895 164.15 / 0.18);
-    --cv-divider-strong: oklch(0.9049 0.0895 164.15 / 0.26);
-  }
-
-  html[data-cv-print-active],
-  html[data-cv-print-active] body {
-    background: var(--cv-print-page-bg) !important;
-  }
-
-  html[data-cv-print-active] body {
-    -webkit-print-color-adjust: exact;
-    print-color-adjust: exact;
-  }
-
-  html[data-cv-print-active] .print-hidden,
-  html[data-print-preview] .print\:hidden {
-    display: none !important;
-  }
-
-  html[data-cv-print-active] .cv-page {
-    margin-top: 0;
-    padding: 0;
-    background: var(--cv-print-page-bg);
-    color: var(--cv-print-text);
-  }
-
-  html[data-print-preview] .cv-page {
-    --cv-preview-page-width: min(210mm, calc(100vw - 1.5rem));
-    padding: 1rem 0 2rem;
-    background:
-      linear-gradient(
-        180deg,
-        oklch(1 0 89.88 / 0.5),
-        oklch(0.9253 0.0083 157.08 / 0.9)
-      ),
-      oklch(0.8982 0.0076 164.92);
-  }
-
-  html[data-print-preview] .cv-print-stack {
-    gap: 1rem;
-    justify-items: center;
-  }
-
-  html[data-print-preview] .cv-print-page {
-    position: relative;
-    width: var(--cv-preview-page-width);
-    height: calc(var(--cv-preview-page-width) * 1.4142857);
-    box-shadow: 0 18px 36px oklch(0.2077 0.0398 265.75 / 0.12);
-  }
-
-  html[data-print-preview] .cv-print-page[data-cv-overflow="true"] {
-    box-shadow:
-      0 18px 36px oklch(0.2077 0.0398 265.75 / 0.12),
-      0 0 0 3px oklch(0.6373 0.237 25.33 / 0.78);
-  }
-
-  html[data-print-preview] .cv-print-page[data-cv-overflow="true"]::after {
-    content: "Page " attr(data-cv-page-number) " overflow +"
-      attr(data-cv-overflow-px) "px";
-    position: absolute;
-    top: 0.55rem;
-    right: 0.55rem;
-    z-index: 2;
-    padding: 0.28rem 0.48rem;
-    border-radius: 999px;
-    font-family: "Chakra Petch", sans-serif;
-    font-size: 0.68rem;
-    font-weight: 700;
-    letter-spacing: 0.06em;
-    color: oklch(0.982 0.0141 17.14);
-    background: oklch(0.6373 0.237 25.33 / 0.9);
-    box-shadow: 0 10px 18px oklch(0.3235 0.1293 24.29 / 0.22);
-  }
-
-  html[data-print-preview] .cv-sheet-page {
-    height: 100%;
-  }
-
-  html[data-cv-print-active] .cv-sheet {
-    width: 100%;
-    max-width: none;
-    margin: 0;
-    padding: 10mm 10mm 9mm;
-    border: 1px solid var(--cv-print-border);
-    border-radius: 20px;
-    box-shadow: none;
-    backdrop-filter: none;
-    background: var(--cv-print-sheet-bg);
-  }
-
-  html[data-cv-print-active] .cv-sheet-page {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-  }
-
-  html[data-cv-print-active] .cv-hero {
-    align-items: start;
-    margin: 0;
-    padding: 0 0 1rem;
-    background: none;
-    border-bottom-color: var(--cv-print-border-soft);
-  }
-
-  html[data-cv-print-active] .cv-hero-media {
-    min-height: 0;
-    aspect-ratio: 4 / 5;
-    align-self: start;
-    background: transparent;
-    box-shadow: none;
-    break-inside: avoid;
-    page-break-inside: avoid;
-  }
-
-  html[data-cv-print-active] .cv-hero-media::after {
-    background: none;
-  }
-
-  html[data-cv-print-active] .cv-surface,
-  html[data-cv-print-active] .cv-surface-soft,
-  html[data-cv-print-active] .cv-surface-inset {
-    background: var(--cv-print-panel-bg) !important;
-    border-color: transparent !important;
-    box-shadow: none;
-    backdrop-filter: none;
-    break-inside: avoid;
-    page-break-inside: avoid;
-  }
-
-  html[data-cv-print-active] .cv-project-header {
-    background: transparent !important;
-    border-color: var(--cv-divider) !important;
-  }
-
-  html[data-cv-print-active] .cv-surface-project {
-    --cv-timeline-strip-color: var(--cv-print-accent);
-  }
-
-  html[data-cv-print-active] .cv-chip-list li,
-  html[data-cv-print-active] .cv-chip {
-    background: var(--cv-print-chip-bg) !important;
-    border-color: transparent !important;
-    color: var(--cv-print-text);
-  }
-
-  html[data-cv-print-active] .cv-badge,
-  html[data-cv-print-active] .cv-facts dt,
-  html[data-cv-print-active] .cv-project-meta dt,
-  html[data-cv-print-active] .cv-stack-list dt,
-  html[data-cv-print-active] .cv-project-period,
-  html[data-cv-print-active] .cv-project-sector,
-  html[data-cv-print-active] .cv-project-page-kicker {
-    color: var(--cv-print-accent);
-  }
-
-  html[data-cv-print-active] .cv-section h2,
-  html[data-cv-print-active] .cv-panel h2,
-  html[data-cv-print-active] .cv-project-card h3,
-  html[data-cv-print-active] .cv-project-highlights h4,
-  html[data-cv-print-active] .cv-detail-card h4,
-  html[data-cv-print-active] .cv-skill-card h3,
-  html[data-cv-print-active] .cv-skill-group-label,
-  html[data-cv-print-active] .cv-link-list a span:first-child {
-    color: var(--cv-print-heading);
-  }
-
-  html[data-cv-print-active] .cv-hero h1 {
-    color: var(--cv-print-display);
-  }
-
-  html[data-cv-print-active] .cv-intro,
-  html[data-cv-print-active] .cv-facts dd,
-  html[data-cv-print-active] .cv-project-meta dd,
-  html[data-cv-print-active] .cv-stack-list dd,
-  html[data-cv-print-active] .cv-link-list a span:last-child,
-  html[data-cv-print-active] .cv-section-heading p,
-  html[data-cv-print-active] .cv-skill-card li,
-  html[data-cv-print-active] .cv-project-highlights li,
-  html[data-cv-print-active] .cv-detail-card li,
-  html[data-cv-print-active] .cv-project-copy p {
-    color: var(--cv-print-muted);
-  }
-
-  html[data-cv-print-active] .cv-intro strong {
-    color: var(--cv-print-emphasis);
-  }
-
-  html[data-cv-print-active] .cv-skill-card li::before,
-  html[data-cv-print-active] .cv-project-highlights li::before,
-  html[data-cv-print-active] .cv-detail-card li::before {
-    background: var(--cv-print-accent);
-  }
-
-  html[data-cv-print-active] .cv-skill-group-dot {
-    background: var(--cv-print-accent);
-  }
-
-  html[data-cv-print-active] .cv-section {
-    margin-top: 0.7rem;
-  }
-
-  html[data-cv-print-active] .cv-section-frame {
-    border-top: 1px dashed var(--cv-divider-strong);
-    border-bottom: 1px dashed var(--cv-divider-strong);
-  }
-
-  html[data-cv-print-active] .cv-section-frame::before,
-  html[data-cv-print-active] .cv-section-frame::after {
-    display: none;
-  }
-
-  html[data-cv-print-active] .cv-projects {
-    gap: 0.8rem;
-  }
-
-  html[data-cv-print-active] .cv-page,
-  html[data-cv-print-active] .cv-sheet,
-  html[data-cv-print-active] .cv-panel,
-  html[data-cv-print-active] .cv-facts dd,
-  html[data-cv-print-active] .cv-project-meta dd,
-  html[data-cv-print-active] .cv-stack-list dd,
-  html[data-cv-print-active] .cv-project-copy p,
-  html[data-cv-print-active] .cv-skill-card li,
-  html[data-cv-print-active] .cv-project-highlights li,
-  html[data-cv-print-active] .cv-link-list a span:last-child {
-    font-size: 0.88rem;
-  }
-
-  html[data-cv-print-active] .cv-sheet {
-    padding: 8mm 8mm 7mm;
-    border-radius: 0;
-  }
-
-  html[data-cv-print-active] .cv-hero h1 {
-    font-size: 2.8rem;
-  }
-
-  html[data-cv-print-active] .cv-panel h2,
-  html[data-cv-print-active] .cv-section h2 {
-    font-size: 1.2rem;
-  }
-
-  html[data-cv-print-active] .cv-project-card h3,
-  html[data-cv-print-active] .cv-project-highlights h4,
-  html[data-cv-print-active] .cv-detail-card h4,
-  html[data-cv-print-active] .cv-skill-card h3 {
-    font-size: 1rem;
-  }
-
-  html[data-cv-print-active] .cv-top-grid,
-  html[data-cv-print-active] .cv-skills-grid,
-  html[data-cv-print-active] .cv-projects {
-    margin-top: 0.7rem;
-  }
-
-  html[data-cv-print-active] .cv-panel,
-  html[data-cv-print-active] .cv-panel-mirrored,
-  html[data-cv-print-active] .cv-detail-card,
-  html[data-cv-print-active] .cv-skill-card {
-    padding: 0.8rem;
-  }
-
-  html[data-cv-print-active] .cv-section-heading {
-    margin-bottom: 0.7rem;
-  }
-
-  html[data-cv-print-active] .cv-facts,
-  html[data-cv-print-active] .cv-project-meta,
-  html[data-cv-print-active] .cv-stack-list,
-  html[data-cv-print-active] .cv-project-summary,
-  html[data-cv-print-active] .cv-project-highlights-list {
-    gap: 0.55rem;
-  }
-
-  html[data-cv-print-active] .cv-link-list {
-    gap: 0.45rem;
-    margin-top: 0.8rem;
-  }
-
-  html[data-cv-print-active] .cv-link-card {
-    padding: 0.55rem 0.65rem;
-  }
-
-  html[data-cv-print-active] .cv-chip-list {
-    gap: 0.4rem;
-    margin-top: 0.7rem;
-  }
-
-  html[data-cv-print-active] .cv-chip-list li {
-    padding: 0.34rem 0.6rem;
-    font-size: 0.76rem;
-  }
-
-  html[data-cv-print-active] .cv-project-card {
-    border-left: 2px solid var(--cv-print-accent);
-    background: transparent !important;
-  }
-
-  html[data-cv-print-active] .cv-project-header {
-    grid-template-columns: minmax(0, 1fr);
-    align-items: start;
-    gap: 0.5rem;
-    padding: 0.44rem 0.12rem 0.68rem 0.86rem;
-    border-bottom: 1px solid var(--cv-divider-strong);
-  }
-
-  html[data-cv-print-active] .cv-project-title-block {
-    gap: 0.22rem;
-  }
-
-  html[data-cv-print-active] .cv-project-eyebrow {
-    gap: 0.44rem;
-  }
-
-  html[data-cv-print-active] .cv-card-index,
-  html[data-cv-print-active] .cv-project-period,
-  html[data-cv-print-active] .cv-project-sector {
-    color: var(--cv-print-muted);
-  }
-
-  html[data-cv-print-active] .cv-project-period,
-  html[data-cv-print-active] .cv-project-sector {
-    font-size: 0.74rem;
-    letter-spacing: 0.08em;
-  }
-
-  html[data-cv-print-active] .cv-project-card h3 {
-    font-size: 1.14rem;
-    line-height: 1.28;
-    margin-top: 0;
-  }
-
-  html[data-cv-print-active] .cv-project-meta {
-    grid-template-columns: repeat(3, minmax(0, max-content));
-    gap: 0.4rem 1.15rem;
-    align-self: start;
-    width: auto;
-  }
-
-  html[data-cv-print-active] .cv-project-meta > div {
-    padding: 0;
-    border: 0 !important;
-    background: transparent !important;
-    box-shadow: none !important;
-  }
-
-  html[data-cv-print-active] .cv-project-meta-roles {
-    grid-column: auto;
-  }
-
-  html[data-cv-print-active] .cv-project-meta dt {
-    font-size: 0.6rem;
-    letter-spacing: 0.12em;
-    color: var(--cv-print-muted);
-  }
-
-  html[data-cv-print-active] .cv-project-meta dd {
-    font-size: 0.78rem;
-    line-height: 1.45;
-    color: var(--cv-print-text);
-  }
-
-  html[data-cv-print-active] .cv-project-divider {
-    display: none;
-  }
-
-  html[data-cv-print-active] .cv-project-body {
-    grid-template-columns: minmax(0, 1.6fr) minmax(10.5rem, 0.9fr);
-    gap: 1rem;
-    padding: 0.82rem 0.12rem 0.14rem 0.86rem;
-  }
-
-  html[data-cv-print-active] .cv-project-body > * + * {
-    padding-top: 0;
-    padding-left: 0.9rem;
-    border-top: 0;
-    border-left: 1px solid var(--cv-divider);
-  }
-
-  html[data-cv-print-active] .cv-project-body-summary {
-    grid-template-columns: minmax(0, 1fr);
-  }
-
-  html[data-cv-print-active] .cv-project-body-summary > * + * {
-    padding-left: 0;
-    border-left: 0;
-  }
-
-  html[data-cv-print-active] .cv-project-copy {
-    gap: 0.72rem;
-  }
-
-  html[data-cv-print-active] .cv-project-summary {
-    gap: 0.58rem;
-  }
-
-  html[data-cv-print-active] .cv-project-spacer {
-    display: none;
-  }
-
-  html[data-cv-print-active] .cv-project-highlights {
-    gap: 0.44rem;
-    padding-top: 0.28rem;
-    padding-bottom: 0;
-  }
-
-  html[data-cv-print-active] .cv-project-highlights h4,
-  html[data-cv-print-active] .cv-detail-card h4 {
-    font-size: 0.9rem;
-  }
-
-  html[data-cv-print-active] .cv-project-highlights-list {
-    gap: 0.42rem;
-  }
-
-  html[data-cv-print-active] .cv-project-highlights-list li,
-  html[data-cv-print-active] .cv-detail-card li {
-    padding-left: 0.78rem;
-  }
-
-  html[data-cv-print-active] .cv-project-highlights-list li::before,
-  html[data-cv-print-active] .cv-detail-card li::before {
-    width: 0.26rem;
-    height: 0.26rem;
-    top: 0.62rem;
-  }
-
-  html[data-cv-print-active] .cv-project-stack-page {
-    padding: 0.82rem 0.12rem 0.14rem 0.86rem;
-  }
-
-  html[data-cv-print-active] .cv-detail-card {
-    padding: 0;
-    border: 0 !important;
-    background: transparent !important;
-  }
-
-  html[data-cv-print-active] .cv-project-card-stack .cv-stack-list {
-    gap: 0.55rem 0.7rem;
-  }
-
-  html[data-cv-print-active] .cv-brace-frame-vertical {
-    --cv-brace-depth: 1.65rem;
-    padding-top: 0.9rem;
-  }
-
-  html[data-cv-print-active] .cv-skill-card ul {
-    gap: 0.3rem;
-  }
-
-  html[data-cv-print-active] .cv-skill-sublist {
-    margin-top: 0.18rem;
-    row-gap: 0.12rem;
-  }
-
-  html[data-cv-print-active] a {
-    color: inherit;
-    text-decoration: none;
-  }
-
-  @media print {
-    html[data-print-preview] .cv-page {
-      padding: 0;
-      background: none;
-    }
-
-    html[data-print-preview] .cv-print-stack {
-      gap: 0;
-    }
-
-    html[data-print-preview] .cv-print-page {
-      width: auto;
-      min-height: auto;
-      box-shadow: none;
-      break-after: page;
-      page-break-after: always;
-    }
-
-    html[data-print-preview] .cv-print-page:last-child {
-      break-after: auto;
-      page-break-after: auto;
-    }
   }
 </style>

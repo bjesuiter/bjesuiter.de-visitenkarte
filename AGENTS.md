@@ -37,6 +37,20 @@ Deployment note:
 - CSS approach: mobile-first. Define base styles as the default, then use media breakpoints to overwrite parts or all of an element’s base styles.
 - Run `bun run prettier` before opening a PR.
 
+## CV Website / Print Coupling
+
+- `src/data/cv.ts` is the shared source of truth for localized CV content.
+- `src/components/CVDocument.astro` renders the website CV.
+- `src/components/CVPrint.astro` renders the print CV.
+- `src/pages/en/cv.astro` and `src/pages/de/lebenslauf.astro` use `CVDocument.astro`.
+- `src/pages/en/cv/print.astro` and `src/pages/de/lebenslauf/drucken.astro` use `CVPrint.astro`.
+- If the data for `en` or `de` changes in `src/data/cv.ts`, both website and print should update together.
+- If a website CV change introduces or uses data that is not present in the print version, ask the user whether the same data should also be added to the print version.
+- If the answer is no, record that decision as an exception in this section.
+
+Current exceptions:
+- None.
+
 ## Testing Guidelines
 
 There is currently no committed automated test suite (`test`/`spec` files are not present).
