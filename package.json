@@ -8,6 +8,8 @@
     "build": "astro build",
     "prod": "bun run build",
     "preview": "astro preview",
+    "test:visual": "bun run build && playwright test",
+    "test:visual:update": "bun run build && playwright test --update-snapshots",
     "astro": "astro",
     "astroup": "bunx @astrojs/upgrade",
     "astro-add": "astro add",
@@ -31,6 +33,7 @@
     "typescript": "^5.9.3"
   },
   "devDependencies": {
+    "@playwright/test": "^1.58.2",
     "oxlint": "^1.43.0",
     "prettier": "^3.8.1",
     "prettier-plugin-astro": "^0.14.1",
