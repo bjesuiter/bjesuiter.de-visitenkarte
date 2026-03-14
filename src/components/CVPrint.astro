@@ -279,6 +279,7 @@ const paginatedProjectPages = [
                   class:list={[
                     "cv-project-card cv-surface cv-surface-project",
                     mode === "stack" && "cv-project-card-stack",
+                    mode === "full" && [0, 1].includes(index) && "cv-project-card-top-aligned-context",
                     mode === "full" && [2, 3].includes(index) && "cv-project-card-linear",
                   ]}
                 >
@@ -2051,6 +2052,10 @@ const paginatedProjectPages = [
     font-size: 1.14rem;
     line-height: 1.28;
     margin-top: 0;
+  }
+
+  html[data-cv-print-active] .cv-project-card-top-aligned-context .cv-detail-card.cv-brace-frame-vertical {
+    padding-top: 0;
   }
 
   html[data-cv-print-active] .cv-project-card-linear .cv-project-header {
