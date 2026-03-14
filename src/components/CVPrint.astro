@@ -115,7 +115,9 @@ const paginatedProjectPages = [
               <p class="cv-badge">{content.badge}</p>
               <p class="cv-last-updated">
                 <span>{lastUpdatedLabel}</span>
-                <time datetime={content.lastUpdated}>{formattedLastUpdated}</time>
+                <time datetime={content.lastUpdated}
+                  >{formattedLastUpdated}</time
+                >
               </p>
             </div>
             <h1>{content.heading}</h1>
@@ -152,7 +154,9 @@ const paginatedProjectPages = [
                         <Icon name={link.icon} class="cv-link-icon" />
                         <span>{link.label}</span>
                       </span>
-                      <span class="cv-link-url">{link.href.replace(/^https?:\/\//, "")}</span>
+                      <span class="cv-link-url">
+                        {link.href.replace(/^https?:\/\//, "")}
+                      </span>
                     </a>
                   </li>
                 ))
@@ -213,7 +217,9 @@ const paginatedProjectPages = [
                             <ul class="cv-skill-sublist">
                               {item.items.map((subItem) =>
                                 typeof subItem === "string" ? (
-                                  <li class="cv-skill-sublist-item">{subItem}</li>
+                                  <li class="cv-skill-sublist-item">
+                                    {subItem}
+                                  </li>
                                 ) : (
                                   <li class="cv-skill-sublist-item">
                                     <span>{subItem.text}</span>
@@ -262,8 +268,12 @@ const paginatedProjectPages = [
                   class:list={[
                     "cv-project-card cv-surface cv-surface-project",
                     mode === "stack" && "cv-project-card-stack",
-                    mode === "full" && ![2, 3, 7, 10].includes(index) && "cv-project-card-top-aligned-context",
-                    mode === "full" && [2, 3, 7, 10].includes(index) && "cv-project-card-linear",
+                    mode === "full" &&
+                      ![2, 3, 7, 10].includes(index) &&
+                      "cv-project-card-top-aligned-context",
+                    mode === "full" &&
+                      [2, 3, 7, 10].includes(index) &&
+                      "cv-project-card-linear",
                   ]}
                 >
                   <header class="cv-project-header gap-4">
@@ -324,7 +334,9 @@ const paginatedProjectPages = [
                       class:list={[
                         "cv-project-body gap-4",
                         mode === "summary" && "cv-project-body-summary",
-                        mode === "full" && [2, 3, 7, 10].includes(index) && "cv-project-body-linear",
+                        mode === "full" &&
+                          [2, 3, 7, 10].includes(index) &&
+                          "cv-project-body-linear",
                       ]}
                     >
                       <div class="cv-project-copy gap-4">
@@ -434,7 +446,9 @@ const paginatedProjectPages = [
           0,
           sheet.scrollWidth - sheet.clientWidth,
         );
-        const descendantOverflow = Array.from(sheet.querySelectorAll("*")).reduce(
+        const descendantOverflow = Array.from(
+          sheet.querySelectorAll("*"),
+        ).reduce(
           (summary, element) => {
             if (!(element instanceof HTMLElement)) {
               return summary;
@@ -462,7 +476,10 @@ const paginatedProjectPages = [
                 : summary.samples;
 
             return {
-              bottomOverflowPx: Math.max(summary.bottomOverflowPx, bottomOverflow),
+              bottomOverflowPx: Math.max(
+                summary.bottomOverflowPx,
+                bottomOverflow,
+              ),
               rightOverflowPx: Math.max(summary.rightOverflowPx, rightOverflow),
               samples: nextSamples,
             };
@@ -610,6 +627,8 @@ const paginatedProjectPages = [
     --cv-divider-strong: oklch(0.9049 0.0895 164.15 / 0.2);
     --cv-panel-radius: 14px;
     --cv-sheet-padding: 1.1rem;
+    --cv-print-paper-width: 210mm;
+    --cv-print-paper-height: 297mm;
     --cv-panel-border: oklch(0.9049 0.0895 164.15 / 0.14);
     --cv-dossier-frame-depth: calc(var(--cv-panel-radius) + 12px);
     --cv-dossier-frame-fade: linear-gradient(
@@ -1587,7 +1606,7 @@ const paginatedProjectPages = [
 
   @page {
     size: A4;
-    margin: 12mm;
+    margin: 0;
   }
 
   :root[data-cv-print-active] {
@@ -2037,7 +2056,9 @@ const paginatedProjectPages = [
     margin-top: 0;
   }
 
-  html[data-cv-print-active] .cv-project-card-top-aligned-context .cv-detail-card.cv-brace-frame-vertical {
+  html[data-cv-print-active]
+    .cv-project-card-top-aligned-context
+    .cv-detail-card.cv-brace-frame-vertical {
     padding-top: 0;
   }
 
@@ -2077,7 +2098,9 @@ const paginatedProjectPages = [
     padding-top: 0.08rem;
   }
 
-  html[data-cv-print-active] .cv-project-card-linear .cv-project-highlights-list {
+  html[data-cv-print-active]
+    .cv-project-card-linear
+    .cv-project-highlights-list {
     gap: 0.26rem;
   }
 
@@ -2218,19 +2241,41 @@ const paginatedProjectPages = [
   @media print {
     html[data-print-preview] .cv-page {
       padding: 0;
+      min-height: auto;
       background: none;
     }
 
     html[data-print-preview] .cv-print-stack {
+      display: block;
       gap: 0;
     }
 
     html[data-print-preview] .cv-print-page {
-      width: auto;
-      min-height: auto;
+      width: var(--cv-print-paper-width);
+      min-width: var(--cv-print-paper-width);
+      max-width: var(--cv-print-paper-width);
+      min-height: var(--cv-print-paper-height);
+      height: var(--cv-print-paper-height);
+      margin: 0;
       box-shadow: none;
+      background: transparent;
+      overflow: hidden;
       break-after: page;
       page-break-after: always;
+    }
+
+    html[data-print-preview] .cv-print-page::after {
+      display: none;
+    }
+
+    html[data-print-preview] .cv-sheet {
+      height: 100%;
+      border: 0;
+      background: transparent;
+    }
+
+    html[data-print-preview] .cv-sheet-page {
+      min-height: 100%;
     }
 
     html[data-print-preview] .cv-print-page:last-child {
