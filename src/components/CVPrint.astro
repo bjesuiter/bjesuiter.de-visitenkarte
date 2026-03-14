@@ -279,6 +279,7 @@ const paginatedProjectPages = [
                   class:list={[
                     "cv-project-card cv-surface cv-surface-project",
                     mode === "stack" && "cv-project-card-stack",
+                    mode === "full" && [2, 3].includes(index) && "cv-project-card-linear",
                   ]}
                 >
                   <header class="cv-project-header gap-4">
@@ -339,6 +340,7 @@ const paginatedProjectPages = [
                       class:list={[
                         "cv-project-body gap-4",
                         mode === "summary" && "cv-project-body-summary",
+                        mode === "full" && [2, 3].includes(index) && "cv-project-body-linear",
                       ]}
                     >
                       <div class="cv-project-copy gap-4">
@@ -1349,6 +1351,15 @@ const paginatedProjectPages = [
     grid-template-columns: minmax(0, 1fr);
   }
 
+  .cv-project-body-linear {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .cv-project-body-linear > * + * {
+    padding-left: 0;
+    border-left: 0;
+  }
+
   .cv-project-body > * + * {
     padding-top: 1rem;
     border-top: 1px dashed var(--cv-divider);
@@ -1409,12 +1420,14 @@ const paginatedProjectPages = [
     padding: 1rem 1.18rem 1.18rem 1.3rem;
   }
 
-  .cv-project-card-stack .cv-stack-list {
+  .cv-project-card-stack .cv-stack-list,
+  .cv-project-card-linear .cv-stack-list {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     column-gap: 0.8rem;
   }
 
-  .cv-project-card-stack .cv-stack-list > div + div {
+  .cv-project-card-stack .cv-stack-list > div + div,
+  .cv-project-card-linear .cv-stack-list > div + div {
     padding-top: 0;
     border-top: 0;
   }
@@ -1574,6 +1587,17 @@ const paginatedProjectPages = [
       padding-left: 1rem;
       border-top: 0;
       border-left: 1px dashed var(--cv-divider);
+    }
+
+    .cv-project-body-linear {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .cv-project-body-linear > * + * {
+      padding-top: 1rem;
+      padding-left: 0;
+      border-top: 1px dashed var(--cv-divider);
+      border-left: 0;
     }
   }
 
@@ -2029,6 +2053,46 @@ const paginatedProjectPages = [
     margin-top: 0;
   }
 
+  html[data-cv-print-active] .cv-project-card-linear .cv-project-header {
+    gap: 0.24rem;
+    padding-bottom: 0.4rem;
+  }
+
+  html[data-cv-print-active] .cv-project-card-linear .cv-project-meta {
+    gap: 0.45rem;
+  }
+
+  html[data-cv-print-active] .cv-project-card-linear .cv-project-meta > div {
+    padding: 0.5rem 0.62rem;
+  }
+
+  html[data-cv-print-active] .cv-project-card-linear .cv-project-body {
+    gap: 0.5rem;
+    padding-top: 0.48rem;
+    padding-bottom: 0;
+  }
+
+  html[data-cv-print-active] .cv-project-card-linear .cv-project-body > * + * {
+    padding-top: 0.5rem;
+  }
+
+  html[data-cv-print-active] .cv-project-card-linear .cv-project-copy {
+    gap: 0.38rem;
+  }
+
+  html[data-cv-print-active] .cv-project-card-linear .cv-project-summary {
+    gap: 0.28rem;
+  }
+
+  html[data-cv-print-active] .cv-project-card-linear .cv-project-highlights {
+    gap: 0.24rem;
+    padding-top: 0.08rem;
+  }
+
+  html[data-cv-print-active] .cv-project-card-linear .cv-project-highlights-list {
+    gap: 0.26rem;
+  }
+
   html[data-cv-print-active] .cv-project-meta {
     grid-template-columns: repeat(3, minmax(0, max-content));
     gap: 0.4rem 1.15rem;
@@ -2080,7 +2144,12 @@ const paginatedProjectPages = [
     grid-template-columns: minmax(0, 1fr);
   }
 
-  html[data-cv-print-active] .cv-project-body-summary > * + * {
+  html[data-cv-print-active] .cv-project-body-linear {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  html[data-cv-print-active] .cv-project-body-summary > * + *,
+  html[data-cv-print-active] .cv-project-body-linear > * + * {
     padding-left: 0;
     border-left: 0;
   }
@@ -2134,7 +2203,8 @@ const paginatedProjectPages = [
     background: transparent !important;
   }
 
-  html[data-cv-print-active] .cv-project-card-stack .cv-stack-list {
+  html[data-cv-print-active] .cv-project-card-stack .cv-stack-list,
+  html[data-cv-print-active] .cv-project-card-linear .cv-stack-list {
     gap: 0.55rem 0.7rem;
   }
 
