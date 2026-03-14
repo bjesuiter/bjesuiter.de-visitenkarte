@@ -279,7 +279,7 @@ const paginatedProjectPages = [
                   class:list={[
                     "cv-project-card cv-surface cv-surface-project",
                     mode === "stack" && "cv-project-card-stack",
-                    mode === "full" && [0, 1].includes(index) && "cv-project-card-top-aligned-context",
+                    mode === "full" && ![2, 3].includes(index) && "cv-project-card-top-aligned-context",
                     mode === "full" && [2, 3].includes(index) && "cv-project-card-linear",
                   ]}
                 >
