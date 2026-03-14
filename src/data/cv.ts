@@ -311,8 +311,7 @@ const cvDe: CvContent = {
       sector: "secunet International GmbH · Teilzeit",
       title: "Senior Software Entwickler:in",
       summary: [
-        "Bei secunet International GmbH bestand meine Rolle in der Mitarbeit an einem sicherheitskritischen Kernmodul.",
-        "Dabei handelte es sich um ein natives Electron-Modul in Rust, ergänzt durch einen separaten Electron-Renderer-Prozess für eine besonders abgesicherte UI. Diese Oberfläche für sicherheitskritische Datenprüfungen wurde mit reinen Web Components umgesetzt, um im Vergleich zu React volle Kontrolle über den UI-Code zu behalten.",
+        "Bei secunet International GmbH bestand meine Rolle in der Mitarbeit an einem sicherheitskritischen Kernmodul. Dabei handelte es sich um ein natives Electron-Modul in Rust, ergänzt durch einen separaten Electron-Renderer-Prozess für eine besonders abgesicherte UI. Diese Oberfläche für sicherheitskritische Datenprüfungen wurde mit reinen Web Components umgesetzt, um im Vergleich zu React volle Kontrolle über den UI-Code zu behalten.",
       ],
       highlights: [
         "Feature-Umsetzung über die gesamte Electron-Anwendung hinweg – vom nativen Rust-Modul bis zur abgesicherten TypeScript-UI.",
