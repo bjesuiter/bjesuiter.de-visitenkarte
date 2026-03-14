@@ -63,35 +63,19 @@ const paginatedProjectPages = [
   },
   {
     showHeading: false,
-    entries: [{ index: 7, mode: "summary" }],
+    entries: [{ index: 7, mode: "full" }],
   },
   {
     showHeading: false,
-    entries: [{ index: 7, mode: "stack" }],
+    entries: [{ index: 8, mode: "full" }],
   },
   {
     showHeading: false,
-    entries: [{ index: 8, mode: "summary" }],
+    entries: [{ index: 9, mode: "full" }],
   },
   {
     showHeading: false,
-    entries: [{ index: 8, mode: "stack" }],
-  },
-  {
-    showHeading: false,
-    entries: [{ index: 9, mode: "summary" }],
-  },
-  {
-    showHeading: false,
-    entries: [{ index: 9, mode: "stack" }],
-  },
-  {
-    showHeading: false,
-    entries: [{ index: 10, mode: "summary" }],
-  },
-  {
-    showHeading: false,
-    entries: [{ index: 10, mode: "stack" }],
+    entries: [{ index: 10, mode: "full" }],
   },
   {
     showHeading: false,
@@ -279,8 +263,8 @@ const paginatedProjectPages = [
                   class:list={[
                     "cv-project-card cv-surface cv-surface-project",
                     mode === "stack" && "cv-project-card-stack",
-                    mode === "full" && ![2, 3].includes(index) && "cv-project-card-top-aligned-context",
-                    mode === "full" && [2, 3].includes(index) && "cv-project-card-linear",
+                    mode === "full" && ![2, 3, 7, 10].includes(index) && "cv-project-card-top-aligned-context",
+                    mode === "full" && [2, 3, 7, 10].includes(index) && "cv-project-card-linear",
                   ]}
                 >
                   <header class="cv-project-header gap-4">
@@ -341,7 +325,7 @@ const paginatedProjectPages = [
                       class:list={[
                         "cv-project-body gap-4",
                         mode === "summary" && "cv-project-body-summary",
-                        mode === "full" && [2, 3].includes(index) && "cv-project-body-linear",
+                        mode === "full" && [2, 3, 7, 10].includes(index) && "cv-project-body-linear",
                       ]}
                     >
                       <div class="cv-project-copy gap-4">
@@ -2068,7 +2052,7 @@ const paginatedProjectPages = [
   }
 
   html[data-cv-print-active] .cv-project-card-linear .cv-project-meta > div {
-    padding: 0.5rem 0.62rem;
+    padding: 0;
   }
 
   html[data-cv-print-active] .cv-project-card-linear .cv-project-body {
@@ -2078,7 +2062,7 @@ const paginatedProjectPages = [
   }
 
   html[data-cv-print-active] .cv-project-card-linear .cv-project-body > * + * {
-    padding-top: 0.5rem;
+    padding-top: 0.8rem;
   }
 
   html[data-cv-print-active] .cv-project-card-linear .cv-project-copy {
