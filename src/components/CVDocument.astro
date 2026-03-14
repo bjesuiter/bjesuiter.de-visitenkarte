@@ -15,13 +15,20 @@ const profileImageAlt =
   locale === "de"
     ? "Porträt von Benjamin Jesuiter"
     : "Portrait of Benjamin Jesuiter";
+const printHref = locale === "de" ? "/de/lebenslauf/drucken/" : "/en/cv/print/";
 ---
 
 <main class="cv-page">
   <article class="cv-sheet">
     <header class="cv-hero gap-4">
       <div class="cv-hero-copy gap-4">
-        <p class="cv-badge">{content.badge}</p>
+        <div class="cv-hero-meta">
+          <p class="cv-badge">{content.badge}</p>
+          <a href={printHref} class="cv-print-link print:hidden">
+            <Icon name="ph:printer-fill" class="cv-print-link-icon" />
+            <span>{content.navigation.printLabel}</span>
+          </a>
+        </div>
         <h1>{content.heading}</h1>
         <CVIntro locale={locale} />
       </div>
@@ -245,33 +252,11 @@ const profileImageAlt =
     color: oklch(0.9793 0.0207 166.11);
   }
 
-  .cv-toolbar,
   .cv-sheet {
     width: min(var(--cv-content-width), 100%);
     margin-inline: auto;
   }
 
-  .cv-toolbar {
-    margin-bottom: 1rem;
-  }
-
-  .cv-toolbar-shell {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: space-between;
-    gap: 0.9rem 1rem;
-    padding: 0.9rem;
-    border-radius: 20px;
-    border: 1px solid oklch(0.9049 0.0895 164.15 / 0.18);
-    background: oklch(0.1775 0.0281 173.8 / 0.8);
-    box-shadow:
-      0 16px 34px oklch(0.131 0.0212 174.91 / 0.18),
-      inset 0 1px 0 oklch(1 0 89.88 / 0.04);
-    backdrop-filter: blur(16px);
-  }
-
-  .cv-toolbar-copy,
   .cv-hero,
   .cv-hero-copy,
   .cv-grid,
@@ -290,113 +275,17 @@ const profileImageAlt =
     display: grid;
   }
 
-  .cv-toolbar-copy {
-    gap: 0.22rem;
-    max-width: 54rem;
-  }
-
-  .cv-toolbar-kicker,
   .cv-badge,
   .cv-card-index,
   .cv-facts dt,
   .cv-project-meta dt,
   .cv-stack-list dt,
   .cv-project-period,
-  .cv-link-label {
+  .cv-link-label,
+  .cv-print-link {
     font-family: "Chakra Petch", sans-serif;
     font-weight: 700;
     text-transform: uppercase;
-  }
-
-  .cv-toolbar-kicker {
-    margin: 0;
-    font-size: 0.75rem;
-    letter-spacing: 0.14em;
-    color: oklch(0.8712 0.1363 154.45);
-  }
-
-  .cv-toolbar-note {
-    margin: 0;
-    font-size: 0.95rem;
-    line-height: 1.55;
-    color: oklch(0.9277 0.0528 165.89);
-  }
-
-  .cv-toolbar-actions {
-    display: flex;
-    flex-wrap: wrap;
-    width: 100%;
-    justify-content: stretch;
-    gap: 0.75rem;
-  }
-
-  .cv-action {
-    appearance: none;
-    display: inline-flex;
-    flex: 1 1 100%;
-    align-items: center;
-    justify-content: center;
-    min-height: 3rem;
-    padding: 0.7rem 1.1rem;
-    border: 1px solid transparent;
-    border-radius: 999px;
-    font-family: "Chakra Petch", sans-serif;
-    font-size: 0.88rem;
-    font-weight: 700;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    text-decoration: none;
-    cursor: pointer;
-    transition:
-      transform 170ms ease,
-      border-color 170ms ease,
-      filter 170ms ease,
-      background-color 170ms ease,
-      color 170ms ease,
-      box-shadow 170ms ease;
-  }
-
-  .cv-action:hover {
-    transform: translateY(-1px);
-  }
-
-  .cv-action-secondary {
-    color: oklch(0.9593 0.0407 169.35);
-    border-color: oklch(0.9049 0.0895 164.15 / 0.18);
-    background: oklch(0.2283 0.0366 170.47 / 0.56);
-    box-shadow: inset 0 1px 0 oklch(1 0 89.88 / 0.04);
-  }
-
-  .cv-action-secondary:hover {
-    border-color: oklch(0.8452 0.1299 164.98 / 0.5);
-    background: oklch(0.2464 0.0413 168.22 / 0.82);
-  }
-
-  .cv-action-download {
-    color: oklch(0.2177 0.0417 164.64);
-    border-color: oklch(1 0 89.88 / 0.24);
-    background: oklch(0.8912 0.0987 161.77);
-    box-shadow: 0 10px 24px oklch(0 0 0 / 0.2);
-  }
-
-  .cv-action-download:hover {
-    filter: brightness(1.04);
-    box-shadow: 0 14px 28px oklch(0 0 0 / 0.28);
-  }
-
-  .cv-action-print {
-    color: oklch(0.9593 0.0407 169.35);
-    border-color: oklch(0.9049 0.0895 164.15 / 0.28);
-    background: oklch(0.1888 0.0313 172.43 / 0.72);
-    box-shadow:
-      0 12px 26px oklch(0.131 0.0212 174.91 / 0.24),
-      inset 0 1px 0 oklch(1 0 89.88 / 0.05);
-    backdrop-filter: blur(18px);
-  }
-
-  .cv-action-print:hover {
-    border-color: oklch(0.8452 0.1299 164.98);
-    background: oklch(0.2123 0.0354 169.1 / 0.92);
   }
 
   .cv-sheet {
@@ -428,11 +317,60 @@ const profileImageAlt =
     align-content: start;
   }
 
+  .cv-hero-meta {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+  }
+
   .cv-badge {
     margin: 0;
     font-size: 0.84rem;
     letter-spacing: 0.14em;
     color: oklch(0.8452 0.1299 164.98);
+  }
+
+  .cv-print-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.48rem 0.82rem;
+    border: 1px solid oklch(0.9049 0.0895 164.15 / 0.2);
+    border-radius: 999px;
+    background: oklch(0.2068 0.0334 171.95 / 0.72);
+    box-shadow:
+      0 10px 22px oklch(0.131 0.0212 174.91 / 0.18),
+      inset 0 1px 0 oklch(1 0 89.88 / 0.05);
+    color: oklch(0.9583 0.0422 168.36);
+    font-size: 0.74rem;
+    letter-spacing: 0.12em;
+    line-height: 1;
+    text-decoration: none;
+    transition:
+      transform 170ms ease,
+      border-color 170ms ease,
+      background-color 170ms ease,
+      color 170ms ease,
+      box-shadow 170ms ease;
+    backdrop-filter: blur(12px);
+  }
+
+  .cv-print-link:hover {
+    transform: translateY(-1px);
+    border-color: oklch(0.8452 0.1299 164.98 / 0.52);
+    background: oklch(0.2249 0.0372 169.86 / 0.88);
+    color: oklch(0.9793 0.0207 166.11);
+    box-shadow:
+      0 14px 28px oklch(0.131 0.0212 174.91 / 0.22),
+      inset 0 1px 0 oklch(1 0 89.88 / 0.06);
+  }
+
+  .cv-print-link-icon {
+    flex: 0 0 auto;
+    width: 0.96rem;
+    height: 0.96rem;
   }
 
   .cv-hero h1,
@@ -520,17 +458,6 @@ const profileImageAlt =
     box-shadow:
       inset 0 1px 0 oklch(1 0 89.88 / 0.04),
       0 14px 28px oklch(0.131 0.0212 174.91 / 0.16);
-    backdrop-filter: blur(8px);
-  }
-
-  .cv-surface-soft {
-    overflow: hidden;
-    border: 1px solid oklch(0.9049 0.0895 164.15 / 0.12);
-    border-radius: 18px;
-    background: oklch(0.1748 0.0249 176.05 / 0.5);
-    box-shadow:
-      inset 0 1px 0 oklch(1 0 89.88 / 0.04),
-      0 12px 24px oklch(0.131 0.0212 174.91 / 0.14);
     backdrop-filter: blur(8px);
   }
 
@@ -1161,26 +1088,9 @@ const profileImageAlt =
     .cv-page {
       --cv-page-padding: clamp(1rem, 2.4vw, 2.1rem);
     }
-
-    .cv-toolbar-note {
-      font-size: 1rem;
-    }
-
-    .cv-action {
-      flex-basis: 14rem;
-    }
   }
 
   @media (min-width: 760px) {
-    .cv-toolbar-actions {
-      width: auto;
-      justify-content: flex-end;
-    }
-
-    .cv-action {
-      flex: 0 1 auto;
-    }
-
     .cv-hero {
       grid-template-columns: minmax(0, 1.14fr) minmax(19rem, 0.86fr);
       align-items: stretch;

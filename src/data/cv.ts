@@ -74,7 +74,6 @@ export interface CvContent {
   rolesLabel: string;
   durationLabel: string;
   teamSizeLabel: string;
-  printHint: string;
   facts: CvFact[];
   contactLinks: CvLink[];
   industries: string[];
@@ -107,8 +106,6 @@ const cvDe: CvContent = {
   rolesLabel: "Rollen",
   durationLabel: "Projektdauer",
   teamSizeLabel: "Teamgröße",
-  printHint:
-    "Download öffnet den Browser-Dialog zum Speichern als PDF mit dem Website-Look. Drucken nutzt automatisch eine helle, tintensparende Variante mit demselben Layout.",
   facts: [
     {
       label: "Beruf",
@@ -817,8 +814,6 @@ const cvEn: CvContent = {
   rolesLabel: "Roles",
   durationLabel: "Project Duration",
   teamSizeLabel: "Team Size",
-  printHint:
-    "Download opens the browser flow for saving a PDF with the site styling. Print automatically switches to a bright, ink-friendly version with the same layout.",
   facts: [
     {
       label: "Role",

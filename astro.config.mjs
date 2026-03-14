@@ -14,6 +14,7 @@ export default defineConfig({
           "linkedin-logo-fill",
           "instagram-logo",
           "globe-fill",
+          "printer-fill",
         ],
         ion: [
           "logo-xing",
