@@ -16,6 +16,7 @@ const profileImageAlt =
     ? "Porträt von Benjamin Jesuiter"
     : "Portrait of Benjamin Jesuiter";
 const printHref = locale === "de" ? "/de/lebenslauf/drucken/" : "/en/cv/print/";
+const autoPrintHref = `${printHref}?autoprint=1`;
 ---
 
 <main class="cv-page">
@@ -24,7 +25,12 @@ const printHref = locale === "de" ? "/de/lebenslauf/drucken/" : "/en/cv/print/";
       <div class="cv-hero-copy gap-4">
         <div class="cv-hero-meta">
           <p class="cv-badge">{content.badge}</p>
-          <a href={printHref} class="cv-print-link print:hidden">
+          <a
+            href={autoPrintHref}
+            target="_blank"
+            rel="noreferrer noopener"
+            class="cv-print-link print:hidden"
+          >
             <Icon name="ph:printer-fill" class="cv-print-link-icon" />
             <span>{content.navigation.printLabel}</span>
           </a>
@@ -74,7 +80,9 @@ const printHref = locale === "de" ? "/de/lebenslauf/drucken/" : "/en/cv/print/";
                     <Icon name={link.icon} class="cv-link-icon" />
                     <span>{link.label}</span>
                   </span>
-                  <span class="cv-link-url">{link.href.replace(/^https?:\/\//, "")}</span>
+                  <span class="cv-link-url">
+                    {link.href.replace(/^https?:\/\//, "")}
+                  </span>
                 </a>
               </li>
             ))

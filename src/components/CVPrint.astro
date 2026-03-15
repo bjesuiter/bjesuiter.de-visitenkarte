@@ -579,6 +579,30 @@ const paginatedProjectPages = [
       document.body?.setAttribute("data-cv-print-active", "true");
     };
 
+    const clearAutoPrintSearchParam = () => {
+      const url = new URL(window.location.href);
+      url.searchParams.delete("autoprint");
+      const nextSearch = url.searchParams.toString();
+      const nextURL = `${url.pathname}${nextSearch ? `?${nextSearch}` : ""}${url.hash}`;
+      window.history.replaceState({}, document.title, nextURL);
+    };
+
+    const autoPrintRequested =
+      new URLSearchParams(window.location.search).get("autoprint") === "1";
+    let hasAutoPrintTriggered = false;
+    const maybeAutoPrint = () => {
+      if (!autoPrintRequested || hasAutoPrintTriggered) {
+        return;
+      }
+
+      hasAutoPrintTriggered = true;
+      setMode("print");
+      clearAutoPrintSearchParam();
+      window.setTimeout(() => {
+        window.print();
+      }, 180);
+    };
+
     const clearMode = () => {
       document.documentElement.removeAttribute("cata-cv-output");
       document.body?.removeAttribute("cata-cv-output");
@@ -597,10 +621,20 @@ const paginatedProjectPages = [
     window.addEventListener("afterprint", clearMode);
     syncPrintActiveState();
     schedulePrintOverflowSync();
-    window.addEventListener("load", schedulePrintOverflowSync);
+    window.addEventListener("load", () => {
+      schedulePrintOverflowSync();
+      maybeAutoPrint();
+    });
     window.addEventListener("resize", schedulePrintOverflowSync);
 
-    document.fonts?.ready.then(schedulePrintOverflowSync).catch(() => {});
+    document.fonts?.ready
+      .then(() => {
+        schedulePrintOverflowSync();
+        maybeAutoPrint();
+      })
+      .catch(() => {
+        maybeAutoPrint();
+      });
 
     document.querySelectorAll("img").forEach((image) => {
       if (image.complete) {
