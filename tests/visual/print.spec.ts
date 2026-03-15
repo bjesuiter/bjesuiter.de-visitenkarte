@@ -7,7 +7,8 @@ import { expect, test, type Page } from "@playwright/test";
 
 const execFileAsync = promisify(execFile);
 const screenshotDelayMs = 400;
-const laterPageIndex = 5;
+const skillPreviewPageIndexes = [2, 3] as const;
+const laterProjectPageIndex = 5;
 const printCases = [
   { name: "en-cv-print", path: "/en/cv/print/" },
   { name: "de-cv-print", path: "/de/lebenslauf/drucken/" },
@@ -42,6 +43,14 @@ for (const printCase of printCases) {
         `${printCase.name}-preview-page-01.png`,
       );
 
+      for (const pageIndex of skillPreviewPageIndexes) {
+        await expect(
+          page.locator(".cv-print-page").nth(pageIndex),
+        ).toHaveScreenshot(
+          `${printCase.name}-preview-page-${String(pageIndex + 1).padStart(2, "0")}.png`,
+        );
+      }
+
       await page.emulateMedia({ media: "print" });
 
       const printState = await getPrintLayoutState(page);
@@ -60,11 +69,19 @@ for (const printCase of printCases) {
         `${printCase.name}-print-page-01.png`,
       );
 
+      for (const pageIndex of skillPreviewPageIndexes) {
+        await expect(
+          page.locator(".cv-print-page").nth(pageIndex),
+        ).toHaveScreenshot(
+          `${printCase.name}-print-page-${String(pageIndex + 1).padStart(2, "0")}.png`,
+        );
+      }
+
       const laterPage = page
         .locator(".cv-print-page")
-        .nth(Math.min(laterPageIndex, previewPageCount - 1));
+        .nth(Math.min(laterProjectPageIndex, previewPageCount - 1));
       await expect(laterPage).toHaveScreenshot(
-        `${printCase.name}-print-page-${String(Math.min(laterPageIndex, previewPageCount - 1) + 1).padStart(2, "0")}.png`,
+        `${printCase.name}-print-page-${String(Math.min(laterProjectPageIndex, previewPageCount - 1) + 1).padStart(2, "0")}.png`,
       );
 
       const pdfPath = join(tempDir, `${printCase.name}.pdf`);
