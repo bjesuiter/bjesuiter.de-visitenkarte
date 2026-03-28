@@ -1,0 +1,26 @@
+---
+import DockNav from "../../../components/DockNav.astro";
+import CVPrintPaged from "../../../components/CVPrintPaged.astro";
+import Layout from "../../../layouts/Layout.astro";
+---
+
+<Layout
+  lang="en"
+  title="Benjamin Jesuiter · CV · Paged Print Prototype"
+  description="Prototype print preview of the CV of Benjamin Jesuiter using a flowing paged-document renderer."
+  canonicalPath="/en/cv/"
+  noindex={true}
+  bodyClass="bg-[#02110d]"
+  printPreview={true}
+>
+  <DockNav
+    locale="en"
+    current="cv"
+    homeHref="/en/"
+    cvHref="/en/cv/print-paged/"
+    supportHref="/en/support/"
+    languageSwitchHref="/de/lebenslauf/drucken-paged/"
+  />
+
+  <CVPrintPaged locale="en" />
+</Layout>

@@ -1,0 +1,26 @@
+---
+import DockNav from "../../../components/DockNav.astro";
+import CVPrintPaged from "../../../components/CVPrintPaged.astro";
+import Layout from "../../../layouts/Layout.astro";
+---
+
+<Layout
+  lang="de"
+  title="Benjamin Jesuiter · Lebenslauf · Paged-Druck-Prototyp"
+  description="Prototypische Druckvorschau des Lebenslaufs von Benjamin Jesuiter mit fließendem Dokumentlayout."
+  canonicalPath="/de/lebenslauf/"
+  noindex={true}
+  bodyClass="bg-[#02110d]"
+  printPreview={true}
+>
+  <DockNav
+    locale="de"
+    current="cv"
+    homeHref="/de/"
+    cvHref="/de/lebenslauf/drucken-paged/"
+    supportHref="/de/support/"
+    languageSwitchHref="/en/cv/print-paged/"
+  />
+
+  <CVPrintPaged locale="de" />
+</Layout>

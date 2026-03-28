@@ -1,0 +1,728 @@
+---
+import { Image } from "astro:assets";
+import { Icon } from "astro-icon/components";
+import profilePic from "../assets/2023-03-17_square_near_profilepic.jpeg";
+import { getLocalizedCvContent, type CvLocale } from "../data/cv";
+import CVIntro from "./CVIntro.astro";
+
+interface Props {
+  locale?: CvLocale;
+}
+
+const { locale = "de" } = Astro.props;
+const content = getLocalizedCvContent(locale);
+const profileImageAlt =
+  locale === "de"
+    ? "Porträt von Benjamin Jesuiter"
+    : "Portrait of Benjamin Jesuiter";
+const lastUpdatedLabel = locale === "de" ? "Stand" : "Updated";
+const parsedLastUpdated = new Date(`${content.lastUpdated}T00:00:00`);
+const formattedLastUpdated = Number.isNaN(parsedLastUpdated.getTime())
+  ? content.lastUpdated
+  : new Intl.DateTimeFormat(locale === "de" ? "de-DE" : "en-GB", {
+      day: "2-digit",
+      month: "short",
+      year: "numeric",
+    }).format(parsedLastUpdated);
+---
+
+<main class="cv-paged-root">
+  <article class="cv-paged-document">
+    <header class="cv-paged-hero">
+      <div class="cv-paged-hero-copy">
+        <div class="cv-paged-meta-row">
+          <p class="cv-paged-kicker">{content.badge}</p>
+          <p class="cv-paged-last-updated">
+            <span>{lastUpdatedLabel}</span>
+            <time datetime={content.lastUpdated}>{formattedLastUpdated}</time>
+          </p>
+        </div>
+
+        <h1>{content.heading}</h1>
+
+        <div class="cv-paged-intro">
+          <CVIntro locale={locale} />
+        </div>
+      </div>
+
+      <div class="cv-paged-hero-media">
+        <Image
+          src={profilePic}
+          alt={profileImageAlt}
+          loading="eager"
+          class="cv-paged-hero-image"
+        />
+      </div>
+    </header>
+
+    <section class="cv-paged-section cv-paged-contact-grid">
+      <section class="cv-paged-panel cv-paged-panel-strong">
+        <div class="cv-paged-section-heading">
+          <h2>{content.contactTitle}</h2>
+        </div>
+
+        <ul class="cv-paged-link-list">
+          {
+            content.contactLinks.map((link) => (
+              <li>
+                <a href={link.href} target="_blank" rel="noreferrer">
+                  <span class="cv-paged-link-label">
+                    <Icon name={link.icon} class="cv-paged-link-icon" />
+                    <span>{link.label}</span>
+                  </span>
+                  <span class="cv-paged-link-url">
+                    {link.href.replace(/^https?:\/\//, "")}
+                  </span>
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </section>
+
+      <section class="cv-paged-panel cv-paged-panel-strong">
+        <div class="cv-paged-section-heading">
+          <h2>{content.industriesTitle}</h2>
+        </div>
+
+        <ul class="cv-paged-chip-list">
+          {content.industries.map((industry) => <li>{industry}</li>)}
+        </ul>
+      </section>
+    </section>
+
+    <section class="cv-paged-section">
+      <div class="cv-paged-section-heading">
+        <h2>{content.factsTitle}</h2>
+      </div>
+
+      <dl class="cv-paged-facts-grid">
+        {
+          content.facts.map((fact) => (
+            <div class="cv-paged-fact-card">
+              <dt>{fact.label}</dt>
+              <dd>{fact.value}</dd>
+            </div>
+          ))
+        }
+      </dl>
+    </section>
+
+    <section class="cv-paged-section">
+      <div class="cv-paged-section-heading">
+        <h2>{content.skillsTitle}</h2>
+      </div>
+
+      <div class="cv-paged-skills-grid">
+        {
+          content.skillCategories.map((category) => (
+            <section class="cv-paged-skill-card">
+              <h3>{category.title}</h3>
+              <ul>
+                {category.items.map((item) =>
+                  typeof item === "string" ? (
+                    <li>{item}</li>
+                  ) : "items" in item ? (
+                    <li class="cv-paged-skill-group-item">
+                      <p class="cv-paged-skill-group-label">{item.label}</p>
+                      <ul class="cv-paged-skill-sublist">
+                        {item.items.map((subItem) =>
+                          typeof subItem === "string" ? (
+                            <li>{subItem}</li>
+                          ) : (
+                            <li class="cv-paged-skill-chip-row">
+                              <span>{subItem.text}</span>
+                              <span class="cv-paged-chip">{subItem.chip}</span>
+                            </li>
+                          ),
+                        )}
+                      </ul>
+                    </li>
+                  ) : (
+                    <li class="cv-paged-skill-chip-row">
+                      <span>{item.text}</span>
+                      <span class="cv-paged-chip">{item.chip}</span>
+                    </li>
+                  ),
+                )}
+              </ul>
+            </section>
+          ))
+        }
+      </div>
+    </section>
+
+    <section class="cv-paged-section cv-paged-projects-section">
+      <div class="cv-paged-section-heading">
+        <h2>{content.projectsTitle}</h2>
+      </div>
+
+      <div class="cv-paged-projects-list">
+        {
+          content.projects.map((project, index) => (
+            <article class="cv-paged-project-card">
+              <header class="cv-paged-project-header">
+                <div class="cv-paged-project-title-block">
+                  <div class="cv-paged-project-eyebrow">
+                    <span class="cv-paged-card-index">
+                      {String(index + 1).padStart(2, "0")}
+                    </span>
+                    <p class="cv-paged-project-period">{project.period}</p>
+                  </div>
+                  <p class="cv-paged-project-sector">{project.sector}</p>
+                  <h3>{project.title}</h3>
+                </div>
+
+                <dl class="cv-paged-project-meta">
+                  {project.duration && (
+                    <div>
+                      <dt>{content.durationLabel}</dt>
+                      <dd>{project.duration}</dd>
+                    </div>
+                  )}
+                  {project.teamSize && (
+                    <div>
+                      <dt>{content.teamSizeLabel}</dt>
+                      <dd>{project.teamSize}</dd>
+                    </div>
+                  )}
+                  <div class="cv-paged-project-meta-wide">
+                    <dt>{content.rolesLabel}</dt>
+                    <dd>{project.roles.join(" · ")}</dd>
+                  </div>
+                </dl>
+              </header>
+
+              <div class="cv-paged-project-body">
+                <section class="cv-paged-project-summary">
+                  {project.summary.map((paragraph) => (
+                    <p>{paragraph}</p>
+                  ))}
+                </section>
+
+                <section class="cv-paged-detail-card">
+                  <h4>{content.highlightsTitle}</h4>
+                  <ul>
+                    {project.highlights.map((highlight) => (
+                      <li>{highlight}</li>
+                    ))}
+                  </ul>
+                </section>
+
+                <section class="cv-paged-detail-card">
+                  <h4>{content.stackTitle}</h4>
+                  <dl class="cv-paged-stack-list">
+                    {project.stack.map((item) => (
+                      <div>
+                        <dt>{item.label}</dt>
+                        <dd>{item.value}</dd>
+                      </div>
+                    ))}
+                  </dl>
+                </section>
+              </div>
+            </article>
+          ))
+        }
+      </div>
+    </section>
+  </article>
+</main>
+
+<style is:global>
+  :root {
+    --cv-paged-paper-width: 210mm;
+    --cv-paged-preview-width: min(
+      var(--cv-paged-paper-width),
+      calc(100vw - 1.5rem)
+    );
+    --cv-paged-bg: oklch(0.161 0.0255 175.92);
+    --cv-paged-surface: oklch(0.1787 0.0258 176.8 / 0.96);
+    --cv-paged-surface-strong: oklch(0.1861 0.0283 174.33 / 0.98);
+    --cv-paged-border: oklch(0.9049 0.0895 164.15 / 0.16);
+    --cv-paged-border-soft: oklch(0.9049 0.0895 164.15 / 0.12);
+    --cv-paged-accent: oklch(0.8452 0.1299 164.98);
+    --cv-paged-heading: oklch(0.9793 0.0207 166.11);
+    --cv-paged-text: oklch(0.9546 0.0306 165.31);
+    --cv-paged-muted: oklch(0.9089 0.0586 165.94);
+    --cv-paged-sheet-shadow: 0 24px 52px oklch(0.131 0.0212 174.91 / 0.32);
+  }
+
+  .cv-paged-root {
+    min-height: 100vh;
+    padding: 1rem 0 2rem;
+    background:
+      linear-gradient(
+        180deg,
+        oklch(1 0 89.88 / 0.08),
+        oklch(0.9253 0.0083 157.08 / 0.16)
+      ),
+      var(--cv-paged-bg);
+  }
+
+  .cv-paged-document {
+    width: var(--cv-paged-preview-width);
+    margin: 0 auto;
+    padding: 12mm;
+    border: 1px solid var(--cv-paged-border);
+    border-radius: 22px;
+    background:
+      linear-gradient(
+          90deg,
+          oklch(0.9624 0.0434 156.74 / 0.018) 1px,
+          transparent 1px
+        )
+        0 0 / 24px 100%,
+      linear-gradient(
+          0deg,
+          oklch(0.9624 0.0434 156.74 / 0.014) 1px,
+          transparent 1px
+        )
+        0 0 / 100% 24px,
+      var(--cv-paged-surface);
+    box-shadow: var(--cv-paged-sheet-shadow);
+    color: var(--cv-paged-text);
+  }
+
+  .cv-paged-hero,
+  .cv-paged-contact-grid,
+  .cv-paged-facts-grid,
+  .cv-paged-skills-grid,
+  .cv-paged-projects-list,
+  .cv-paged-project-body,
+  .cv-paged-project-meta,
+  .cv-paged-stack-list {
+    display: grid;
+  }
+
+  .cv-paged-hero {
+    gap: 1rem;
+  }
+
+  .cv-paged-hero-copy,
+  .cv-paged-project-title-block,
+  .cv-paged-section,
+  .cv-paged-project-summary,
+  .cv-paged-detail-card,
+  .cv-paged-skill-card,
+  .cv-paged-fact-card {
+    display: grid;
+    gap: 0.8rem;
+  }
+
+  .cv-paged-meta-row,
+  .cv-paged-project-eyebrow {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.8rem;
+    flex-wrap: wrap;
+  }
+
+  .cv-paged-kicker,
+  .cv-paged-last-updated span,
+  .cv-paged-card-index,
+  .cv-paged-fact-card dt,
+  .cv-paged-project-meta dt,
+  .cv-paged-stack-list dt,
+  .cv-paged-project-period,
+  .cv-paged-project-sector,
+  .cv-paged-link-label {
+    margin: 0;
+    font-family: "Chakra Petch", sans-serif;
+    font-weight: 700;
+    font-size: 0.76rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--cv-paged-accent);
+  }
+
+  .cv-paged-last-updated {
+    margin: 0;
+    display: grid;
+    gap: 0.14rem;
+    text-align: right;
+  }
+
+  .cv-paged-last-updated time {
+    font-size: 0.92rem;
+    font-weight: 600;
+    line-height: 1.2;
+    color: var(--cv-paged-heading);
+  }
+
+  .cv-paged-hero h1,
+  .cv-paged-section h2,
+  .cv-paged-project-card h3,
+  .cv-paged-detail-card h4,
+  .cv-paged-skill-card h3 {
+    margin: 0;
+    font-family: "Fraunces", serif;
+    color: var(--cv-paged-heading);
+    text-wrap: balance;
+  }
+
+  .cv-paged-hero h1 {
+    font-size: clamp(2.2rem, 8vw, 4.4rem);
+    line-height: 0.92;
+    letter-spacing: -0.04em;
+  }
+
+  .cv-paged-intro .cv-intro {
+    max-width: none;
+    font-size: 1rem;
+    line-height: 1.7;
+    color: var(--cv-paged-muted);
+  }
+
+  .cv-paged-intro .cv-intro strong {
+    color: var(--cv-paged-heading);
+  }
+
+  .cv-paged-hero-media {
+    overflow: hidden;
+    border-radius: 28px;
+    border: 1px solid var(--cv-paged-border);
+    background: var(--cv-paged-surface-strong);
+    break-inside: avoid;
+  }
+
+  .cv-paged-hero-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center top;
+    aspect-ratio: 4 / 5;
+  }
+
+  .cv-paged-section {
+    margin-top: 1.5rem;
+    break-inside: avoid;
+  }
+
+  .cv-paged-section-heading {
+    margin-bottom: 0.25rem;
+  }
+
+  .cv-paged-section h2 {
+    font-size: clamp(1.45rem, 4vw, 2rem);
+  }
+
+  .cv-paged-contact-grid,
+  .cv-paged-projects-list {
+    gap: 1rem;
+  }
+
+  .cv-paged-panel,
+  .cv-paged-fact-card,
+  .cv-paged-skill-card,
+  .cv-paged-project-card,
+  .cv-paged-detail-card {
+    border: 1px solid var(--cv-paged-border-soft);
+    border-radius: 18px;
+    background: var(--cv-paged-surface-strong);
+    break-inside: avoid;
+  }
+
+  .cv-paged-panel,
+  .cv-paged-fact-card,
+  .cv-paged-skill-card,
+  .cv-paged-detail-card {
+    padding: 1rem;
+  }
+
+  .cv-paged-panel-strong {
+    background: oklch(0.1861 0.0283 174.33 / 1);
+  }
+
+  .cv-paged-link-list,
+  .cv-paged-chip-list,
+  .cv-paged-skill-card ul,
+  .cv-paged-detail-card ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .cv-paged-link-list {
+    display: grid;
+    gap: 0.7rem;
+  }
+
+  .cv-paged-link-list a {
+    display: grid;
+    gap: 0.24rem;
+    padding: 0.8rem 0.9rem;
+    border: 1px solid var(--cv-paged-border-soft);
+    border-radius: 16px;
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .cv-paged-link-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .cv-paged-link-icon {
+    width: 1rem;
+    height: 1rem;
+  }
+
+  .cv-paged-link-url {
+    color: var(--cv-paged-muted);
+    line-height: 1.5;
+    word-break: break-word;
+  }
+
+  .cv-paged-chip-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+  }
+
+  .cv-paged-chip-list li,
+  .cv-paged-chip {
+    border-radius: 999px;
+    border: 1px solid var(--cv-paged-border-soft);
+    background: oklch(0.2241 0.0367 170.4 / 0.72);
+  }
+
+  .cv-paged-chip-list li {
+    padding: 0.5rem 0.8rem;
+    line-height: 1.4;
+  }
+
+  .cv-paged-facts-grid,
+  .cv-paged-skills-grid {
+    gap: 1rem;
+  }
+
+  .cv-paged-fact-card dd,
+  .cv-paged-project-meta dd,
+  .cv-paged-stack-list dd {
+    margin: 0;
+    line-height: 1.55;
+    color: var(--cv-paged-heading);
+  }
+
+  .cv-paged-skill-card h3,
+  .cv-paged-project-card h3,
+  .cv-paged-detail-card h4 {
+    font-size: 1.15rem;
+    line-height: 1.2;
+  }
+
+  .cv-paged-skill-card > ul,
+  .cv-paged-detail-card ul,
+  .cv-paged-stack-list {
+    display: grid;
+    gap: 0.55rem;
+  }
+
+  .cv-paged-skill-card > ul > li,
+  .cv-paged-detail-card li {
+    position: relative;
+    padding-left: 1rem;
+    line-height: 1.6;
+    color: var(--cv-paged-muted);
+  }
+
+  .cv-paged-skill-card > ul > li::before,
+  .cv-paged-detail-card li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0.72rem;
+    width: 0.38rem;
+    height: 0.38rem;
+    border-radius: 999px;
+    background: var(--cv-paged-accent);
+  }
+
+  .cv-paged-skill-group-item::before {
+    display: none;
+  }
+
+  .cv-paged-skill-group-label {
+    margin: 0;
+    color: var(--cv-paged-heading);
+    font-weight: 600;
+    line-height: 1.45;
+  }
+
+  .cv-paged-skill-sublist {
+    margin-top: 0.45rem !important;
+    padding-left: 1rem !important;
+    list-style: disc !important;
+  }
+
+  .cv-paged-skill-sublist li {
+    color: var(--cv-paged-muted);
+    line-height: 1.55;
+  }
+
+  .cv-paged-skill-sublist li::before {
+    display: none !important;
+  }
+
+  .cv-paged-skill-chip-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .cv-paged-chip {
+    display: inline-block;
+    padding: 0.1rem 0.48rem;
+    color: var(--cv-paged-heading);
+    font-size: 0.68rem;
+    font-weight: 700;
+    line-height: 1.3;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .cv-paged-project-card {
+    overflow: hidden;
+  }
+
+  .cv-paged-project-header {
+    padding: 1rem 1rem 0.9rem;
+    border-bottom: 1px dashed var(--cv-paged-border-soft);
+  }
+
+  .cv-paged-project-title-block {
+    gap: 0.45rem;
+  }
+
+  .cv-paged-card-index {
+    color: var(--cv-paged-accent);
+  }
+
+  .cv-paged-project-sector {
+    font-size: 0.88rem;
+  }
+
+  .cv-paged-project-meta {
+    gap: 0.7rem;
+    margin-top: 0.9rem;
+  }
+
+  .cv-paged-project-meta > div,
+  .cv-paged-stack-list > div {
+    display: grid;
+    gap: 0.18rem;
+    padding: 0.75rem 0.85rem;
+    border: 1px solid var(--cv-paged-border-soft);
+    border-radius: 14px;
+  }
+
+  .cv-paged-project-meta-wide {
+    grid-column: 1 / -1;
+  }
+
+  .cv-paged-project-body {
+    gap: 0.9rem;
+    padding: 1rem;
+  }
+
+  .cv-paged-project-summary p {
+    margin: 0;
+    color: var(--cv-paged-muted);
+    line-height: 1.65;
+  }
+
+  .cv-paged-stack-list {
+    gap: 0.65rem;
+  }
+
+  @media (min-width: 760px) {
+    .cv-paged-hero {
+      grid-template-columns: minmax(0, 1.35fr) minmax(13rem, 0.75fr);
+      align-items: start;
+    }
+
+    .cv-paged-contact-grid,
+    .cv-paged-facts-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .cv-paged-skills-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .cv-paged-project-meta {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (min-width: 980px) {
+    .cv-paged-skills-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .cv-paged-project-body {
+      grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.85fr) minmax(
+          0,
+          0.85fr
+        );
+      align-items: start;
+    }
+  }
+
+  @page {
+    size: A4;
+    margin: 10mm;
+  }
+
+  @media print {
+    :root {
+      --cv-paged-bg: white;
+      --cv-paged-surface: white;
+      --cv-paged-surface-strong: white;
+      --cv-paged-border: oklch(0 0 0 / 0.14);
+      --cv-paged-border-soft: oklch(0 0 0 / 0.1);
+      --cv-paged-accent: oklch(0.42 0.0861 186.39);
+      --cv-paged-heading: oklch(0.2077 0.0398 265.75);
+      --cv-paged-text: oklch(0.24 0.0296 256.85);
+      --cv-paged-muted: oklch(0.36 0.0374 257.28);
+      --cv-paged-sheet-shadow: none;
+    }
+
+    html,
+    body {
+      background: white !important;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    .cv-paged-root {
+      padding: 0;
+      background: white;
+    }
+
+    .cv-paged-document {
+      width: auto;
+      margin: 0;
+      padding: 0;
+      border: 0;
+      border-radius: 0;
+      background: white;
+      box-shadow: none;
+    }
+
+    .cv-paged-section,
+    .cv-paged-panel,
+    .cv-paged-project-card,
+    .cv-paged-skill-card,
+    .cv-paged-fact-card,
+    .cv-paged-detail-card,
+    .cv-paged-hero-media {
+      break-inside: avoid;
+      page-break-inside: avoid;
+    }
+  }
+</style>
