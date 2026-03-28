@@ -6,6 +6,7 @@
       "dependencies": {
         "@astrojs/check": "0.9.8",
         "@astrojs/tailwind": "^6.0.2",
+        "@chenglou/pretext": "^0.0.2",
         "@iconify-json/bxl": "^1.2.2",
         "@iconify-json/ion": "^1.2.6",
         "@iconify-json/logos": "^1.2.10",
@@ -62,6 +63,8 @@
     "@babel/types": ["@babel/types@7.29.0", "", { "dependencies": { "@babel/helper-string-parser": "^7.27.1", "@babel/helper-validator-identifier": "^7.28.5" } }, "sha512-LwdZHpScM4Qz8Xw2iKSzS+cfglZzJGvofQICy7W7v4caru4EaAmyUuO6BGrbyQ2mYV11W0U8j5mBhd14dd3B0A=="],
 
     "@capsizecss/unpack": ["@capsizecss/unpack@4.0.0", "", { "dependencies": { "fontkitten": "^1.0.0" } }, "sha512-VERIM64vtTP1C4mxQ5thVT9fK0apjPFobqybMtA1UdUujWka24ERHbRHFGmpbbhp73MhV+KSsHQH9C6uOTdEQA=="],
+
+    "@chenglou/pretext": ["@chenglou/pretext@0.0.2", "", { "peerDependencies": { "typescript": "^5" } }, "sha512-bMPySDxbU1h+qU3D7HzTsz2vhBFIeO19Yp8gsYTJ219tjuX7WFsKJzk2oPVpwxl2P1VEuQGo6whg6Kr8gztphA=="],
 
     "@clack/core": ["@clack/core@1.1.0", "", { "dependencies": { "sisteransi": "^1.0.5" } }, "sha512-SVcm4Dqm2ukn64/8Gub2wnlA5nS2iWJyCkdNHcvNHPIeBTGojpdJ+9cZKwLfmqy7irD4N5qLteSilJlE0WLAtA=="],
 

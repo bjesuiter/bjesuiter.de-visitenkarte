@@ -1,0 +1,26 @@
+---
+import DockNav from "../../../components/DockNav.astro";
+import CVPrintPretext from "../../../components/CVPrintPretext.astro";
+import Layout from "../../../layouts/Layout.astro";
+---
+
+<Layout
+  lang="de"
+  title="Benjamin Jesuiter · Lebenslauf · Pretext-Druck-Prototyp"
+  description="Prototypische Druckvorschau des Lebenslaufs von Benjamin Jesuiter mit Pretext-gestützter Abschnittsplatzierung."
+  canonicalPath="/de/lebenslauf/"
+  noindex={true}
+  bodyClass="bg-[#02110d]"
+  printPreview={true}
+>
+  <DockNav
+    locale="de"
+    current="cv"
+    homeHref="/de/"
+    cvHref="/de/lebenslauf/drucken-pretext/"
+    supportHref="/de/support/"
+    languageSwitchHref="/en/cv/print-pretext/"
+  />
+
+  <CVPrintPretext locale="de" />
+</Layout>
