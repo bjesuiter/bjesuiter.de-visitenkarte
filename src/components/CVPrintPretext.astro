@@ -179,119 +179,115 @@ const paginatedSkillPages = [
     }
 
     <div
-      class="cv-pretext-source-shell"
-      data-pretext-source-shell
+      class="cv-pretext-measurement-root"
+      data-pretext-measurement-root
       aria-hidden="true"
     >
-      <article
-        class="cv-print-page cv-print-page-projects cv-pretext-source-page"
-      >
-        <div class="cv-sheet cv-sheet-page">
-          <section
-            class="cv-section-shell cv-section cv-project-history-section"
-            data-pretext-heading-template
-          >
-            <div class="cv-section-heading">
-              <div>
-                <h2 class="pl-1">{content.projectsTitle}</h2>
-              </div>
+      <div class="cv-sheet cv-sheet-page cv-pretext-measurement-sheet">
+        <section
+          class="cv-section-shell cv-section cv-project-history-section"
+          data-pretext-heading-template
+        >
+          <div class="cv-section-heading">
+            <div>
+              <h2 class="pl-1">{content.projectsTitle}</h2>
             </div>
-          </section>
+          </div>
+        </section>
 
-          <div class="cv-projects" data-pretext-source-projects>
-            {
-              content.projects.map((project, index) => (
-                <article
-                  data-pretext-project-card
-                  data-project-index={String(index)}
+        <div class="cv-projects" data-pretext-source-projects>
+          {
+            content.projects.map((project, index) => (
+              <article
+                data-pretext-project-card
+                data-project-index={String(index)}
+                class:list={[
+                  "cv-project-card cv-surface cv-surface-project",
+                  ![2, 3, 7, 10].includes(index) &&
+                    "cv-project-card-top-aligned-context",
+                  [2, 3, 7, 10].includes(index) && "cv-project-card-linear",
+                ]}
+              >
+                <header class="cv-project-header gap-4">
+                  <div class="cv-project-title-block gap-4">
+                    <div class="cv-project-eyebrow">
+                      <span class="cv-card-index">
+                        {String(index + 1).padStart(2, "0")}
+                      </span>
+                      <p class="cv-project-period" data-pretext-text>
+                        {project.period}
+                      </p>
+                    </div>
+                    <p class="cv-project-sector" data-pretext-text>
+                      {project.sector}
+                    </p>
+                    <h3 data-pretext-text>{project.title}</h3>
+                  </div>
+
+                  <dl class="cv-project-meta gap-4">
+                    {project.duration && (
+                      <div class="cv-surface-inset">
+                        <dt data-pretext-text>{content.durationLabel}</dt>
+                        <dd data-pretext-text>{project.duration}</dd>
+                      </div>
+                    )}
+                    {project.teamSize && (
+                      <div class="cv-surface-inset">
+                        <dt data-pretext-text>{content.teamSizeLabel}</dt>
+                        <dd data-pretext-text>{project.teamSize}</dd>
+                      </div>
+                    )}
+                    <div class="cv-surface-inset cv-project-meta-roles">
+                      <dt data-pretext-text>{content.rolesLabel}</dt>
+                      <dd data-pretext-text>{project.roles.join(" · ")}</dd>
+                    </div>
+                  </dl>
+                </header>
+
+                <div class="cv-project-divider" aria-hidden="true" />
+
+                <div
                   class:list={[
-                    "cv-project-card cv-surface cv-surface-project",
-                    ![2, 3, 7, 10].includes(index) &&
-                      "cv-project-card-top-aligned-context",
-                    [2, 3, 7, 10].includes(index) && "cv-project-card-linear",
+                    "cv-project-body gap-4",
+                    [2, 3, 7, 10].includes(index) && "cv-project-body-linear",
                   ]}
                 >
-                  <header class="cv-project-header gap-4">
-                    <div class="cv-project-title-block gap-4">
-                      <div class="cv-project-eyebrow">
-                        <span class="cv-card-index">
-                          {String(index + 1).padStart(2, "0")}
-                        </span>
-                        <p class="cv-project-period" data-pretext-text>
-                          {project.period}
-                        </p>
-                      </div>
-                      <p class="cv-project-sector" data-pretext-text>
-                        {project.sector}
-                      </p>
-                      <h3 data-pretext-text>{project.title}</h3>
-                    </div>
+                  <div class="cv-project-copy gap-4">
+                    <section class="cv-project-summary">
+                      {project.summary.map((paragraph) => (
+                        <p data-pretext-text>{paragraph}</p>
+                      ))}
+                    </section>
 
-                    <dl class="cv-project-meta gap-4">
-                      {project.duration && (
-                        <div class="cv-surface-inset">
-                          <dt data-pretext-text>{content.durationLabel}</dt>
-                          <dd data-pretext-text>{project.duration}</dd>
-                        </div>
-                      )}
-                      {project.teamSize && (
-                        <div class="cv-surface-inset">
-                          <dt data-pretext-text>{content.teamSizeLabel}</dt>
-                          <dd data-pretext-text>{project.teamSize}</dd>
-                        </div>
-                      )}
-                      <div class="cv-surface-inset cv-project-meta-roles">
-                        <dt data-pretext-text>{content.rolesLabel}</dt>
-                        <dd data-pretext-text>{project.roles.join(" · ")}</dd>
-                      </div>
-                    </dl>
-                  </header>
+                    <section class="cv-project-spacer" aria-hidden="true" />
 
-                  <div class="cv-project-divider" aria-hidden="true" />
-
-                  <div
-                    class:list={[
-                      "cv-project-body gap-4",
-                      [2, 3, 7, 10].includes(index) && "cv-project-body-linear",
-                    ]}
-                  >
-                    <div class="cv-project-copy gap-4">
-                      <section class="cv-project-summary">
-                        {project.summary.map((paragraph) => (
-                          <p data-pretext-text>{paragraph}</p>
+                    <section class="cv-project-highlights">
+                      <h4 data-pretext-text>{content.highlightsTitle}</h4>
+                      <ul class="cv-project-highlights-list gap-4">
+                        {project.highlights.map((highlight) => (
+                          <li data-pretext-text>{highlight}</li>
                         ))}
-                      </section>
-
-                      <section class="cv-project-spacer" aria-hidden="true" />
-
-                      <section class="cv-project-highlights">
-                        <h4 data-pretext-text>{content.highlightsTitle}</h4>
-                        <ul class="cv-project-highlights-list gap-4">
-                          {project.highlights.map((highlight) => (
-                            <li data-pretext-text>{highlight}</li>
-                          ))}
-                        </ul>
-                      </section>
-                    </div>
-
-                    <section class="cv-detail-card cv-surface-inset cv-brace-frame-vertical">
-                      <h4 data-pretext-text>{content.stackTitle}</h4>
-                      <dl class="cv-stack-list gap-4">
-                        {project.stack.map((item) => (
-                          <div>
-                            <dt data-pretext-text>{item.label}</dt>
-                            <dd data-pretext-text>{item.value}</dd>
-                          </div>
-                        ))}
-                      </dl>
+                      </ul>
                     </section>
                   </div>
-                </article>
-              ))
-            }
-          </div>
+
+                  <section class="cv-detail-card cv-surface-inset cv-brace-frame-vertical">
+                    <h4 data-pretext-text>{content.stackTitle}</h4>
+                    <dl class="cv-stack-list gap-4">
+                      {project.stack.map((item) => (
+                        <div>
+                          <dt data-pretext-text>{item.label}</dt>
+                          <dd data-pretext-text>{item.value}</dd>
+                        </div>
+                      ))}
+                    </dl>
+                  </section>
+                </div>
+              </article>
+            ))
+          }
         </div>
-      </article>
+      </div>
     </div>
 
     <div class="cv-pretext-generated-stack" data-pretext-pages></div>
@@ -402,6 +398,7 @@ const paginatedSkillPages = [
       const page = document.createElement("article");
       page.className =
         "cv-print-page cv-print-page-projects cv-pretext-generated-page";
+      page.setAttribute("data-pretext-generated-page", "true");
 
       const sheet = document.createElement("div");
       sheet.className = "cv-sheet cv-sheet-page";
@@ -431,7 +428,9 @@ const paginatedSkillPages = [
 
     const paginatePretextProjects = () => {
       const pagesRoot = document.querySelector("[data-pretext-pages]");
-      const sourceShell = document.querySelector("[data-pretext-source-shell]");
+      const measurementRoot = document.querySelector(
+        "[data-pretext-measurement-root]",
+      );
       const sourceProjects = document.querySelector(
         "[data-pretext-source-projects]",
       );
@@ -441,7 +440,7 @@ const paginatedSkillPages = [
 
       if (
         !(pagesRoot instanceof HTMLElement) ||
-        !(sourceShell instanceof HTMLElement) ||
+        !(measurementRoot instanceof HTMLElement) ||
         !(sourceProjects instanceof HTMLElement) ||
         !(headingTemplate instanceof HTMLElement)
       ) {
@@ -537,7 +536,11 @@ const paginatedSkillPages = [
     };
 
     const collectPrintOverflow = () => {
-      const pages = Array.from(document.querySelectorAll(".cv-print-page"));
+      const pages = Array.from(
+        document.querySelectorAll(
+          ".cv-print-page[data-pretext-generated-page], .cv-print-page:not(.cv-pretext-generated-page):not(.cv-pretext-measurement-page)",
+        ),
+      );
 
       return pages.map((page, index) => {
         const sheet = page.querySelector(".cv-sheet-page");
@@ -644,7 +647,11 @@ const paginatedSkillPages = [
     const syncPrintOverflowState = () => {
       const root = document.documentElement;
       const isPreview = root.hasAttribute("data-print-preview");
-      const pages = Array.from(document.querySelectorAll(".cv-print-page"));
+      const pages = Array.from(
+        document.querySelectorAll(
+          ".cv-print-page[data-pretext-generated-page], .cv-print-page:not(.cv-pretext-generated-page):not(.cv-pretext-measurement-page)",
+        ),
+      );
 
       if (!isPreview || pages.length === 0) {
         delete root.dataset.cvOverflowActive;
@@ -2417,7 +2424,7 @@ const paginatedSkillPages = [
     justify-items: center;
   }
 
-  .cv-pretext-source-shell {
+  .cv-pretext-measurement-root {
     position: fixed;
     top: 0;
     left: -300vw;
@@ -2426,12 +2433,12 @@ const paginatedSkillPages = [
     pointer-events: none;
   }
 
-  .cv-pretext-source-page {
-    height: calc(var(--cv-preview-page-width) * 1.4142857);
+  .cv-pretext-measurement-sheet {
+    min-height: calc(var(--cv-preview-page-width) * 1.4142857);
     box-shadow: none !important;
   }
 
-  html[data-cv-print-active] .cv-pretext-source-shell {
+  html[data-cv-print-active] .cv-pretext-measurement-root {
     display: none !important;
   }
 
