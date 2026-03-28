@@ -1,13 +1,13 @@
 ---
 import DockNav from "../../../components/DockNav.astro";
-import CVPrint from "../../../components/CVPrint.astro";
+import CVPrintPretext from "../../../components/CVPrintPretext.astro";
 import Layout from "../../../layouts/Layout.astro";
 ---
 
 <Layout
   lang="de"
   title="Benjamin Jesuiter · Lebenslauf · Druckansicht"
-  description="Druckvorschau des Lebenslaufs von Benjamin Jesuiter."
+  description="Druckvorschau des Lebenslaufs von Benjamin Jesuiter mit Pretext-gestützter Abschnittsplatzierung."
   canonicalPath="/de/lebenslauf/"
   noindex={true}
   bodyClass="bg-[#02110d]"
@@ -22,5 +22,5 @@ import Layout from "../../../layouts/Layout.astro";
     languageSwitchHref="/en/cv/print/"
   />
 
-  <CVPrint locale="de" />
+  <CVPrintPretext locale="de" />
 </Layout>
