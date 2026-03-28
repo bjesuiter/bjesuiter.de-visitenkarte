@@ -2116,6 +2116,11 @@ const paginatedSkillPages = [
     margin-top: 0.7rem;
   }
 
+  html[data-cv-print-active] .cv-skills-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.7rem;
+  }
+
   html[data-cv-print-active] .cv-panel,
   html[data-cv-print-active] .cv-panel-mirrored,
   html[data-cv-print-active] .cv-detail-card,
@@ -2449,7 +2454,8 @@ const paginatedSkillPages = [
       background: none;
     }
 
-    html[data-print-preview] .cv-print-stack {
+    html[data-print-preview] .cv-print-stack,
+    html[data-print-preview] .cv-pretext-generated-stack {
       display: block;
       gap: 0;
     }
@@ -2482,7 +2488,10 @@ const paginatedSkillPages = [
       min-height: 100%;
     }
 
-    html[data-print-preview] .cv-print-page:last-child {
+    html[data-print-preview] .cv-print-stack > .cv-print-page:last-child,
+    html[data-print-preview]
+      .cv-pretext-generated-stack
+      > .cv-print-page:last-child {
       break-after: auto;
       page-break-after: auto;
     }
