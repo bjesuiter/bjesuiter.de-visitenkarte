@@ -13,7 +13,8 @@ export interface CvLink {
 
 export interface CvSkillChipItem {
   text: string;
-  chip: string;
+  chip?: string;
+  level?: number;
 }
 
 export type CvSkillSubItem = string | CvSkillChipItem;
@@ -99,7 +100,7 @@ const cvDe: CvContent = {
   contactTitle: "Links",
   factsTitle: "Zur Person",
   industriesTitle: "Branchen",
-  skillsTitle: "IT-Kenntnisse",
+  skillsTitle: "Skills & Expertise",
   projectsTitle: "Projektchronik",
   highlightsTitle: "Aufgaben & Erfolge",
   stackTitle: "Technischer Kontext",
@@ -143,8 +144,7 @@ const cvDe: CvContent = {
     },
     {
       label: "Rollenprofil",
-      value:
-        "Softwarearchitekt, Technical Lead, Senior Entwickler, Consultant",
+      value: "Softwarearchitekt, Technical Lead, Senior Entwickler, Consultant",
     },
     {
       label: "Projekte & Branchen",
@@ -165,7 +165,11 @@ const cvDe: CvContent = {
       href: "https://www.linkedin.com/in/bjesuiter",
       icon: "ph:linkedin-logo-fill",
     },
-    { label: "GitHub", href: "https://github.com/bjesuiter", icon: "bxl:github" },
+    {
+      label: "GitHub",
+      href: "https://github.com/bjesuiter",
+      icon: "bxl:github",
+    },
   ],
   industries: [
     "Finanzen",
@@ -205,9 +209,11 @@ const cvDe: CvContent = {
           label: "Daily driver models",
           items: [
             "Claude Sonnet 4.1, 4.5, Opus 4.5, 4.6",
+            "GPT 5.2 Codex, 5.3 Codex and 5.4",
             {
-              text: "GPT 5.2 Codex, 5.3 Codex and 5.4",
+              text: "GPT 5.5",
               chip: "current",
+              level: 4,
             },
           ],
         },
@@ -807,7 +813,7 @@ const cvEn: CvContent = {
   contactTitle: "Links",
   factsTitle: "Profile",
   industriesTitle: "Industries",
-  skillsTitle: "IT Skills",
+  skillsTitle: "Skills & Expertise",
   projectsTitle: "Project History",
   highlightsTitle: "Responsibilities & Outcomes",
   stackTitle: "Technical Context",
@@ -841,7 +847,8 @@ const cvEn: CvContent = {
     },
     {
       label: "Core Focus",
-      value: "Agentic Engineering, Software Architecture, Full-Stack Web Engineering",
+      value:
+        "Agentic Engineering, Software Architecture, Full-Stack Web Engineering",
     },
     {
       label: "Primary Stack",
@@ -871,7 +878,11 @@ const cvEn: CvContent = {
       href: "https://www.linkedin.com/in/bjesuiter",
       icon: "ph:linkedin-logo-fill",
     },
-    { label: "GitHub", href: "https://github.com/bjesuiter", icon: "bxl:github" },
+    {
+      label: "GitHub",
+      href: "https://github.com/bjesuiter",
+      icon: "bxl:github",
+    },
   ],
   industries: [
     "Finance",
@@ -892,7 +903,10 @@ const cvEn: CvContent = {
         "Requirements analysis",
         "Project setup with Git",
         "Monorepos with Nx, npm workspaces, bun workspaces, and TypeScript path aliases",
-        "Git workflows such as GitFlow and OneFlow",
+        {
+          text: "Git workflows such as GitFlow and OneFlow",
+          level: 4,
+        },
         "GitLab, GitHub, Gitea, and Bitbucket",
       ],
     },
@@ -911,9 +925,11 @@ const cvEn: CvContent = {
           label: "Daily driver models",
           items: [
             "Claude Sonnet 4.1, 4.5, Opus 4.5, 4.6",
+            "GPT 5.2 Codex, 5.3 Codex and 5.4",
             {
-              text: "GPT 5.2 Codex, 5.3 Codex and 5.4",
+              text: "GPT 5.5",
               chip: "current",
+              level: 4,
             },
           ],
         },

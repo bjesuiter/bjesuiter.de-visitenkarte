@@ -17,6 +17,24 @@ const profileImageAlt =
     : "Portrait of Benjamin Jesuiter";
 const printHref = locale === "de" ? "/de/lebenslauf/drucken/" : "/en/cv/print/";
 const autoPrintHref = `${printHref}?autoprint=1`;
+const skillLevelDots = [1, 2, 3, 4, 5];
+const getSkillLevel = (level?: number) => level ?? 3;
+const skillLegend =
+  locale === "de"
+    ? [
+        { level: 1, label: "Grundkenntnisse" },
+        { level: 2, label: "Arbeitsfähig" },
+        { level: 3, label: "Sicher" },
+        { level: 4, label: "Fortgeschritten" },
+        { level: 5, label: "Experte" },
+      ]
+    : [
+        { level: 1, label: "Foundational" },
+        { level: 2, label: "Working" },
+        { level: 3, label: "Proficient" },
+        { level: 4, label: "Advanced" },
+        { level: 5, label: "Expert" },
+      ];
 ---
 
 <main class="cv-page">
@@ -97,11 +115,36 @@ const autoPrintHref = `${printHref}?autoprint=1`;
     </section>
 
     <section class="cv-section-shell cv-section cv-skills-section">
-      <div class="cv-section-heading">
-        <h2 class="pl-2">{content.skillsTitle}</h2>
+      <div class="cv-section-heading cv-skills-heading">
+        <h2>{content.skillsTitle}</h2>
       </div>
 
-      <div class="cv-skills-grid gap-4">
+      <div
+        class="cv-skills-legend"
+        aria-label={locale === "de"
+          ? "Legende für Kompetenzstufen"
+          : "Skill level legend"}
+      >
+        {
+          skillLegend.map((entry) => (
+            <div class="cv-skills-legend-item">
+              <span class="cv-skill-rating" aria-hidden="true">
+                {skillLevelDots.map((dot) => (
+                  <span
+                    class:list={[
+                      "cv-skill-rating-dot",
+                      dot <= entry.level && "is-active",
+                    ]}
+                  />
+                ))}
+              </span>
+              <span>{entry.label}</span>
+            </div>
+          ))
+        }
+      </div>
+
+      <div class="cv-skills-grid">
         {
           content.skillCategories.map((category) => (
             <section class="cv-skill-card">
@@ -111,19 +154,73 @@ const autoPrintHref = `${printHref}?autoprint=1`;
               <ul class="gap-4">
                 {category.items.map((item) =>
                   typeof item === "string" ? (
-                    <li>{item}</li>
+                    <li class="cv-skill-rating-row">
+                      <span>{item}</span>
+                      <span class="cv-skill-rating" aria-label="Level 3 of 5">
+                        {skillLevelDots.map((dot) => (
+                          <span
+                            class:list={[
+                              "cv-skill-rating-dot",
+                              dot <= getSkillLevel() && "is-active",
+                            ]}
+                            aria-hidden="true"
+                          />
+                        ))}
+                      </span>
+                    </li>
                   ) : "items" in item ? (
-                    <li class="cv-skill-group">
+                    <li
+                      class:list={[
+                        "cv-skill-group",
+                        item.label === "Daily driver models" &&
+                          "cv-skill-group-spaced",
+                      ]}
+                    >
                       <p class="cv-skill-group-label">{item.label}</p>
                       <ul class="cv-skill-sublist">
                         {item.items.map((subItem) =>
                           typeof subItem === "string" ? (
-                            <li class="cv-skill-sublist-item">{subItem}</li>
+                            <li class="cv-skill-sublist-item cv-skill-rating-row">
+                              <span>{subItem}</span>
+                              <span
+                                class="cv-skill-rating"
+                                aria-label="Level 3 of 5"
+                              >
+                                {skillLevelDots.map((dot) => (
+                                  <span
+                                    class:list={[
+                                      "cv-skill-rating-dot",
+                                      dot <= getSkillLevel() && "is-active",
+                                    ]}
+                                    aria-hidden="true"
+                                  />
+                                ))}
+                              </span>
+                            </li>
                           ) : (
-                            <li class="cv-skill-sublist-item">
+                            <li class="cv-skill-sublist-item cv-skill-rating-row">
                               <span>{subItem.text}</span>
-                              <span class="cv-chip cv-skill-sublist-chip">
-                                {subItem.chip}
+                              <span class="cv-skill-rating-group">
+                                {subItem.chip && (
+                                  <span class="cv-chip cv-skill-sublist-chip">
+                                    {subItem.chip}
+                                  </span>
+                                )}
+                                <span
+                                  class="cv-skill-rating"
+                                  aria-label={`Level ${getSkillLevel(subItem.level)} of 5`}
+                                >
+                                  {skillLevelDots.map((dot) => (
+                                    <span
+                                      class:list={[
+                                        "cv-skill-rating-dot",
+                                        dot <= getSkillLevel(subItem.level) &&
+                                          "is-active",
+                                      ]}
+                                      aria-hidden="true"
+                                    />
+                                  ))}
+                                </span>
                               </span>
                             </li>
                           ),
@@ -131,9 +228,25 @@ const autoPrintHref = `${printHref}?autoprint=1`;
                       </ul>
                     </li>
                   ) : (
-                    <li class="cv-skill-chip-row">
+                    <li class="cv-skill-chip-row cv-skill-rating-row">
                       <span>{item.text}</span>
-                      <span class="cv-chip">{item.chip}</span>
+                      <span class="cv-skill-rating-group">
+                        {item.chip && <span class="cv-chip">{item.chip}</span>}
+                        <span
+                          class="cv-skill-rating"
+                          aria-label={`Level ${getSkillLevel(item.level)} of 5`}
+                        >
+                          {skillLevelDots.map((dot) => (
+                            <span
+                              class:list={[
+                                "cv-skill-rating-dot",
+                                dot <= getSkillLevel(item.level) && "is-active",
+                              ]}
+                              aria-hidden="true"
+                            />
+                          ))}
+                        </span>
+                      </span>
                     </li>
                   ),
                 )}
@@ -542,6 +655,7 @@ const autoPrintHref = `${printHref}?autoprint=1`;
     --cv-section-clamp-depth: 0.78rem;
     --cv-section-clamp-inset-left: 1.1rem;
     --cv-section-clamp-inset-right: 1.1rem;
+    padding-inline: 0.15rem;
   }
 
   .cv-section-frame::before,
@@ -595,6 +709,27 @@ const autoPrintHref = `${printHref}?autoprint=1`;
 
   .cv-section-heading {
     margin-bottom: 1rem;
+  }
+
+  .cv-skills-heading {
+    margin-bottom: 1.25rem;
+  }
+
+  .cv-skills-heading h2 {
+    position: relative;
+    display: inline-block;
+    padding: 0 0 0.6rem;
+  }
+
+  .cv-skills-heading h2::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: min(12rem, 100%);
+    height: 2px;
+    border-radius: 999px;
+    background: oklch(0.8452 0.1299 164.98 / 0.72);
   }
 
   .cv-panel h2,
@@ -732,23 +867,60 @@ const autoPrintHref = `${printHref}?autoprint=1`;
     opacity: 0.92;
   }
 
+  .cv-skills-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.55rem 1.05rem;
+    margin: -0.25rem 0 1rem;
+    color: oklch(0.9089 0.0586 165.94 / 0.82);
+    font-size: 0.82rem;
+  }
+
+  .cv-skills-legend-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.42rem;
+    white-space: nowrap;
+  }
+
+  .cv-skills-grid {
+    gap: 0.9rem;
+  }
+
   .cv-skill-card {
-    padding: 1rem 1rem 1.05rem;
-    border: 0;
-    background: transparent;
-    box-shadow: none;
+    min-height: 100%;
+    padding: 1.05rem 1.15rem 1.15rem;
+    border: 1px solid oklch(0.8452 0.1299 164.98 / 0.18);
+    border-radius: 0.55rem;
+    background: oklch(0.2058 0.0319 169.79 / 0.72);
+    box-shadow:
+      inset 0 1px 0 oklch(1 0 0 / 0.04),
+      0 12px 28px oklch(0.107 0.027 252.7 / 0.16);
+  }
+
+  .cv-skill-card .cv-card-heading {
+    margin-bottom: 0.74rem;
   }
 
   .cv-skill-card h3 {
-    font-size: 1.08rem;
+    color: oklch(0.9089 0.0586 165.94);
+    font-family: "Chakra Petch", sans-serif;
+    font-size: 0.82rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
   }
 
   .cv-skill-card ul {
-    gap: 0.46rem;
+    gap: 0.3rem;
   }
 
   .cv-skill-group {
     padding-left: 0 !important;
+  }
+
+  .cv-skill-group-spaced {
+    margin-top: 1.45rem;
   }
 
   .cv-skill-group::before {
@@ -758,7 +930,7 @@ const autoPrintHref = `${printHref}?autoprint=1`;
   .cv-skill-group-label {
     margin: 0;
     font-weight: 400;
-    color: oklch(0.9647 0.0378 164.9);
+    color: oklch(0.9583 0.0422 168.36);
     line-height: 1.4;
   }
 
@@ -778,6 +950,11 @@ const autoPrintHref = `${printHref}?autoprint=1`;
     list-style: disc outside;
   }
 
+  .cv-skill-sublist .cv-skill-rating-row {
+    list-style: none;
+    margin-left: 0;
+  }
+
   .cv-skill-sublist .cv-skill-sublist-item::before {
     display: none;
   }
@@ -787,6 +964,40 @@ const autoPrintHref = `${printHref}?autoprint=1`;
     flex-wrap: wrap;
     align-items: center;
     gap: 0.45rem;
+  }
+
+  .cv-skill-rating-row {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.85rem;
+  }
+
+  .cv-skill-rating-group {
+    display: inline-flex;
+    flex: 0 0 auto;
+    align-items: center;
+    gap: 0.5rem;
+    margin-left: auto;
+  }
+
+  .cv-skill-rating {
+    display: inline-flex;
+    flex: 0 0 auto;
+    align-items: center;
+    gap: 0.18rem;
+  }
+
+  .cv-skill-rating-dot {
+    width: 0.42rem;
+    height: 0.42rem;
+    border-radius: 999px;
+    background: oklch(0.8452 0.1299 164.98 / 0.18);
+  }
+
+  .cv-skill-rating-dot.is-active {
+    background: oklch(0.8452 0.1299 164.98);
+    box-shadow: 0 0 0 1px oklch(0.8452 0.1299 164.98 / 0.16);
   }
 
   .cv-chip {
@@ -816,11 +1027,21 @@ const autoPrintHref = `${printHref}?autoprint=1`;
     line-height: 1.7;
   }
 
+  .cv-skill-card li {
+    color: oklch(0.9277 0.0528 165.89);
+    font-weight: 400;
+    line-height: 1.5;
+  }
+
   .cv-skill-card > ul > li,
   .cv-project-highlights li,
   .cv-detail-card li {
     position: relative;
     padding-left: 1rem;
+  }
+
+  .cv-skill-card > ul > li {
+    padding-left: 0;
   }
 
   .cv-skill-card > ul > li::before,
@@ -834,6 +1055,10 @@ const autoPrintHref = `${printHref}?autoprint=1`;
     height: 0.38rem;
     border-radius: 999px;
     background: oklch(0.8452 0.1299 164.98);
+  }
+
+  .cv-skill-card > ul > li::before {
+    display: none;
   }
 
   .cv-projects {
