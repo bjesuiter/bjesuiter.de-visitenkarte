@@ -229,10 +229,31 @@ const skillLegend =
         </div>
       </div>
 
+      <nav class="cv-project-toc" aria-label={content.projectTocTitle}>
+        <h3>{content.projectTocTitle}</h3>
+        <ol class="cv-project-toc-list">
+          {
+            content.projects.map((project, index) => (
+              <li>
+                <a href={`#${project.id}`} class="cv-project-toc-link">
+                  <span class="cv-project-toc-index">
+                    {String(index + 1).padStart(2, "0")}
+                  </span>
+                  <span class="cv-project-toc-copy">
+                    <span class="cv-project-toc-meta">{project.period}</span>
+                    <span class="cv-project-toc-title">{project.title}</span>
+                  </span>
+                </a>
+              </li>
+            ))
+          }
+        </ol>
+      </nav>
+
       <div class="cv-projects">
         {
           content.projects.map((project, index) => (
-            <article class="cv-project-card cv-surface cv-surface-project">
+            <article id={project.id} class="cv-project-card cv-surface cv-surface-project">
               <header class="cv-project-header gap-4">
                 <div class="cv-project-title-block gap-4">
                   <div class="cv-project-eyebrow">
@@ -455,6 +476,7 @@ const skillLegend =
   .cv-hero h1,
   .cv-section h2,
   .cv-panel h2,
+  .cv-project-toc h3,
   .cv-project-card h3,
   .cv-project-highlights h4,
   .cv-detail-card h4,
@@ -462,6 +484,10 @@ const skillLegend =
     margin: 0;
     font-family: "Fraunces", serif;
     text-wrap: balance;
+    color: oklch(0.92 0.008 166.11);
+  }
+
+  .cv-hero h1 {
     color: oklch(0.9793 0.0207 166.11);
   }
 
@@ -1031,8 +1057,92 @@ const skillLegend =
     display: none;
   }
 
+  .cv-project-toc {
+    display: grid;
+    gap: 0.55rem;
+    margin-top: 0.65rem;
+    padding-inline: 0.15rem;
+  }
+
+  .cv-project-toc h3 {
+    font-family: "Chakra Petch", sans-serif;
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: oklch(0.8452 0.1299 164.98 / 0.78);
+  }
+
+  .cv-project-toc-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 25rem), 1fr));
+    gap: 0.18rem 1.3rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .cv-project-toc-link {
+    display: grid;
+    grid-template-columns: 1.4rem 7.1rem minmax(0, 1fr);
+    gap: 0.35rem;
+    align-items: baseline;
+    padding-block: 0.12rem;
+    color: inherit;
+    text-decoration: none;
+    transition: color 170ms ease;
+  }
+
+  .cv-project-toc-link:hover {
+    color: oklch(0.8452 0.1299 164.98);
+  }
+
+  .cv-project-toc-index,
+  .cv-project-toc-meta {
+    font-family: "Chakra Petch", sans-serif;
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+
+  .cv-project-toc-index {
+    color: oklch(0.8712 0.1363 154.45 / 0.76);
+    font-size: 0.64rem;
+    letter-spacing: 0.1em;
+    line-height: 1.35;
+  }
+
+  .cv-project-toc-copy {
+    display: contents;
+  }
+
+  .cv-project-toc-title {
+    color: oklch(0.92 0.008 166.11 / 0.72);
+    overflow: hidden;
+    font-size: 0.86rem;
+    font-weight: 500;
+    line-height: 1.35;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .cv-project-toc-link:hover .cv-project-toc-title {
+    color: oklch(0.8452 0.1299 164.98);
+  }
+
+  .cv-project-toc-meta {
+    color: oklch(0.9089 0.0586 165.94 / 0.58);
+    font-size: 0.58rem;
+    letter-spacing: 0.02em;
+    line-height: 1.35;
+    white-space: nowrap;
+  }
+
   .cv-projects {
     gap: 2rem;
+  }
+
+  .cv-project-card {
+    scroll-margin-top: 1rem;
   }
 
   .cv-project-header {

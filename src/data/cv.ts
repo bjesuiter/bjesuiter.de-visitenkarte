@@ -70,6 +70,7 @@ export interface CvContent {
   industriesTitle: string;
   skillsTitle: string;
   projectsTitle: string;
+  projectTocTitle: string;
   highlightsTitle: string;
   stackTitle: string;
   rolesLabel: string;
@@ -102,6 +103,7 @@ const cvDe: CvContent = {
   industriesTitle: "Branchen",
   skillsTitle: "Skills & Expertise",
   projectsTitle: "Projektchronik",
+  projectTocTitle: "Projektübersicht",
   highlightsTitle: "Aufgaben & Erfolge",
   stackTitle: "Technischer Kontext",
   rolesLabel: "Rollen",
@@ -831,6 +833,7 @@ const cvEn: CvContent = {
   industriesTitle: "Industries",
   skillsTitle: "Skills & Expertise",
   projectsTitle: "Project History",
+  projectTocTitle: "Project Overview",
   highlightsTitle: "Responsibilities & Outcomes",
   stackTitle: "Technical Context",
   rolesLabel: "Roles",
