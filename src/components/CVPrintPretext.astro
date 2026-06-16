@@ -33,6 +33,24 @@ const paginatedSkillPages = [
   toIndexedPageItems(content.skillCategories, [0, 1, 3, 4, 7, 8]),
   toIndexedPageItems(content.skillCategories, [2, 5, 6]),
 ].filter((page) => page.length > 0);
+const skillLevelDots = [1, 2, 3, 4, 5];
+const getSkillLevel = (level?: number) => level ?? 3;
+const skillLegend =
+  locale === "de"
+    ? [
+        { level: 1, label: "Grundkenntnisse" },
+        { level: 2, label: "Arbeitsfähig" },
+        { level: 3, label: "Sicher" },
+        { level: 4, label: "Fortgeschritten" },
+        { level: 5, label: "Experte" },
+      ]
+    : [
+        { level: 1, label: "Foundational" },
+        { level: 2, label: "Working" },
+        { level: 3, label: "Proficient" },
+        { level: 4, label: "Advanced" },
+        { level: 5, label: "Expert" },
+      ];
 ---
 
 <main class="cv-page">
@@ -131,6 +149,29 @@ const paginatedSkillPages = [
                 <h2 class="pl-2">{content.skillsTitle}</h2>
               </div>
 
+              <div
+                class="cv-skills-legend"
+                aria-label={locale === "de"
+                  ? "Legende für Kompetenzstufen"
+                  : "Skill level legend"}
+              >
+                {skillLegend.map((entry) => (
+                  <div class="cv-skills-legend-item">
+                    <span class="cv-skill-rating" aria-hidden="true">
+                      {skillLevelDots.map((dot) => (
+                        <span
+                          class:list={[
+                            "cv-skill-rating-dot",
+                            dot <= entry.level && "is-active",
+                          ]}
+                        />
+                      ))}
+                    </span>
+                    <span>{entry.label}</span>
+                  </div>
+                ))}
+              </div>
+
               <div class="cv-skills-grid gap-4">
                 {skillPage.map(({ item: category }) => (
                   <section class="cv-skill-card">
@@ -139,32 +180,59 @@ const paginatedSkillPages = [
                     </div>
                     <ul class="gap-4">
                       {category.items.map((item) =>
-                        typeof item === "string" ? (
-                          <li>{item}</li>
-                        ) : "items" in item ? (
+                        "items" in item ? (
                           <li class="cv-skill-group">
                             <p class="cv-skill-group-label">{item.label}</p>
                             <ul class="cv-skill-sublist">
-                              {item.items.map((subItem) =>
-                                typeof subItem === "string" ? (
-                                  <li class="cv-skill-sublist-item">
-                                    {subItem}
-                                  </li>
-                                ) : (
-                                  <li class="cv-skill-sublist-item">
-                                    <span>{subItem.text}</span>
-                                    <span class="cv-chip cv-skill-sublist-chip">
-                                      {subItem.chip}
+                              {item.items.map((subItem) => (
+                                <li class="cv-skill-sublist-item cv-skill-rating-row">
+                                  <span>{subItem.text}</span>
+                                  <span class="cv-skill-rating-group">
+                                    {subItem.chip && (
+                                      <span class="cv-chip cv-skill-sublist-chip">
+                                        {subItem.chip}
+                                      </span>
+                                    )}
+                                    <span
+                                      class="cv-skill-rating"
+                                      aria-label={`Level ${getSkillLevel(subItem.level)} of 5`}
+                                    >
+                                      {skillLevelDots.map((dot) => (
+                                        <span
+                                          class:list={[
+                                            "cv-skill-rating-dot",
+                                            dot <= getSkillLevel(subItem.level) &&
+                                              "is-active",
+                                          ]}
+                                          aria-hidden="true"
+                                        />
+                                      ))}
                                     </span>
-                                  </li>
-                                ),
-                              )}
+                                  </span>
+                                </li>
+                              ))}
                             </ul>
                           </li>
                         ) : (
-                          <li class="cv-skill-chip-row">
+                          <li class="cv-skill-chip-row cv-skill-rating-row">
                             <span>{item.text}</span>
-                            <span class="cv-chip">{item.chip}</span>
+                            <span class="cv-skill-rating-group">
+                              {item.chip && <span class="cv-chip">{item.chip}</span>}
+                              <span
+                                class="cv-skill-rating"
+                                aria-label={`Level ${getSkillLevel(item.level)} of 5`}
+                              >
+                                {skillLevelDots.map((dot) => (
+                                  <span
+                                    class:list={[
+                                      "cv-skill-rating-dot",
+                                      dot <= getSkillLevel(item.level) && "is-active",
+                                    ]}
+                                    aria-hidden="true"
+                                  />
+                                ))}
+                              </span>
+                            </span>
                           </li>
                         ),
                       )}
@@ -1381,8 +1449,29 @@ const paginatedSkillPages = [
     list-style: disc outside;
   }
 
+  .cv-skill-sublist .cv-skill-rating-row {
+    list-style: none;
+    margin-left: 0;
+  }
+
   .cv-skill-sublist .cv-skill-sublist-item::before {
     display: none;
+  }
+
+  .cv-skills-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 0.9rem;
+    margin: -0.2rem 0 0.9rem;
+    color: oklch(0.9089 0.0586 165.94 / 0.82);
+    font-size: 0.74rem;
+  }
+
+  .cv-skills-legend-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.36rem;
+    white-space: nowrap;
   }
 
   .cv-skill-chip-row {
@@ -1390,6 +1479,44 @@ const paginatedSkillPages = [
     flex-wrap: wrap;
     align-items: center;
     gap: 0.45rem;
+  }
+
+  .cv-skill-rating-row {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.7rem;
+  }
+
+  .cv-skill-rating-row > span:first-child {
+    text-wrap: balance;
+  }
+
+  .cv-skill-rating-group {
+    display: inline-flex;
+    flex: 0 0 auto;
+    align-items: center;
+    gap: 0.45rem;
+    margin-left: auto;
+  }
+
+  .cv-skill-rating {
+    display: inline-flex;
+    flex: 0 0 auto;
+    align-items: center;
+    gap: 0.16rem;
+  }
+
+  .cv-skill-rating-dot {
+    width: 0.36rem;
+    height: 0.36rem;
+    border-radius: 999px;
+    background: oklch(0.8452 0.1299 164.98 / 0.18);
+  }
+
+  .cv-skill-rating-dot.is-active {
+    background: oklch(0.8452 0.1299 164.98);
+    box-shadow: 0 0 0 1px oklch(0.8452 0.1299 164.98 / 0.16);
   }
 
   .cv-chip {
