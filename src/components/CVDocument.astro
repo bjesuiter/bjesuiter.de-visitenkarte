@@ -390,6 +390,7 @@ const skillLegend =
     --cv-content-width: 1140px;
     --cv-page-padding: 0.8rem;
     --cv-dock-overlap: 8.25rem;
+    --cv-scroll-margin: calc(var(--cv-dock-overlap) + 1.25rem);
     --cv-divider: oklch(0.9049 0.0895 164.15 / 0.12);
     --cv-divider-strong: oklch(0.9049 0.0895 164.15 / 0.2);
     --cv-panel-radius: 14px;
@@ -1201,7 +1202,7 @@ const skillLegend =
   .cv-project-card,
   .cv-project-history-section,
   .cv-project-history-end {
-    scroll-margin-top: 1rem;
+    scroll-margin-top: var(--cv-scroll-margin);
   }
 
   .cv-project-rail {
