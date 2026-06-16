@@ -153,22 +153,7 @@ const skillLegend =
               </div>
               <ul class="gap-4">
                 {category.items.map((item) =>
-                  typeof item === "string" ? (
-                    <li class="cv-skill-rating-row">
-                      <span>{item}</span>
-                      <span class="cv-skill-rating" aria-label="Level 3 of 5">
-                        {skillLevelDots.map((dot) => (
-                          <span
-                            class:list={[
-                              "cv-skill-rating-dot",
-                              dot <= getSkillLevel() && "is-active",
-                            ]}
-                            aria-hidden="true"
-                          />
-                        ))}
-                      </span>
-                    </li>
-                  ) : "items" in item ? (
+                  "items" in item ? (
                     <li
                       class:list={[
                         "cv-skill-group",
@@ -178,53 +163,33 @@ const skillLegend =
                     >
                       <p class="cv-skill-group-label">{item.label}</p>
                       <ul class="cv-skill-sublist">
-                        {item.items.map((subItem) =>
-                          typeof subItem === "string" ? (
-                            <li class="cv-skill-sublist-item cv-skill-rating-row">
-                              <span>{subItem}</span>
+                        {item.items.map((subItem) => (
+                          <li class="cv-skill-sublist-item cv-skill-rating-row">
+                            <span>{subItem.text}</span>
+                            <span class="cv-skill-rating-group">
+                              {subItem.chip && (
+                                <span class="cv-chip cv-skill-sublist-chip">
+                                  {subItem.chip}
+                                </span>
+                              )}
                               <span
                                 class="cv-skill-rating"
-                                aria-label="Level 3 of 5"
+                                aria-label={`Level ${getSkillLevel(subItem.level)} of 5`}
                               >
                                 {skillLevelDots.map((dot) => (
                                   <span
                                     class:list={[
                                       "cv-skill-rating-dot",
-                                      dot <= getSkillLevel() && "is-active",
+                                      dot <= getSkillLevel(subItem.level) &&
+                                        "is-active",
                                     ]}
                                     aria-hidden="true"
                                   />
                                 ))}
                               </span>
-                            </li>
-                          ) : (
-                            <li class="cv-skill-sublist-item cv-skill-rating-row">
-                              <span>{subItem.text}</span>
-                              <span class="cv-skill-rating-group">
-                                {subItem.chip && (
-                                  <span class="cv-chip cv-skill-sublist-chip">
-                                    {subItem.chip}
-                                  </span>
-                                )}
-                                <span
-                                  class="cv-skill-rating"
-                                  aria-label={`Level ${getSkillLevel(subItem.level)} of 5`}
-                                >
-                                  {skillLevelDots.map((dot) => (
-                                    <span
-                                      class:list={[
-                                        "cv-skill-rating-dot",
-                                        dot <= getSkillLevel(subItem.level) &&
-                                          "is-active",
-                                      ]}
-                                      aria-hidden="true"
-                                    />
-                                  ))}
-                                </span>
-                              </span>
-                            </li>
-                          ),
-                        )}
+                            </span>
+                          </li>
+                        ))}
                       </ul>
                     </li>
                   ) : (

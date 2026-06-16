@@ -11,20 +11,20 @@ export interface CvLink {
   icon: string;
 }
 
-export interface CvSkillChipItem {
+export interface CvSkillCapability {
   text: string;
   chip?: string;
-  level?: number;
+  level: number;
 }
 
-export type CvSkillSubItem = string | CvSkillChipItem;
+export type CvSkillSubItem = CvSkillCapability;
 
 export interface CvSkillSublistItem {
   label: string;
   items: CvSkillSubItem[];
 }
 
-export type CvSkillItem = string | CvSkillSublistItem | CvSkillChipItem;
+export type CvSkillItem = CvSkillSublistItem | CvSkillCapability;
 
 export interface CvSkillCategory {
   title: string;
@@ -187,11 +187,14 @@ const cvDe: CvContent = {
     {
       title: "Projektstart & Setup",
       items: [
-        "Anforderungsanalyse",
-        "Projektsetup mit Git",
-        "Monorepos mit Nx, npm workspaces, bun workspaces und TypeScript path aliases",
-        "Git-Workflows wie GitFlow und OneFlow",
-        "GitLab, GitHub, Gitea und Bitbucket",
+        { text: "Anforderungsanalyse", level: 3 },
+        { text: "Projektsetup mit Git", level: 3 },
+        {
+          text: "Monorepos mit Nx, npm workspaces, bun workspaces und TypeScript path aliases",
+          level: 3,
+        },
+        { text: "Git-Workflows wie GitFlow und OneFlow", level: 4 },
+        { text: "GitLab, GitHub, Gitea und Bitbucket", level: 3 },
       ],
     },
     {
@@ -200,16 +203,16 @@ const cvDe: CvContent = {
         {
           label: "Coding Agents",
           items: [
-            "OpenCode + oh-my-opencode",
-            "codex-cli",
-            "pi-agent (pi.dev)",
+            { text: "OpenCode + oh-my-opencode", level: 3 },
+            { text: "codex-cli", level: 3 },
+            { text: "pi-agent (pi.dev)", level: 3 },
           ],
         },
         {
           label: "Daily driver models",
           items: [
-            "Claude Sonnet 4.1, 4.5, Opus 4.5, 4.6",
-            "GPT 5.2 Codex, 5.3 Codex and 5.4",
+            { text: "Claude Sonnet 4.1, 4.5, Opus 4.5, 4.6", level: 3 },
+            { text: "GPT 5.2 Codex, 5.3 Codex and 5.4", level: 3 },
             {
               text: "GPT 5.5",
               chip: "current",
@@ -222,88 +225,94 @@ const cvDe: CvContent = {
     {
       title: "Entwicklungsumgebung",
       items: [
-        "macOS",
-        "Desktop Linux: Ubuntu, Debian",
-        "Windows + cmder",
-        "VSCode / Cursor",
+        { text: "macOS", level: 3 },
+        { text: "Desktop Linux: Ubuntu, Debian", level: 3 },
+        { text: "Windows + cmder", level: 3 },
+        { text: "VSCode / Cursor", level: 3 },
       ],
     },
     {
       title: "Server-Entwicklung",
       items: [
-        "Node.js, Bun, Deno",
-        "Express, Elysia",
-        "RESTful Architektur",
-        "Event Driven Design",
-        "WebSockets: plain und mit tRPC",
-        "Drizzle ORM + Drizzle Kit",
-        "Turso und PlanetScale",
+        { text: "Node.js, Bun, Deno", level: 3 },
+        { text: "Express, Elysia", level: 3 },
+        { text: "RESTful Architektur", level: 3 },
+        { text: "Event Driven Design", level: 3 },
+        { text: "WebSockets: plain und mit tRPC", level: 3 },
+        { text: "Drizzle ORM + Drizzle Kit", level: 3 },
+        { text: "Turso und PlanetScale", level: 3 },
       ],
     },
     {
       title: "Frontend-Entwicklung",
       items: [
-        "Vite",
-        "Angular (AngularJS 1 bis Angular 20)",
-        "SolidJS",
-        "TanStack Query, DB, Router & Start",
-        "RxJS",
-        "Microfrontends mit Angular Elements & Web Components",
-        "Progressive Web Apps",
-        "StencilJS",
-        "CSS3 & Tailwind CSS",
-        { text: "Angular Material", chip: "legacy" },
-        { text: "PrimeNG 17", chip: "legacy" },
+        { text: "Vite", level: 3 },
+        { text: "Angular (AngularJS 1 bis Angular 20)", level: 3 },
+        { text: "SolidJS", level: 3 },
+        { text: "TanStack Query, DB, Router & Start", level: 3 },
+        { text: "RxJS", level: 3 },
+        {
+          text: "Microfrontends mit Angular Elements & Web Components",
+          level: 3,
+        },
+        { text: "Progressive Web Apps", level: 3 },
+        { text: "StencilJS", level: 3 },
+        { text: "CSS & Tailwind CSS", level: 3 },
+        { text: "Angular Material", chip: "legacy", level: 3 },
+        { text: "PrimeNG 17", chip: "legacy", level: 3 },
       ],
     },
     {
       title: "Programmiersprachen",
       items: [
-        "TypeScript",
-        "JavaScript",
-        "Rust",
-        { text: "Java", chip: "legacy" },
-        "Shell / Bash / Fish",
+        { text: "TypeScript", level: 3 },
+        { text: "JavaScript", level: 3 },
+        { text: "Rust", level: 3 },
+        { text: "Java", chip: "legacy", level: 3 },
+        { text: "Shell / Bash / Fish", level: 3 },
       ],
     },
     {
       title: "CI/CD & DevOps",
       items: [
-        "Buddy.Works",
-        "GitLab Pipelines",
-        "GitHub Actions",
-        "Jenkins",
-        "Docker Compose",
-        "Ansible",
+        { text: "Buddy.Works", level: 3 },
+        { text: "GitLab Pipelines", level: 3 },
+        { text: "GitHub Actions", level: 3 },
+        { text: "Jenkins", level: 3 },
+        { text: "Docker Compose", level: 3 },
+        { text: "Ansible", level: 3 },
       ],
     },
     {
       title: "Projektorganisation & Dokumentation",
       items: [
-        "Jira",
-        "GitLab Boards",
-        "KanBoard",
-        "Scrum",
-        "Confluence",
-        "Markdown",
-        "Excalidraw",
-        "draw.io",
-        "Figma",
+        { text: "Jira", level: 3 },
+        { text: "GitLab Boards", level: 3 },
+        { text: "KanBoard", level: 3 },
+        { text: "Scrum", level: 3 },
+        { text: "Confluence", level: 3 },
+        { text: "Markdown", level: 3 },
+        { text: "Excalidraw", level: 3 },
+        { text: "draw.io", level: 3 },
+        { text: "Figma", level: 3 },
       ],
     },
     {
       title: "Deployment & Selfhosting",
       items: [
-        "nginx",
-        "Deno Deploy",
-        "AWS Cloud (EC2, VPC, EKS, RDS, IAM, Lambda, API Gateway)",
-        "Railway",
-        "Linux-Server (Ubuntu, Debian, Alpine)",
-        "Traefik",
-        "Nextcloud",
-        "Vaultwarden",
-        "Plex",
-        "Netcup, Hetzner, do.de, hosting.de",
+        { text: "nginx", level: 3 },
+        { text: "Deno Deploy", level: 3 },
+        {
+          text: "AWS Cloud (EC2, VPC, EKS, RDS, IAM, Lambda, API Gateway)",
+          level: 3,
+        },
+        { text: "Railway", level: 3 },
+        { text: "Linux-Server (Ubuntu, Debian, Alpine)", level: 3 },
+        { text: "Traefik", level: 3 },
+        { text: "Nextcloud", level: 3 },
+        { text: "Vaultwarden", level: 3 },
+        { text: "Plex", level: 3 },
+        { text: "Netcup, Hetzner, do.de, hosting.de", level: 3 },
       ],
     },
   ],
@@ -900,14 +909,17 @@ const cvEn: CvContent = {
     {
       title: "Project Setup",
       items: [
-        "Requirements analysis",
-        "Project setup with Git",
-        "Monorepos with Nx, npm workspaces, bun workspaces, and TypeScript path aliases",
+        { text: "Requirements analysis", level: 3 },
+        { text: "Project setup with Git", level: 3 },
+        {
+          text: "Monorepos with Nx, npm workspaces, bun workspaces, and TypeScript path aliases",
+          level: 3,
+        },
         {
           text: "Git workflows such as GitFlow and OneFlow",
           level: 4,
         },
-        "GitLab, GitHub, Gitea, and Bitbucket",
+        { text: "GitLab, GitHub, Gitea, and Bitbucket", level: 3 },
       ],
     },
     {
@@ -916,16 +928,16 @@ const cvEn: CvContent = {
         {
           label: "Coding Agents",
           items: [
-            "OpenCode + oh-my-opencode",
-            "codex-cli",
-            "pi-agent (pi.dev)",
+            { text: "OpenCode + oh-my-opencode", level: 3 },
+            { text: "codex-cli", level: 3 },
+            { text: "pi-agent (pi.dev)", level: 3 },
           ],
         },
         {
           label: "Daily driver models",
           items: [
-            "Claude Sonnet 4.1, 4.5, Opus 4.5, 4.6",
-            "GPT 5.2 Codex, 5.3 Codex and 5.4",
+            { text: "Claude Sonnet 4.1, 4.5, Opus 4.5, 4.6", level: 3 },
+            { text: "GPT 5.2 Codex, 5.3 Codex and 5.4", level: 3 },
             {
               text: "GPT 5.5",
               chip: "current",
@@ -938,88 +950,94 @@ const cvEn: CvContent = {
     {
       title: "Development Environment",
       items: [
-        "macOS",
-        "Desktop Linux: Ubuntu, Debian",
-        "Windows + cmder",
-        "VSCode / Cursor",
+        { text: "macOS", level: 3 },
+        { text: "Desktop Linux: Ubuntu, Debian", level: 3 },
+        { text: "Windows + cmder", level: 3 },
+        { text: "VSCode / Cursor", level: 3 },
       ],
     },
     {
       title: "Server-Side Development",
       items: [
-        "Node.js, Bun, Deno",
-        "Express, Elysia",
-        "RESTful architecture",
-        "Event-driven design",
-        "Websockets: plain and with tRPC",
-        "Drizzle ORM + Drizzle Kit",
-        "Turso and PlanetScale",
+        { text: "Node.js, Bun, Deno", level: 3 },
+        { text: "Express, Elysia", level: 3 },
+        { text: "RESTful architecture", level: 3 },
+        { text: "Event-driven design", level: 3 },
+        { text: "Websockets: plain and with tRPC", level: 3 },
+        { text: "Drizzle ORM + Drizzle Kit", level: 3 },
+        { text: "Turso and PlanetScale", level: 3 },
       ],
     },
     {
       title: "Frontend Development",
       items: [
-        "Vite",
-        "Angular (AngularJS 1 to Angular 20)",
-        "SolidJS",
-        "TanStack Query, DB, Router & Start",
-        "RxJS",
-        "Microfrontends with Angular Elements & Web Components",
-        "Progressive Web Apps",
-        "StencilJS",
-        "CSS3 & Tailwind CSS",
-        { text: "Angular Material", chip: "legacy" },
-        { text: "PrimeNG 17", chip: "legacy" },
+        { text: "Vite", level: 3 },
+        { text: "Angular (AngularJS 1 to Angular 20)", level: 3 },
+        { text: "SolidJS", level: 3 },
+        { text: "TanStack Query, DB, Router & Start", level: 3 },
+        { text: "RxJS", level: 3 },
+        {
+          text: "Microfrontends with Angular Elements & Web Components",
+          level: 3,
+        },
+        { text: "Progressive Web Apps", level: 3 },
+        { text: "StencilJS", level: 3 },
+        { text: "CSS & Tailwind CSS", level: 3 },
+        { text: "Angular Material", chip: "legacy", level: 3 },
+        { text: "PrimeNG 17", chip: "legacy", level: 3 },
       ],
     },
     {
       title: "Programming Languages",
       items: [
-        "TypeScript",
-        "JavaScript",
-        "Rust",
-        { text: "Java", chip: "legacy" },
-        "Shell / Bash / Fish",
+        { text: "TypeScript", level: 3 },
+        { text: "JavaScript", level: 3 },
+        { text: "Rust", level: 3 },
+        { text: "Java", chip: "legacy", level: 3 },
+        { text: "Shell / Bash / Fish", level: 3 },
       ],
     },
     {
       title: "CI/CD & DevOps",
       items: [
-        "Buddy.Works",
-        "GitLab Pipelines",
-        "GitHub Actions",
-        "Jenkins",
-        "Docker Compose",
-        "Ansible",
+        { text: "Buddy.Works", level: 3 },
+        { text: "GitLab Pipelines", level: 3 },
+        { text: "GitHub Actions", level: 3 },
+        { text: "Jenkins", level: 3 },
+        { text: "Docker Compose", level: 3 },
+        { text: "Ansible", level: 3 },
       ],
     },
     {
       title: "Project Organization & Documentation",
       items: [
-        "Jira",
-        "GitLab Boards",
-        "KanBoard",
-        "Scrum",
-        "Confluence",
-        "Markdown",
-        "Excalidraw",
-        "draw.io",
-        "Figma",
+        { text: "Jira", level: 3 },
+        { text: "GitLab Boards", level: 3 },
+        { text: "KanBoard", level: 3 },
+        { text: "Scrum", level: 3 },
+        { text: "Confluence", level: 3 },
+        { text: "Markdown", level: 3 },
+        { text: "Excalidraw", level: 3 },
+        { text: "draw.io", level: 3 },
+        { text: "Figma", level: 3 },
       ],
     },
     {
       title: "Deployment & Self-Hosting",
       items: [
-        "nginx",
-        "Deno Deploy",
-        "AWS Cloud (EC2, VPC, EKS, RDS, IAM, Lambda, API Gateway)",
-        "Railway",
-        "Linux servers (Ubuntu, Debian, Alpine)",
-        "Traefik",
-        "Nextcloud",
-        "Vaultwarden",
-        "Plex",
-        "Netcup, Hetzner, do.de, hosting.de",
+        { text: "nginx", level: 3 },
+        { text: "Deno Deploy", level: 3 },
+        {
+          text: "AWS Cloud (EC2, VPC, EKS, RDS, IAM, Lambda, API Gateway)",
+          level: 3,
+        },
+        { text: "Railway", level: 3 },
+        { text: "Linux servers (Ubuntu, Debian, Alpine)", level: 3 },
+        { text: "Traefik", level: 3 },
+        { text: "Nextcloud", level: 3 },
+        { text: "Vaultwarden", level: 3 },
+        { text: "Plex", level: 3 },
+        { text: "Netcup, Hetzner, do.de, hosting.de", level: 3 },
       ],
     },
   ],
