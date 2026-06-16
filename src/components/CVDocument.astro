@@ -1207,15 +1207,18 @@ const skillLegend =
 
   .cv-project-rail {
     position: fixed;
-    right: max(0.55rem, env(safe-area-inset-right));
+    left: min(
+      calc(var(--cv-page-padding) + var(--cv-content-width) + 0.75rem),
+      calc(100vw - 3rem - env(safe-area-inset-right))
+    );
     top: 50%;
     z-index: 30;
     display: none;
     gap: 0.26rem;
     padding: 0.22rem;
-    border: 1px solid oklch(0.9049 0.0895 164.15 / 0.08);
+    border: 1px solid oklch(0.9049 0.0895 164.15 / 0.16);
     border-radius: 999px;
-    background: oklch(0.131 0.0212 174.91 / 0.42);
+    background: oklch(0.131 0.0212 174.91 / 0.56);
     opacity: 0;
     pointer-events: none;
     transform: translateY(-50%);
@@ -1226,7 +1229,7 @@ const skillLegend =
   }
 
   .cv-project-rail.is-visible {
-    opacity: 0.58;
+    opacity: 0.76;
     pointer-events: auto;
   }
 
@@ -1244,7 +1247,7 @@ const skillLegend =
     border: 0;
     border-radius: 999px;
     background: transparent;
-    color: oklch(0.9089 0.0586 165.94 / 0.72);
+    color: oklch(0.9089 0.0586 165.94 / 0.86);
     text-decoration: none;
     cursor: pointer;
     transition:
@@ -1275,10 +1278,6 @@ const skillLegend =
   @media (min-width: 980px) {
     .cv-project-rail {
       display: grid;
-    }
-
-    .cv-project-rail {
-      right: max(0.8rem, calc((100vw - var(--cv-content-width)) / 2 - 3.1rem));
     }
 
     .cv-project-toc-list {
