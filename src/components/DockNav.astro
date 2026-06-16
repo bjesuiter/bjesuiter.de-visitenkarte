@@ -47,10 +47,8 @@ const navContent =
           },
         ],
         language: {
-          trigger: "DE",
-          menuLabel: "Sprache auswählen",
+          ariaLabel: "Zur englischen Version wechseln",
           switchLabel: "English",
-          switchMeta: "EN",
         },
       }
     : {
@@ -76,10 +74,8 @@ const navContent =
           },
         ],
         language: {
-          trigger: "EN",
-          menuLabel: "Choose language",
+          ariaLabel: "Switch to the German version",
           switchLabel: "Deutsch",
-          switchMeta: "DE",
         },
       };
 
@@ -100,12 +96,7 @@ const activeIconClass =
   "!bg-[rgba(2,21,15,0.18)] !text-[#02150f] shadow-[inset_0_1px_0_rgba(255,255,255,0.22)]";
 const labelClass =
   "font-tech text-[0.88rem] font-bold uppercase tracking-[0.04em] whitespace-nowrap";
-const languageTriggerClass =
-  "group inline-flex min-h-12 w-full cursor-pointer list-none items-center gap-[0.58rem] rounded-full px-[0.52rem] py-2 pr-[0.85rem] text-[#d8fbed] transition duration-200 ease-out hover:-translate-y-px hover:bg-emerald-200/8 focus-visible:-translate-y-px focus-visible:bg-emerald-200/8 focus-visible:outline-none group-open:-translate-y-px group-open:bg-emerald-200/8 [&::-webkit-details-marker]:hidden max-[520px]:justify-center max-[520px]:pr-[0.7rem]";
-const languageMenuClass =
-  "absolute right-0 top-[calc(100%+0.65rem)] min-w-[220px] rounded-[18px] border border-emerald-200/18 bg-[rgba(5,29,22,0.92)] p-[0.45rem] shadow-[0_24px_44px_rgba(1,10,7,0.34),inset_0_1px_0_rgba(255,255,255,0.06)] backdrop-blur-[18px] max-[640px]:left-1/2 max-[640px]:right-auto max-[640px]:w-[min(260px,calc(100vw-1.4rem))] max-[640px]:-translate-x-1/2 max-[520px]:top-[calc(100%+0.45rem)]";
-const languageRowClass =
-  "flex items-center justify-between gap-4 rounded-[14px] px-[0.9rem] py-[0.8rem] text-[#d8fbed] transition duration-200 ease-out hover:-translate-y-px hover:bg-emerald-200/8 focus-visible:-translate-y-px focus-visible:bg-emerald-200/8 focus-visible:outline-none";
+
 ---
 
 <div class={wrapperClass}>
@@ -135,48 +126,16 @@ const languageRowClass =
       }
 
       <li class={navItemSlotClass}>
-        <details class="group relative">
-          <summary class={languageTriggerClass}>
-            <span
-              class="inline-grid size-8 place-items-center rounded-full bg-white/8 text-current transition duration-200 ease-out group-open:scale-[1.06] group-open:bg-white/13 group-hover:scale-[1.06] group-hover:bg-white/13"
-              aria-hidden="true"
-            >
-              <Icon name="ion:language" class="size-[1.1rem]" />
-            </span>
-            <span class={labelClass}>{navContent.language.trigger}</span>
-            <span class="inline-grid place-items-center" aria-hidden="true">
-              <span
-                class="size-[0.68rem] rounded-full border-[1.5px] border-current opacity-80 transition duration-200 group-open:hidden"
-              ></span>
-              <span
-                class="hidden size-[0.68rem] rounded-full bg-current opacity-90 transition duration-200 group-open:block"
-              ></span>
-            </span>
-          </summary>
-
-          <div
-            class={languageMenuClass}
-            aria-label={navContent.language.menuLabel}
-          >
-            <a href={languageSwitchHref} class={languageRowClass}>
-              <div>
-                <span
-                  class="font-tech block font-bold tracking-[0.03em] uppercase"
-                >
-                  {navContent.language.switchLabel}
-                </span>
-                <span
-                  class="mt-0.5 block text-[0.72rem] tracking-[0.08em] text-[#93cdb7] uppercase"
-                >
-                  {navContent.language.switchMeta}
-                </span>
-              </div>
-              <span class="text-[0.9rem] text-emerald-300" aria-hidden="true">
-                ↗
-              </span>
-            </a>
-          </div>
-        </details>
+        <a
+          href={languageSwitchHref}
+          class={navItemClass}
+          aria-label={navContent.language.ariaLabel}
+        >
+          <span class={iconClass} aria-hidden="true">
+            <Icon name="ion:language" class="size-[1.1rem]" />
+          </span>
+          <span class={labelClass}>{navContent.language.switchLabel}</span>
+        </a>
       </li>
     </ul>
   </nav>
