@@ -1,0 +1,88 @@
+{
+  "schemaVersion": 1,
+  "findingId": "fnd_sig-feat-library-4f1e5a63f1-477b_a55306a37e",
+  "featureId": "feat_library_4f1e5a63f1",
+  "title": "Dev and start scripts require undeclared global CLIs",
+  "category": "build-release",
+  "severity": "low",
+  "confidence": "medium",
+  "triage": "risk",
+  "evidence": [
+    {
+      "path": "package.json",
+      "startLine": 5,
+      "endLine": 7,
+      "symbol": "scripts.dev",
+      "quote": "\"dev\": \"bgproc start -n visitenkarte -f -w -- env PORTLESS_PORT=443 portless visitenkarte astro dev\""
+    },
+    {
+      "path": "package.json",
+      "startLine": 18,
+      "endLine": 42,
+      "symbol": "dependencies",
+      "quote": null
+    },
+    {
+      "path": "AGENTS.md",
+      "startLine": 18,
+      "endLine": 20,
+      "symbol": null,
+      "quote": "`bun run dev` (or `bun run start`): run local Astro dev server."
+    }
+  ],
+  "reasoning": "The documented local workflow tells contributors to run `bun run dev` or `bun run start`, but the script shells out to `bgproc` and `portless` while the package manifest only installs Astro, Tailwind, Playwright, and related project dependencies. A fresh checkout that follows `bun install` can fail before Astro starts unless those user-specific CLIs already exist on PATH.",
+  "reproduction": "On an environment without global `bgproc` and `portless`, run `bun install` followed by `bun run dev`; command lookup fails before the Astro dev server starts.",
+  "recommendation": "Either declare the required CLIs as dev dependencies or change the standard dev script to use declared tools only. If global `bgproc`/`portless` are intentional, document their installation as a prerequisite and provide a fallback script such as plain `astro dev`.",
+  "whyTestsDoNotAlreadyCoverThis": "The linked visual tests run `bun run build` and Playwright against `astro preview`; they do not exercise the `dev` or `start` package scripts on a clean install.",
+  "suggestedRegressionTest": "Add a lightweight CI smoke check that validates all first-token package script commands resolve from declared dependencies or an explicit allowlist.",
+  "minimumFixScope": "Update `package.json` dev/start scripts and the local workflow documentation.",
+  "status": "fixed",
+  "history": [
+    {
+      "runId": "20260616T150751-89942d",
+      "kind": "revalidate",
+      "status": "open",
+      "note": null,
+      "reasoning": "Original package.json evidence still exists: scripts.dev uses bgproc and portless at line 6, and scripts.start delegates to bun dev at line 7. The dependency block moved to package.json lines 21-46 and still does not declare bgproc or portless; node_modules/.bin only contains declared CLIs such as astro/playwright for this check. AGENTS.md evidence changed: lines 19-23 now document bgproc/portless and add a dev:plain fallback, which mitigates contributor guidance, but the standard dev/start scripts still fail without the undeclared globals. A focused smoke check with PATH limited to local node_modules/.bin, node, and system bins reproduced /bin/bash: bgproc: command not found for bun run dev, while bun run dev:plain -- --help succeeded under the same PATH.",
+      "commands": [
+        "sed -n '1,220p' /Users/bjesuiter/.agents/skills/jb-clawpatch-review/SKILL.md",
+        "nl -ba package.json | sed -n '1,90p'",
+        "nl -ba AGENTS.md | sed -n '1,90p'",
+        "rg -n 'bgproc|portless|dev:plain|\"dev\"|\"start\"' package.json AGENTS.md bun.lockb deno.json bunfig.toml 2>/dev/null",
+        "ls -la",
+        "find node_modules/.bin -maxdepth 1 -type l -o -type f 2>/dev/null | sed 's#^node_modules/.bin/##' | sort | rg '^(bgproc|portless|astro|playwright)$'",
+        "command -v bgproc; command -v portless; command -v astro; command -v playwright",
+        "rg -n '\"(bgproc|portless)\"|bgproc@|portless@|name = \"(bgproc|portless)\"' bun.lock package-lock.json pnpm-lock.yaml yarn.lock deno.lock 2>/dev/null",
+        "env PATH=\"$PWD/node_modules/.bin:/Users/bjesuiter/.homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin\" /Users/bjesuiter/.bun/bin/bun run dev",
+        "env PATH=\"$PWD/node_modules/.bin:/Users/bjesuiter/.homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin\" /Users/bjesuiter/.bun/bin/bun run dev:plain -- --help",
+        "rg -n 'bun run dev|dev:plain|bgproc|portless|start' README.md AGENTS.md package.json"
+      ],
+      "createdAt": "2026-06-16T15:09:42.056Z"
+    },
+    {
+      "runId": "20260616T151008-d5d872",
+      "kind": "revalidate",
+      "status": "fixed",
+      "note": null,
+      "reasoning": "The original package.json evidence changed: package.json:6 now has \"dev\": \"astro dev\", package.json:8 has \"start\": \"bun dev\", and the bgproc/portless command was moved to the explicitly named optional script \"dev:portless\" at package.json:7. The dependency block still does not declare bgproc or portless, but that is no longer required for the documented default dev/start path. AGENTS.md:19-21 now says bun run dev/start use declared project dependencies and documents dev:portless only when the global CLIs are installed, with bun run dev as the fallback. Focused smoke checks with PATH excluding the directory containing bgproc/portless showed bun run dev -- --help resolves to astro dev, and bun run start -- --help also resolves to astro dev when Bun itself is available; bun run dev:portless still fails without bgproc, but that is now an optional documented script rather than the standard workflow. bun run check passed with only existing hints.",
+      "commands": [
+        "sed -n '1,240p' /Users/bjesuiter/.agents/skills/jb-clawpatch-review/SKILL.md",
+        "nl -ba package.json | sed -n '1,120p'",
+        "nl -ba AGENTS.md | sed -n '1,120p'",
+        "rg -n 'bgproc|portless|dev:plain|dev:portless|\"dev\"|\"start\"' package.json AGENTS.md README.md deno.json bunfig.toml 2>/dev/null",
+        "find node_modules/.bin -maxdepth 1 \\( -type l -o -type f \\) 2>/dev/null | sed 's#^node_modules/.bin/##' | sort | rg '^(bgproc|portless|astro|playwright)$'",
+        "rg -n 'bgproc|portless' bun.lock package.json AGENTS.md README.md",
+        "env PATH=\"$PWD/node_modules/.bin:/Users/bjesuiter/.homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin\" /Users/bjesuiter/.bun/bin/bun run dev -- --help",
+        "env PATH=\"$PWD/node_modules/.bin:/Users/bjesuiter/.homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin\" /Users/bjesuiter/.bun/bin/bun run dev:portless -- --help",
+        "/Users/bjesuiter/.homebrew/bin/bash -c 'bun(){ /Users/bjesuiter/.bun/bin/bun \"$@\"; }; export -f bun; env PATH=\"$PWD/node_modules/.bin:/Users/bjesuiter/.homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin\" /Users/bjesuiter/.bun/bin/bun run start -- --help'",
+        "bun run check"
+      ],
+      "createdAt": "2026-06-16T15:14:03.170Z"
+    }
+  ],
+  "signature": "sig_feat-library-4f1e5a63f1_477b8e1ebf",
+  "linkedPatchAttemptIds": [],
+  "createdByRunId": "20260616T144110-320df6",
+  "createdAt": "2026-06-16T14:44:47.228Z",
+  "updatedAt": "2026-06-16T15:14:03.170Z"
+}

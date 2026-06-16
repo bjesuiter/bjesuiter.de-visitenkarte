@@ -151,9 +151,11 @@ const skillLegend =
 
               <div
                 class="cv-skills-legend"
-                aria-label={locale === "de"
-                  ? "Legende für Kompetenzstufen"
-                  : "Skill level legend"}
+                aria-label={
+                  locale === "de"
+                    ? "Legende für Kompetenzstufen"
+                    : "Skill level legend"
+                }
               >
                 {skillLegend.map((entry) => (
                   <div class="cv-skills-legend-item">
@@ -201,7 +203,8 @@ const skillLegend =
                                         <span
                                           class:list={[
                                             "cv-skill-rating-dot",
-                                            dot <= getSkillLevel(subItem.level) &&
+                                            dot <=
+                                              getSkillLevel(subItem.level) &&
                                               "is-active",
                                           ]}
                                           aria-hidden="true"
@@ -217,7 +220,9 @@ const skillLegend =
                           <li class="cv-skill-chip-row cv-skill-rating-row">
                             <span>{item.text}</span>
                             <span class="cv-skill-rating-group">
-                              {item.chip && <span class="cv-chip">{item.chip}</span>}
+                              {item.chip && (
+                                <span class="cv-chip">{item.chip}</span>
+                              )}
                               <span
                                 class="cv-skill-rating"
                                 aria-label={`Level ${getSkillLevel(item.level)} of 5`}
@@ -226,7 +231,8 @@ const skillLegend =
                                   <span
                                     class:list={[
                                       "cv-skill-rating-dot",
-                                      dot <= getSkillLevel(item.level) && "is-active",
+                                      dot <= getSkillLevel(item.level) &&
+                                        "is-active",
                                     ]}
                                     aria-hidden="true"
                                   />
@@ -367,6 +373,30 @@ const skillLegend =
   import { layout, prepare } from "@chenglou/pretext";
 
   (() => {
+    type PrintMode = "preview" | "print";
+    type ProjectPageParts = {
+      page: HTMLElement;
+      sheet: HTMLElement;
+      projects: HTMLElement;
+    };
+    type OverflowSample = {
+      element: string;
+      bottomOverflowPx: number;
+      rightOverflowPx: number;
+    };
+    type DescendantOverflowSummary = {
+      bottomOverflowPx: number;
+      rightOverflowPx: number;
+      samples: OverflowSample[];
+    };
+    type CVWindow = Window &
+      typeof globalThis & {
+        __cvMeasurePrintOverflow?: () => unknown;
+        __cvPrintOverflowState?: unknown[];
+        __cvPrintMode?: (mode: PrintMode) => void;
+      };
+
+    const cvWindow = window as CVWindow;
     const OVERFLOW_TOLERANCE_PX = 1;
 
     const syncPrintActiveState = () => {
@@ -383,7 +413,7 @@ const skillLegend =
       document.body?.removeAttribute("data-cv-print-active");
     };
 
-    const normalizeLineHeight = (style) => {
+    const normalizeLineHeight = (style: CSSStyleDeclaration) => {
       const parsedLineHeight = Number.parseFloat(style.lineHeight);
       if (Number.isFinite(parsedLineHeight)) {
         return parsedLineHeight;
@@ -393,7 +423,7 @@ const skillLegend =
       return fontSize * 1.45;
     };
 
-    const toCanvasFont = (style) => {
+    const toCanvasFont = (style: CSSStyleDeclaration) => {
       const fontStyle = style.fontStyle || "normal";
       const fontVariant = style.fontVariant || "normal";
       const fontWeight = style.fontWeight || "400";
@@ -413,7 +443,7 @@ const skillLegend =
         .join(" ");
     };
 
-    const estimatePretextHeight = (element) => {
+    const estimatePretextHeight = (element: HTMLElement) => {
       const style = window.getComputedStyle(element);
       const maxWidth = element.clientWidth;
       const text = element.textContent?.replace(/\s+/g, " ").trim() ?? "";
@@ -434,7 +464,7 @@ const skillLegend =
       }
     };
 
-    const estimateProjectCardHeight = (card) => {
+    const estimateProjectCardHeight = (card: HTMLElement) => {
       const actualHeight = card.getBoundingClientRect().height;
       const textBlocks = Array.from(
         card.querySelectorAll("[data-pretext-text]"),
@@ -489,7 +519,7 @@ const skillLegend =
       return { page, sheet, projects };
     };
 
-    const getProjectsAvailableHeight = (pageParts) => {
+    const getProjectsAvailableHeight = (pageParts: ProjectPageParts) => {
       const projectsTop = pageParts.projects.offsetTop;
       return Math.max(0, pageParts.sheet.clientHeight - projectsTop);
     };
@@ -529,8 +559,8 @@ const skillLegend =
         Number.parseFloat(window.getComputedStyle(sourceProjects).rowGap) || 0;
       const headingHTML = headingTemplate.outerHTML;
 
-      const pages = [];
-      const appendPage = (withHeading) => {
+      const pages: ProjectPageParts[] = [];
+      const appendPage = (withHeading: boolean) => {
         const pageParts = createProjectPage({
           headingHTML: withHeading ? headingHTML : "",
         });
@@ -624,7 +654,7 @@ const skillLegend =
           };
         }
 
-        const describeElement = (element) => {
+        const describeElement = (element: HTMLElement) => {
           const classes =
             typeof element.className === "string"
               ? element.className
@@ -653,7 +683,7 @@ const skillLegend =
         );
         const descendantOverflow = Array.from(
           sheet.querySelectorAll("*"),
-        ).reduce(
+        ).reduce<DescendantOverflowSummary>(
           (summary, element) => {
             if (!(element instanceof HTMLElement)) {
               return summary;
@@ -689,7 +719,11 @@ const skillLegend =
               samples: nextSamples,
             };
           },
-          { bottomOverflowPx: 0, rightOverflowPx: 0, samples: [] },
+          {
+            bottomOverflowPx: 0,
+            rightOverflowPx: 0,
+            samples: [],
+          },
         );
         const bottomOverflowPx = Math.max(
           scrollBottomOverflow,
@@ -723,9 +757,13 @@ const skillLegend =
 
       if (!isPreview || pages.length === 0) {
         delete root.dataset.cvOverflowActive;
-        window.__cvMeasurePrintOverflow = undefined;
-        window.__cvPrintOverflowState = [];
+        cvWindow.__cvMeasurePrintOverflow = undefined;
+        cvWindow.__cvPrintOverflowState = [];
         pages.forEach((page) => {
+          if (!(page instanceof HTMLElement)) {
+            return;
+          }
+
           delete page.dataset.cvOverflow;
           delete page.dataset.cvOverflowPx;
           delete page.dataset.cvPageNumber;
@@ -738,10 +776,14 @@ const skillLegend =
 
       root.dataset.cvOverflowActive =
         overflowPages.length > 0 ? "true" : "false";
-      window.__cvMeasurePrintOverflow = () => collectPrintOverflow();
-      window.__cvPrintOverflowState = overflowState;
+      cvWindow.__cvMeasurePrintOverflow = () => collectPrintOverflow();
+      cvWindow.__cvPrintOverflowState = overflowState;
 
       pages.forEach((page, index) => {
+        if (!(page instanceof HTMLElement)) {
+          return;
+        }
+
         const state = overflowState[index];
 
         if (!state) {
@@ -781,7 +823,7 @@ const skillLegend =
       });
     };
 
-    const setMode = (mode) => {
+    const setMode = (mode: PrintMode) => {
       document.documentElement.setAttribute("cata-cv-output", mode);
       document.body?.setAttribute("cata-cv-output", mode);
       document.documentElement.dataset.cvPrintActive = "true";
@@ -818,7 +860,7 @@ const skillLegend =
       syncPrintActiveState();
     };
 
-    window.__cvPrintMode = (mode) => {
+    cvWindow.__cvPrintMode = (mode: PrintMode) => {
       setMode(mode);
       window.print();
     };

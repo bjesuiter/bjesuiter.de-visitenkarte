@@ -16,12 +16,16 @@ This repository is a static Astro site.
 Use Bun for local workflows:
 
 - `bun install`: install dependencies.
-- `bun run dev` (or `bun run start`): run local Astro dev server.
-- Prefer `bun run dev` for local serving in this repo instead of ad-hoc servers like Python HTTP servers.
-- Use `bgproc` to run long-lived dev servers or other background processes.
+- `bun run dev` (or `bun run start`): run local Astro dev server with declared project dependencies.
+- `bun run dev:portless`: run the local Astro dev server via `bgproc` and `portless` when those global CLIs are installed.
+- Prefer `bun run dev:portless` for local serving in this repo when `bgproc` and `portless` are available; otherwise use `bun run dev` instead of ad-hoc servers like Python HTTP servers.
+- Use `bgproc` to run long-lived dev servers or other background processes when available.
 - Keep bgproc-managed dev servers running after testing; only stop them when the user explicitly asks.
+- `bun run check`: run Astro and TypeScript diagnostics.
 - `bun run build`: produce static output in `dist/`.
 - `bun run preview`: preview the built site.
+- `bun run test`: run diagnostics, build, and visual regression tests.
+- `bun run test:visual`: build the site and run Playwright visual tests.
 - `bun run prettier`: format all files with Prettier.
 
 Deployment note:
@@ -49,17 +53,19 @@ Deployment note:
 - If the answer is no, record that decision as an exception in this section.
 
 Current exceptions:
+
 - None.
 
 ## Testing Guidelines
 
-There is currently no committed automated test suite (`test`/`spec` files are not present).
+This repo has committed Playwright visual tests under `tests/visual/`.
 
 Minimum validation before merge:
 
-- `bun run build` must succeed.
-- `bun run preview` and manually verify core page rendering, responsive layout, and social link behavior.
+- `bun run test` must succeed. This runs `astro check`, builds the site, and runs Playwright visual tests.
+- `bun run preview` and manually verify core page rendering, responsive layout, print CV rendering, and social link behavior.
 - For UI changes, include before/after screenshots in the PR.
+- For intentional visual changes, update Playwright snapshots with `bun run test:visual:update`.
 
 ## Commit & Pull Request Guidelines
 

@@ -1,0 +1,82 @@
+{
+  "schemaVersion": 1,
+  "findingId": "fnd_sig-feat-library-4f1e5a63f1-2f80_c7fb3792be",
+  "featureId": "feat_library_4f1e5a63f1",
+  "title": "Testing documentation is stale relative to committed visual tests",
+  "category": "docs-gap",
+  "severity": "low",
+  "confidence": "high",
+  "triage": "docs-gap",
+  "evidence": [
+    {
+      "path": "AGENTS.md",
+      "startLine": 54,
+      "endLine": 57,
+      "symbol": null,
+      "quote": "There is currently no committed automated test suite (`test`/`spec` files are not present)."
+    },
+    {
+      "path": "package.json",
+      "startLine": 11,
+      "endLine": 12,
+      "symbol": "scripts",
+      "quote": "\"test:visual\": \"bun run build && playwright test\""
+    },
+    {
+      "path": "tests/visual/home.spec.ts",
+      "startLine": 1,
+      "endLine": 10,
+      "symbol": null,
+      "quote": "import { expect, test } from \"@playwright/test\";"
+    },
+    {
+      "path": "tests/visual/print.spec.ts",
+      "startLine": 12,
+      "endLine": 18,
+      "symbol": "printCases",
+      "quote": null
+    },
+    {
+      "path": "README.md",
+      "startLine": 28,
+      "endLine": 39,
+      "symbol": null,
+      "quote": "Current scope:"
+    }
+  ],
+  "reasoning": "AGENTS.md still says no committed automated test suite exists, while the package exposes visual test scripts and committed Playwright specs are present. README.md also describes the current visual scope as homepage routes and full-page screenshots, but the committed tests include CV print layout, print behavior, and PDF checks. Contributors following the stale docs can skip relevant tests or miss when print snapshots must be updated.",
+  "reproduction": null,
+  "recommendation": "Update AGENTS.md and README.md so the testing guidance matches the committed Playwright suite and package scripts, including the CV print and print-behavior coverage.",
+  "whyTestsDoNotAlreadyCoverThis": "The tests validate rendered behavior, not consistency between repository documentation and the actual test suite.",
+  "suggestedRegressionTest": null,
+  "minimumFixScope": "Documentation-only update to the testing sections in `AGENTS.md` and `README.md`.",
+  "status": "fixed",
+  "history": [
+    {
+      "runId": "20260616T150624-ce8b82",
+      "kind": "revalidate",
+      "status": "fixed",
+      "note": null,
+      "reasoning": "The original stale AGENTS.md quote is no longer present in the current file; AGENTS.md now states that committed Playwright visual tests live under tests/visual and that bun run test runs astro check, build, and visual tests. README.md still has a Current scope section, but it now explicitly includes homepage routes, CV print routes, print action behavior, print-page snapshots, and PDF checks. The referenced package.json script still exists, now at lines 13-15 with bun run test added, and the committed tests under tests/visual include home.spec.ts, print.spec.ts, and print-behavior.spec.ts covering the scopes documented. The working tree is dirty, so this is fixed in the current repository state, not necessarily committed.",
+      "commands": [
+        "git status --short",
+        "rg -n \"no committed automated|automated test suite|Current scope|test:visual|printCases|@playwright/test|visual tests|print\" AGENTS.md README.md package.json tests/visual",
+        "rg --files tests/visual",
+        "nl -ba AGENTS.md | sed -n '50,75p'",
+        "nl -ba README.md | sed -n '20,70p'",
+        "nl -ba package.json | sed -n '1,25p'",
+        "nl -ba tests/visual/print.spec.ts | sed -n '1,130p'",
+        "git diff -- AGENTS.md README.md package.json",
+        "nl -ba tests/visual/print-behavior.spec.ts | sed -n '1,100p'",
+        "nl -ba tests/visual/home.spec.ts | sed -n '1,80p'",
+        "rg -n \"There is currently no committed automated test suite|test/spec files are not present|screenshots: full-page only|Run the checks:\" AGENTS.md README.md"
+      ],
+      "createdAt": "2026-06-16T15:07:50.842Z"
+    }
+  ],
+  "signature": "sig_feat-library-4f1e5a63f1_2f80b95179",
+  "linkedPatchAttemptIds": [],
+  "createdByRunId": "20260616T144110-320df6",
+  "createdAt": "2026-06-16T14:44:47.228Z",
+  "updatedAt": "2026-06-16T15:07:50.842Z"
+}

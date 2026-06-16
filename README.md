@@ -27,8 +27,11 @@ This repo includes a local Playwright-based visual regression setup.
 
 Current scope:
 
-- routes: `/de/` and `/en/`
-- screenshots: full-page only
+- homepage routes: `/de/` and `/en/`
+- CV print routes: `/en/cv/print/` and `/de/lebenslauf/drucken/`
+- print action behavior from `/en/cv/` and `/de/lebenslauf/`
+- screenshots: homepage full-page screenshots plus approved print-page snapshots
+- PDF checks: print preview page count matches the generated PDF page count
 - browser: Chromium
 - viewports:
   - `300x500`
@@ -43,7 +46,13 @@ One-time browser install:
 bunx playwright install chromium
 ```
 
-Run the checks:
+Run the full validation path:
+
+```bash
+bun run test
+```
+
+Run only the visual checks:
 
 ```bash
 bun run test:visual

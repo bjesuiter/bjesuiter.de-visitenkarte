@@ -1,0 +1,86 @@
+{
+  "schemaVersion": 1,
+  "featureId": "feat_library_4f1e5a63f1",
+  "title": "Node package visitenkarte",
+  "summary": "Node package visitenkarte with package metadata and review context rooted at ..",
+  "kind": "library",
+  "source": "node-package",
+  "confidence": "medium",
+  "entrypoints": [
+    {
+      "path": "package.json",
+      "symbol": "visitenkarte",
+      "route": null,
+      "command": null
+    }
+  ],
+  "ownedFiles": [
+    {
+      "path": "package.json",
+      "reason": "package manifest"
+    },
+    {
+      "path": "tsconfig.json",
+      "reason": "typescript configuration"
+    }
+  ],
+  "contextFiles": [
+    {
+      "path": "README.md",
+      "reason": "package context"
+    },
+    {
+      "path": "AGENTS.md",
+      "reason": "package context"
+    },
+    {
+      "path": "src/data/cv.ts",
+      "reason": "package source overview"
+    },
+    {
+      "path": "src/data/profiles.ts",
+      "reason": "package source overview"
+    },
+    {
+      "path": "tests/visual/home.spec.ts",
+      "reason": "package test"
+    },
+    {
+      "path": "tests/visual/print-behavior.spec.ts",
+      "reason": "package test"
+    },
+    {
+      "path": "tests/visual/print.spec.ts",
+      "reason": "package test"
+    }
+  ],
+  "tests": [],
+  "tags": [
+    "node",
+    "package",
+    "project:visitenkarte",
+    "project-root:."
+  ],
+  "trustBoundaries": [],
+  "status": "fixed",
+  "lock": null,
+  "findingIds": [
+    "fnd_sig-feat-library-4f1e5a63f1-e1be_41651c10f2",
+    "fnd_sig-feat-library-4f1e5a63f1-477b_a55306a37e",
+    "fnd_sig-feat-library-4f1e5a63f1-2f80_c7fb3792be"
+  ],
+  "patchAttemptIds": [],
+  "analysisHistory": [
+    {
+      "runId": "20260616T144110-320df6",
+      "kind": "review",
+      "summary": "3 finding(s)",
+      "provider": "codex",
+      "model": null,
+      "reasoningEffort": null,
+      "createdAt": "2026-06-16T14:44:47.229Z"
+    }
+  ],
+  "createdAt": "2026-06-16T14:41:10.514Z",
+  "updatedAt": "2026-06-16T15:14:03.173Z"
+}

@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 1,
+  "projectId": "prj_git-github-com-bjesuiter-bjesuit_ed8e26820a",
+  "name": "visitenkarte",
+  "rootPath": "/Users/bjesuiter/Develop/bjesuiter/bjesuiter.de-visitenkarte",
+  "git": {
+    "remoteUrl": "git@github.com:bjesuiter/bjesuiter.de-visitenkarte.git",
+    "defaultBranch": "main",
+    "currentBranch": "main",
+    "headSha": "bc804cacd048d8bad963945591b327c1161d705a"
+  },
+  "detected": {
+    "languages": ["typescript", "javascript"],
+    "frameworks": [],
+    "packageManagers": ["node"],
+    "commands": {
+      "typecheck": null,
+      "lint": null,
+      "format": null,
+      "test": null
+    }
+  },
+  "createdAt": "2026-06-16T14:41:10.354Z",
+  "updatedAt": "2026-06-16T14:41:10.354Z"
+}

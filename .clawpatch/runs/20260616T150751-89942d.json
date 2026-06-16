@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "runId": "20260616T150751-89942d",
+  "command": "revalidate",
+  "args": [
+    "revalidate",
+    "--finding",
+    "fnd_sig-feat-library-4f1e5a63f1-477b_a55306a37e"
+  ],
+  "rootPath": "/Users/bjesuiter/Develop/bjesuiter/bjesuiter.de-visitenkarte",
+  "headSha": "bc804cacd048d8bad963945591b327c1161d705a",
+  "startedAt": "2026-06-16T15:07:52.007Z",
+  "finishedAt": "2026-06-16T15:09:42.061Z",
+  "status": "completed",
+  "claimedFeatureIds": [],
+  "findingIds": [
+    "fnd_sig-feat-library-4f1e5a63f1-477b_a55306a37e"
+  ],
+  "patchAttemptIds": [],
+  "errors": []
+}

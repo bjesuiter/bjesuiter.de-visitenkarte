@@ -1,0 +1,64 @@
+{
+  "schemaVersion": 1,
+  "findingId": "fnd_sig-feat-library-4f1e5a63f1-e1be_41651c10f2",
+  "featureId": "feat_library_4f1e5a63f1",
+  "title": "Declared validation never runs Astro or TypeScript diagnostics",
+  "category": "test-gap",
+  "severity": "low",
+  "confidence": "high",
+  "triage": "test-gap",
+  "evidence": [
+    {
+      "path": "package.json",
+      "startLine": 5,
+      "endLine": 16,
+      "symbol": "scripts",
+      "quote": "\"test:visual\": \"bun run build && playwright test\""
+    },
+    {
+      "path": "package.json",
+      "startLine": 19,
+      "endLine": 19,
+      "symbol": "dependencies.@astrojs/check",
+      "quote": "\"@astrojs/check\": \"0.9.9\""
+    },
+    {
+      "path": "tsconfig.json",
+      "startLine": 1,
+      "endLine": 3,
+      "symbol": null,
+      "quote": "\"extends\": \"astro/tsconfigs/strict\""
+    }
+  ],
+  "reasoning": "The package declares a strict Astro TypeScript configuration and installs @astrojs/check, but no package script exposes or chains an Astro/TypeScript check. The only automated validation script builds and runs Playwright visual tests, so type diagnostics are not part of the package's declared review or release path.",
+  "reproduction": "Add a type-only error that Astro/Vite can transpile, then run the declared validation command `bun run test:visual`; there is no package script step that invokes `astro check`, `astro-check`, or `tsc`.",
+  "recommendation": "Add a `check` or `typecheck` script, for example `astro check`, and include it in the normal validation path or CI before visual tests.",
+  "whyTestsDoNotAlreadyCoverThis": "The linked Playwright tests verify selected rendered pages, print behavior, screenshots, and PDF page counts; they do not invoke the installed Astro checker or TypeScript compiler diagnostics.",
+  "suggestedRegressionTest": "Add CI/package validation that runs `bun run check` before `bun run test:visual`, and keep a documented command for contributors to run the same checks locally.",
+  "minimumFixScope": "Update `package.json` scripts and, if applicable, the documented validation command.",
+  "status": "fixed",
+  "history": [
+    {
+      "runId": "20260616T150453-5be38d",
+      "kind": "revalidate",
+      "status": "fixed",
+      "note": null,
+      "reasoning": "The original evidence paths still exist, but the script evidence has changed: package.json now declares \"check\": \"astro check\" at line 12 and \"test\": \"bun run check && bun run test:visual\" at line 13, while \"test:visual\" remains build-plus-Playwright at line 14. @astrojs/check is still installed and tsconfig.json still extends astro/tsconfigs/strict. `bun run check` executed Astro diagnostics successfully with 0 errors. `bun run test` also proved the normal validation path invokes `astro check` before visual tests; it failed later only because the Playwright Chromium executable is missing from the local cache, not because Astro/TypeScript diagnostics are absent.",
+      "commands": [
+        "sed -n '1,240p' /Users/bjesuiter/.agents/skills/jb-clawpatch-review/SKILL.md",
+        "nl -ba package.json",
+        "nl -ba tsconfig.json",
+        "rg -n \"astro check|astro-check|tsc|test:visual|\\\"check\\\"|\\\"test\\\"\" package.json .github .clawpatch deno.json bunfig.toml",
+        "bun run check",
+        "bun run test",
+        "git status --short"
+      ],
+      "createdAt": "2026-06-16T15:06:24.619Z"
+    }
+  ],
+  "signature": "sig_feat-library-4f1e5a63f1_e1be61a61d",
+  "linkedPatchAttemptIds": [],
+  "createdByRunId": "20260616T144110-320df6",
+  "createdAt": "2026-06-16T14:44:47.228Z",
+  "updatedAt": "2026-06-16T15:06:24.619Z"
+}
