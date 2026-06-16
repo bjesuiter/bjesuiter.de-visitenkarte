@@ -1074,12 +1074,14 @@ const skillLegend =
   }
 
   .cv-project-toc-list {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(min(100%, 25rem), 1fr));
-    gap: 0.18rem 1.3rem;
+    display: block;
     margin: 0;
     padding: 0;
     list-style: none;
+  }
+
+  .cv-project-toc-list li {
+    break-inside: avoid;
   }
 
   .cv-project-toc-link {
@@ -1117,12 +1119,11 @@ const skillLegend =
 
   .cv-project-toc-title {
     color: oklch(0.92 0.008 166.11 / 0.72);
-    overflow: hidden;
+    min-width: 0;
     font-size: 0.86rem;
     font-weight: 500;
     line-height: 1.35;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+    text-wrap: balance;
   }
 
   .cv-project-toc-link:hover .cv-project-toc-title {
@@ -1143,6 +1144,13 @@ const skillLegend =
 
   .cv-project-card {
     scroll-margin-top: 1rem;
+  }
+
+  @media (min-width: 980px) {
+    .cv-project-toc-list {
+      column-count: 2;
+      column-gap: 1.3rem;
+    }
   }
 
   .cv-project-header {
