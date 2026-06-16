@@ -222,7 +222,10 @@ const skillLegend =
       </div>
     </section>
 
-    <section class="cv-section-shell cv-section cv-project-history-section">
+    <section
+      id="project-history"
+      class="cv-section-shell cv-section cv-project-history-section"
+    >
       <div class="cv-section-heading">
         <div>
           <h2 class="pl-1">{content.projectsTitle}</h2>
@@ -250,10 +253,13 @@ const skillLegend =
         </ol>
       </nav>
 
-      <div class="cv-projects">
+      <div class="cv-projects" data-cv-projects>
         {
           content.projects.map((project, index) => (
-            <article id={project.id} class="cv-project-card cv-surface cv-surface-project">
+            <article
+              id={project.id}
+              class="cv-project-card cv-surface cv-surface-project"
+            >
               <header class="cv-project-header gap-4">
                 <div class="cv-project-title-block gap-4">
                   <div class="cv-project-eyebrow">
@@ -324,7 +330,57 @@ const skillLegend =
           ))
         }
       </div>
+
+      <div
+        id="project-history-end"
+        class="cv-project-history-end"
+        aria-hidden="true"
+      >
+      </div>
     </section>
+
+    <nav
+      class="cv-project-rail"
+      aria-label={content.projectNavigationLabel}
+      data-cv-project-rail
+    >
+      <a
+        href="#project-history"
+        class="cv-project-rail-button"
+        aria-label={content.projectNavigationTopLabel}
+        title={content.projectNavigationTopLabel}
+        data-cv-project-rail-top
+      >
+        <span aria-hidden="true">↟</span>
+      </a>
+      <button
+        type="button"
+        class="cv-project-rail-button"
+        aria-label={content.projectNavigationPreviousLabel}
+        title={content.projectNavigationPreviousLabel}
+        data-cv-project-rail-prev
+      >
+        <span aria-hidden="true">↑</span>
+      </button>
+      <button
+        type="button"
+        class="cv-project-rail-button"
+        aria-label={content.projectNavigationNextLabel}
+        title={content.projectNavigationNextLabel}
+        data-cv-project-rail-next
+      >
+        <span aria-hidden="true">↓</span>
+      </button>
+      <a
+        href="#project-history-end"
+        class="cv-project-rail-button"
+        aria-label={content.projectNavigationEndLabel}
+        title={content.projectNavigationEndLabel}
+        data-cv-project-rail-end
+      >
+        <span aria-hidden="true">↡</span>
+      </a>
+    </nav>
   </article>
 </main>
 
@@ -1142,11 +1198,88 @@ const skillLegend =
     gap: 2rem;
   }
 
-  .cv-project-card {
+  .cv-project-card,
+  .cv-project-history-section,
+  .cv-project-history-end {
     scroll-margin-top: 1rem;
   }
 
+  .cv-project-rail {
+    position: fixed;
+    right: max(0.55rem, env(safe-area-inset-right));
+    top: 50%;
+    z-index: 30;
+    display: none;
+    gap: 0.26rem;
+    padding: 0.22rem;
+    border: 1px solid oklch(0.9049 0.0895 164.15 / 0.08);
+    border-radius: 999px;
+    background: oklch(0.131 0.0212 174.91 / 0.42);
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(-50%);
+    transition:
+      opacity 170ms ease,
+      background-color 170ms ease;
+    backdrop-filter: blur(10px);
+  }
+
+  .cv-project-rail.is-visible {
+    opacity: 0.58;
+    pointer-events: auto;
+  }
+
+  .cv-project-rail:hover,
+  .cv-project-rail:focus-within {
+    background: oklch(0.131 0.0212 174.91 / 0.68);
+    opacity: 1;
+  }
+
+  .cv-project-rail-button {
+    display: inline-grid;
+    place-items: center;
+    width: 1.9rem;
+    height: 1.9rem;
+    border: 0;
+    border-radius: 999px;
+    background: transparent;
+    color: oklch(0.9089 0.0586 165.94 / 0.72);
+    text-decoration: none;
+    cursor: pointer;
+    transition:
+      color 170ms ease,
+      background-color 170ms ease,
+      opacity 170ms ease;
+  }
+
+  .cv-project-rail-button:hover,
+  .cv-project-rail-button:focus-visible {
+    background: oklch(0.8452 0.1299 164.98 / 0.12);
+    color: oklch(0.8452 0.1299 164.98);
+    outline: 0;
+  }
+
+  .cv-project-rail-button:disabled {
+    opacity: 0.26;
+    cursor: default;
+  }
+
+  .cv-project-rail-button span {
+    font-family: "Chakra Petch", sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    line-height: 1;
+  }
+
   @media (min-width: 980px) {
+    .cv-project-rail {
+      display: grid;
+    }
+
+    .cv-project-rail {
+      right: max(0.8rem, calc((100vw - var(--cv-content-width)) / 2 - 3.1rem));
+    }
+
     .cv-project-toc-list {
       column-count: 2;
       column-gap: 1.3rem;
@@ -1474,3 +1607,77 @@ const skillLegend =
     margin: 12mm;
   }
 </style>
+
+<script is:inline>
+  (() => {
+    const rail = document.querySelector("[data-cv-project-rail]");
+    const projectHistory = document.querySelector("#project-history");
+    const projectHistoryEnd = document.querySelector("#project-history-end");
+    const projects = Array.from(
+      document.querySelectorAll("[data-cv-projects] .cv-project-card"),
+    );
+    const previousButton = document.querySelector(
+      "[data-cv-project-rail-prev]",
+    );
+    const nextButton = document.querySelector("[data-cv-project-rail-next]");
+
+    if (
+      !(rail instanceof HTMLElement) ||
+      !(projectHistory instanceof HTMLElement) ||
+      !(projectHistoryEnd instanceof HTMLElement) ||
+      !(previousButton instanceof HTMLButtonElement) ||
+      !(nextButton instanceof HTMLButtonElement) ||
+      projects.length === 0
+    ) {
+      return;
+    }
+
+    const scrollToElement = (element) => {
+      element.scrollIntoView({ block: "start", behavior: "smooth" });
+    };
+
+    const getCurrentProjectIndex = () => {
+      const anchorY = window.scrollY + window.innerHeight * 0.32;
+      let currentIndex = 0;
+
+      projects.forEach((project, index) => {
+        if (!(project instanceof HTMLElement)) return;
+        if (project.offsetTop <= anchorY) {
+          currentIndex = index;
+        }
+      });
+
+      return currentIndex;
+    };
+
+    const updateRail = () => {
+      const viewportAnchor = window.scrollY + window.innerHeight * 0.45;
+      const historyTop = projectHistory.offsetTop;
+      const historyBottom = projectHistoryEnd.offsetTop;
+      const isVisible =
+        viewportAnchor >= historyTop && window.scrollY <= historyBottom;
+      const currentIndex = getCurrentProjectIndex();
+
+      rail.classList.toggle("is-visible", isVisible);
+      previousButton.disabled = currentIndex <= 0;
+      nextButton.disabled = currentIndex >= projects.length - 1;
+    };
+
+    previousButton.addEventListener("click", () => {
+      const targetIndex = Math.max(0, getCurrentProjectIndex() - 1);
+      scrollToElement(projects[targetIndex]);
+    });
+
+    nextButton.addEventListener("click", () => {
+      const targetIndex = Math.min(
+        projects.length - 1,
+        getCurrentProjectIndex() + 1,
+      );
+      scrollToElement(projects[targetIndex]);
+    });
+
+    window.addEventListener("scroll", updateRail, { passive: true });
+    window.addEventListener("resize", updateRail);
+    updateRail();
+  })();
+</script>

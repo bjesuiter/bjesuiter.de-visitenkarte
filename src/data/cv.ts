@@ -71,6 +71,11 @@ export interface CvContent {
   skillsTitle: string;
   projectsTitle: string;
   projectTocTitle: string;
+  projectNavigationLabel: string;
+  projectNavigationTopLabel: string;
+  projectNavigationPreviousLabel: string;
+  projectNavigationNextLabel: string;
+  projectNavigationEndLabel: string;
   highlightsTitle: string;
   stackTitle: string;
   rolesLabel: string;
@@ -104,6 +109,11 @@ const cvDe: CvContent = {
   skillsTitle: "Skills & Expertise",
   projectsTitle: "Projektchronik",
   projectTocTitle: "Projektübersicht",
+  projectNavigationLabel: "Projektnavigation",
+  projectNavigationTopLabel: "Zum Anfang der Projektchronik",
+  projectNavigationPreviousLabel: "Zum vorherigen Projekt",
+  projectNavigationNextLabel: "Zum nächsten Projekt",
+  projectNavigationEndLabel: "Zum Ende der Projektchronik",
   highlightsTitle: "Aufgaben & Erfolge",
   stackTitle: "Technischer Kontext",
   rolesLabel: "Rollen",
@@ -197,6 +207,8 @@ const cvDe: CvContent = {
         },
         { text: "Git-Workflows wie GitFlow und OneFlow", level: 5 },
         { text: "GitLab, GitHub, Gitea und Bitbucket", level: 5 },
+        { text: "Software architecture", level: 5 },
+        { text: "System architecture", level: 4 },
       ],
     },
     {
@@ -206,7 +218,7 @@ const cvDe: CvContent = {
           label: "Coding Agents",
           items: [
             { text: "pi-agent (pi.dev)", level: 5 },
-            { text: "OpenCode + oh-my-opencode", level: 3 },
+            { text: "OpenCode + oh-my-opencode", level: 4 },
             { text: "codex-cli", level: 3 },
             { text: "Codex Desktop", level: 2 },
           ],
@@ -230,6 +242,7 @@ const cvDe: CvContent = {
       items: [
         { text: "macOS", level: 5 },
         { text: "Desktop Linux: Ubuntu, Debian", level: 4 },
+        { text: "System administration", level: 4 },
         { text: "Windows + cmder", level: 4 },
         { text: "VSCode / Cursor", level: 5 },
         { text: "Zed (on macOS)", level: 3 },
@@ -249,6 +262,7 @@ const cvDe: CvContent = {
         { text: "Turso und PlanetScale", level: 3 },
         { text: "Cloudflare Workers", level: 3 },
         { text: "TanStack Start", level: 4 },
+        { text: "JSON", level: 5 },
       ],
     },
     {
@@ -256,6 +270,7 @@ const cvDe: CvContent = {
       items: [
         { text: "Vite", level: 4 },
         { text: "Angular (AngularJS 1 bis Angular 20)", level: 5 },
+        { text: "React", level: 4 },
         { text: "SolidJS", level: 5 },
         { text: "TanStack Query", level: 5 },
         { text: "TanStack DB & Router", level: 4 },
@@ -834,6 +849,11 @@ const cvEn: CvContent = {
   skillsTitle: "Skills & Expertise",
   projectsTitle: "Project History",
   projectTocTitle: "Project Overview",
+  projectNavigationLabel: "Project navigation",
+  projectNavigationTopLabel: "Jump to project history start",
+  projectNavigationPreviousLabel: "Jump to previous project",
+  projectNavigationNextLabel: "Jump to next project",
+  projectNavigationEndLabel: "Jump to project history end",
   highlightsTitle: "Responsibilities & Outcomes",
   stackTitle: "Technical Context",
   rolesLabel: "Roles",
@@ -930,6 +950,8 @@ const cvEn: CvContent = {
           level: 4,
         },
         { text: "GitLab, GitHub, Gitea, and Bitbucket", level: 5 },
+        { text: "Software architecture", level: 5 },
+        { text: "System architecture", level: 4 },
       ],
     },
     {
@@ -939,7 +961,7 @@ const cvEn: CvContent = {
           label: "Coding Agents",
           items: [
             { text: "pi-agent (pi.dev)", level: 5 },
-            { text: "OpenCode + oh-my-opencode", level: 3 },
+            { text: "OpenCode + oh-my-opencode", level: 4 },
             { text: "codex-cli", level: 3 },
             { text: "Codex Desktop", level: 2 },
           ],
@@ -963,6 +985,7 @@ const cvEn: CvContent = {
       items: [
         { text: "macOS", level: 5 },
         { text: "Desktop Linux: Ubuntu, Debian", level: 4 },
+        { text: "System administration", level: 4 },
         { text: "Windows + cmder", level: 4 },
         { text: "VSCode / Cursor", level: 5 },
         { text: "Zed (on macOS)", level: 3 },
@@ -982,6 +1005,7 @@ const cvEn: CvContent = {
         { text: "Turso and PlanetScale", level: 3 },
         { text: "Cloudflare Workers", level: 3 },
         { text: "TanStack Start", level: 4 },
+        { text: "JSON", level: 5 },
       ],
     },
     {
@@ -989,6 +1013,7 @@ const cvEn: CvContent = {
       items: [
         { text: "Vite", level: 4 },
         { text: "Angular (AngularJS 1 to Angular 20)", level: 5 },
+        { text: "React", level: 4 },
         { text: "SolidJS", level: 5 },
         { text: "TanStack Query", level: 5 },
         { text: "TanStack DB & Router", level: 4 },
