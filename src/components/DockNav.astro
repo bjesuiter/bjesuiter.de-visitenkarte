@@ -80,15 +80,16 @@ const navContent =
       };
 
 const wrapperClass =
-  "sticky top-[0.9rem] z-[60] mb-[0.9rem] flex justify-center px-4 pt-[0.9rem] max-[520px]:top-[0.6rem] max-[520px]:px-[0.7rem] print:hidden";
+  "fixed inset-x-0 top-[0.9rem] z-[60] flex justify-center px-4 max-[520px]:top-[0.6rem] max-[520px]:px-[0.7rem] print:hidden";
+const spacerClass = "h-[calc(64.796875px+1.8rem)] print:hidden";
 const navClass =
   "max-w-full rounded-full border border-emerald-200/20 bg-[rgba(3,24,18,0.8)] shadow-[0_16px_34px_rgba(1,10,7,0.3),inset_0_1px_0_rgba(255,255,255,0.08)] backdrop-blur-[18px] backdrop-saturate-[130%] max-[520px]:w-full max-[520px]:rounded-[28px]";
 const listClass =
   "m-0 flex list-none flex-wrap justify-center gap-[0.35rem] p-[0.4rem] max-[520px]:gap-[0.28rem]";
 const navItemClass =
-  "group inline-flex min-h-12 items-center gap-[0.58rem] rounded-full px-[0.52rem] py-2 pr-[0.85rem] text-[#d8fbed] transition duration-200 ease-out hover:-translate-y-px hover:bg-emerald-200/8 focus-visible:-translate-y-px focus-visible:bg-emerald-200/8 focus-visible:outline-none max-[520px]:w-full max-[520px]:justify-center max-[520px]:pr-[0.7rem]";
+  "group inline-flex min-h-12 min-w-[8.5rem] items-center justify-center gap-[0.58rem] rounded-full border border-transparent px-[0.52rem] py-2 pr-[0.85rem] text-[#d8fbed] transition duration-200 ease-out hover:-translate-y-px hover:bg-emerald-200/8 focus-visible:-translate-y-px focus-visible:bg-emerald-200/8 focus-visible:outline-none max-[520px]:w-full max-[520px]:min-w-0 max-[520px]:pr-[0.7rem]";
 const activeNavItemClass =
-  "border border-white/35 bg-[linear-gradient(135deg,#e7fff4_0%,#b6f8da_42%,#63e5af_100%)] !text-[#02150f] shadow-[0_14px_30px_rgba(0,0,0,0.28),inset_0_1px_0_rgba(255,255,255,0.52)]";
+  "border-white/35 bg-[linear-gradient(135deg,#e7fff4_0%,#b6f8da_42%,#63e5af_100%)] !text-[#02150f] shadow-[0_14px_30px_rgba(0,0,0,0.28),inset_0_1px_0_rgba(255,255,255,0.52)]";
 const navItemSlotClass = "max-[520px]:flex-[1_1_calc(50%-0.28rem)]";
 const iconClass =
   "inline-grid size-8 place-items-center rounded-full bg-white/8 text-current transition duration-200 ease-out group-hover:scale-[1.06] group-hover:bg-white/13";
@@ -96,7 +97,6 @@ const activeIconClass =
   "!bg-[rgba(2,21,15,0.18)] !text-[#02150f] shadow-[inset_0_1px_0_rgba(255,255,255,0.22)]";
 const labelClass =
   "font-tech text-[0.88rem] font-bold uppercase tracking-[0.04em] whitespace-nowrap";
-
 ---
 
 <div class={wrapperClass}>
@@ -140,3 +140,4 @@ const labelClass =
     </ul>
   </nav>
 </div>
+<div class={spacerClass} aria-hidden="true"></div>
