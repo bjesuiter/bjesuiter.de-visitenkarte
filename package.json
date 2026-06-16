@@ -3,7 +3,7 @@
   "type": "module",
   "version": "0.0.1",
   "scripts": {
-    "dev": "astro dev",
+    "dev": "bgproc start -n visitenkarte -f -w -- env PORTLESS_PORT=443 portless visitenkarte astro dev",
     "start": "bun dev",
     "build": "astro build",
     "prod": "bun run build",
